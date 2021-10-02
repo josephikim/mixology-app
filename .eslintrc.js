@@ -7,7 +7,7 @@ module.exports = {
     'plugin:prettier/recommended',
   ],
   parserOptions: {
-    ecmaVersion: 2020,
+    ecmaVersion: 2021,
     sourceType: 'module',
     ecmaFeatures: {
       jsx: true,
@@ -21,8 +21,14 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-var-requires': 0,
-    'react/display-name': 'off',
+    'react/display-name': 'off'
   },
+  overrides: [ 
+    { 
+      files: ["*.ts", "*.tsx"],
+      rules: { "no-undef": "off" }
+    }
+  ],
   settings: {
     react: {
       version: 'detect',

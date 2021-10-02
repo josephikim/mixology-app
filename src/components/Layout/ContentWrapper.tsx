@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 
-const style = { marginRight: '25%', marginLeft: '25%' };
+const style = { marginRight: '15%', marginLeft: '15%' };
 
 const ContentWrapper = ({ children }: { children: any }) => (
   <Row gutter={16}>

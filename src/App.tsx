@@ -1,10 +1,12 @@
-import 'font-awesome/css/font-awesome.min.css';
+import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import React, { FunctionComponent } from 'react';
-import DemoView from './views/Demo/DemoView';
-import DemoSecondView from './views/DemoSecond/DemoSecondView';
 
-const App: FunctionComponent = () => {
+import DemoView from './views/Demo/DemoView';
+import CellarView from './views/Cellar/CellarView';
+import BottleView from './views/Bottle/BottleView';
+import 'font-awesome/css/font-awesome.min.css';
+
+const App = () => {
   return (
     <div className="h-100">
       <Router>
@@ -12,8 +14,11 @@ const App: FunctionComponent = () => {
           <Route path="/" exact>
             <DemoView />
           </Route>
-          <Route path="/demosecond">
-            <DemoSecondView />
+          <Route path="/cellar">
+            <CellarView />
+          </Route>
+          <Route path="/bottletest">
+            <BottleView />
           </Route>
         </Switch>
       </Router>

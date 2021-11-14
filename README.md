@@ -1,9 +1,5 @@
 # drink-cellar-app
-Build and manage your personal drink cellar, add bottles to wish lists, add tasting notes
+Build and manage your personal drink cellar, create wish lists, add tasting notes and more!
 
-# To Do's
-  - Build cellar view and model
-  - Build bottle view and model
-  - Add interaction to add new bottle to cellar
-  - Set up DB and test add new bottle
-  - Add 'id' field to api call responses taken from DB object's ID property (whatever that may be)
+## Production Mode
+1. Create a .env.production file in your host directory. This file should contain values for the environment variables listed in .env.example (e.g. DB_HOST). Alternatively, you can set those environment variables directly in your host environment before starting the app.

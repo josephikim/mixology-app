@@ -1,14 +1,14 @@
 import * as webpack from 'webpack';
 
-const common: webpack.Configuration = {
+const common = {
   module: {
     rules: [
       {
         test: /\.s?css$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.(ts|js)x?$/,
+        test: /\.(ts)x?$/,
         exclude: /node_modules/,
         use: ['babel-loader']
       },

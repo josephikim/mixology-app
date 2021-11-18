@@ -8,7 +8,7 @@ const client = merge(common, {
   plugins: [
     new Dotenv({
       path: '.env'
-    }) as any,
+    }),
     new HtmlWebpackPlugin()
   ]
 });
@@ -17,6 +17,6 @@ const server = merge(common, {
   // dev server configs
 });
 
-const config: webpack.Configuration = { ...server, ...client };
+const config = { ...client, ...server };
 
 export default config;

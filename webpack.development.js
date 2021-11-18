@@ -7,13 +7,19 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 import common from './webpack.common.js';
 
-const client: webpack.Configuration = merge(common, {
+const client = merge(common, {
   name: 'client',
-  entry: './src/client/index.tsx',
+  entry: {
+    main: [
+      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true', 
+      './src/client/index.tsx'
+    ]
+  },
   devtool: 'inline-source-map',
   output: {
     path: path.resolve('./dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -22,12 +28,12 @@ const client: webpack.Configuration = merge(common, {
       excludeChunks: ['server']
     }),
     new Dotenv({
-      path: path.resolve('src/config', '.env.development')
-    }) as any
+      path: '.env.development'
+    })
   ]
 });
 
-const server: webpack.Configuration = merge(common, {
+const server = merge(common, {
   name: 'server',
   entry: './src/server/server.ts',
   target: 'node',
@@ -38,11 +44,11 @@ const server: webpack.Configuration = merge(common, {
   externals: [nodeExternals()],
   plugins: [
     new Dotenv({
-      path: path.resolve('src/config', '.env.development')
-    }) as any
+      path: '.env.development'
+    })
   ]
 });
 
-const config: webpack.Configuration[] = [server, client];
+const config = [client, server];
 
 export default config;

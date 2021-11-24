@@ -9,17 +9,18 @@ import common from './webpack.common.js';
 
 const client = merge(common, {
   name: 'client',
-  entry: {
-    main: [
-      'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true', 
-      './src/client/index.tsx'
-    ]
-  },
-  devtool: 'inline-source-map',
+  entry: './src/client/index.tsx',
+  target: 'web',
+  devtool: 'source-map',
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',
     publicPath: '/'
+  },
+  devServer: {
+    port: 8080,
+    historyApiFallback: true,
+    hot: true
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -35,11 +36,15 @@ const client = merge(common, {
 
 const server = merge(common, {
   name: 'server',
-  entry: './src/server/server.ts',
   target: 'node',
+  node: {
+    __dirname: false,
+    __filename: false,
+  },
+  entry: './src/server/server.ts',
   output: {
     path: path.resolve('./dist'),
-    filename: 'server.js'
+    filename: 'server.cjs'
   },
   externals: [nodeExternals()],
   plugins: [

@@ -5,10 +5,10 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start:dev-server": "node ./dist/server.js",
-    "watch:dev-client": "webpack serve --open --mode=development --config ./webpack.development.js --config-name client",
+    "start:dev-server": "node-dev dist/server.cjs",
+    "watch:dev-client": "webpack serve --open --mode=development --config webpack.development.js --config-name client",
     "dev": "npm run check-types && npm run lint && npm run build:dev && npm-run-all --parallel start:dev-server watch:dev-client",
-    "build:dev": "rm -rf dist && webpack --mode=development --config ./webpack.development.js",
+    "build:dev": "rm -rf dist && webpack --mode=development --config webpack.development.js --config-name server",
     "check-types": "tsc",
     "prettier": "prettier \"src/**/*.{ts,tsx,css}\"",
     "prettier:fix": "npm run prettier -- --write",
@@ -28,7 +28,6 @@
     "@storybook/react": "^5.3.21",
     "@types/dotenv-webpack": "^7.0.3",
     "@types/express": "^4.17.13",
-    "@types/html-webpack-plugin": "^3.2.6",
     "@types/node": "^16.11.6",
     "@types/webpack": "^4.41.32",
     "@types/webpack-dev-server": "^4.3.1",
@@ -113,7 +112,6 @@
     ],
     "ignorePatterns": [
       "node_modules",
-      "config",
       "dist"
     ],
     "rules": {

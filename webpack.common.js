@@ -8,7 +8,7 @@ const common = {
         use: ['style-loader', 'css-loader']
       },
       {
-        test: /\.(ts)x?$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: ['babel-loader']
       },

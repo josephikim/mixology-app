@@ -1,14 +1,16 @@
 {
   "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
     "alwaysStrict": true,
-    "target": "es5",
+    "target": "esnext",
+    "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "./src",
+    "baseUrl": "src",
     "strictNullChecks": true,
     "declaration": true,
     "noEmit": true,
-    "esModuleInterop": true,
     "jsx": "react"
   }
 }

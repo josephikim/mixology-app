@@ -19,7 +19,7 @@ const wines = [
   {
     id: 102,
     category: 'wine',
-    name: 'Mello Yello',
+    name: 'Mello Yello 3',
     producer: 'Radical Vineyards',
     country: 'US',
     price: 1899,

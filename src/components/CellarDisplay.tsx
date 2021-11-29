@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Row, Col } from 'antd';
-import { IBottle } from '../models';
+import { IBottle } from '../types';
 import BottleCard from './BottleCard';
 
 const wines = [

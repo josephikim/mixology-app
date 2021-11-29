@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Card } from 'antd';
 import { EditOutlined, EllipsisOutlined, SettingOutlined } from '@ant-design/icons';
-import { IBottle } from '../models';
+import { IBottle } from '../types';
 
 import '../styles/BottleCard.css';
 

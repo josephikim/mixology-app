@@ -1,22 +1,22 @@
-import { ITokenModel } from '../models';
+import { IAuthToken } from '../types';
 
 const TOKEN_RESULT = 'TOKEN_RESULT';
 
 export class StorageHelper {
-  static setTokenResult(tokenModel: ITokenModel): void {
-    localStorage.setItem(TOKEN_RESULT, JSON.stringify(tokenModel));
+  static setTokenResult(token: IAuthToken): void {
+    localStorage.setItem(TOKEN_RESULT, JSON.stringify(token));
   }
 
   static onSignOut(): void {
     localStorage.removeItem(TOKEN_RESULT);
   }
 
-  static tryGetTokenResult(): Promise<ITokenModel | null> {
+  static tryGetTokenResult(): Promise<IAuthToken | null> {
     return new Promise((resolve, reject) => {
       try {
         const res = localStorage.getItem(TOKEN_RESULT);
         if (res !== null) {
-          resolve(<ITokenModel>JSON.parse(res));
+          resolve(<IAuthToken>JSON.parse(res));
         } else {
           resolve(null);
         }

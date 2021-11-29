@@ -1,4 +1,4 @@
-import settings from '../models/Settings';
+import settings from '../api/Settings';
 import { StorageHelper } from '.';
 
 export async function createHeaders(): Promise<any> {

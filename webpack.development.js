@@ -9,7 +9,7 @@ import common from './webpack.common.js';
 
 const client = merge(common, {
   name: 'client',
-  entry: './src/client/index.tsx',
+  entry: './src/index.tsx',
   target: 'web',
   devtool: 'source-map',
   output: {
@@ -24,7 +24,7 @@ const client = merge(common, {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve('src/client', 'index.html'),
+      template: path.resolve('src', 'index.html'),
       filename: 'index.html',
       excludeChunks: ['server']
     }),
@@ -41,7 +41,7 @@ const server = merge(common, {
     __dirname: false,
     __filename: false,
   },
-  entry: './src/server/server.ts',
+  entry: './src/server.ts',
   output: {
     path: path.resolve('./dist'),
     filename: 'server.cjs'

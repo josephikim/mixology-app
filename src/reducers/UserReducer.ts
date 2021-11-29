@@ -1,5 +1,4 @@
-import { IAction } from '../Globals';
-import { IBottle } from '../models';
+import { IAction, IBottle } from '../types';
 
 export interface IUserState {
   bottles: IBottle[];

@@ -1,4 +1,4 @@
-import { IAction } from '../Globals';
+import { IAction } from '../types';
 
 export interface IAppState {
   data: [];

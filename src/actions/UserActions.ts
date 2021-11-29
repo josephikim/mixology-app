@@ -1,7 +1,5 @@
-import { createAddBottleAction, createSetCellarViewAction } from './Types';
+import { createAddBottleAction, createSetCellarViewAction, IDispatch, IBottle } from '../types';
 import { UserApi } from '../api';
-import { IDispatch } from '../Globals';
-import { IBottle } from '../models';
 
 export const addBottle: (bottle: IBottle) => (dispatch: IDispatch) => Promise<void> =
   (bottle: IBottle) =>

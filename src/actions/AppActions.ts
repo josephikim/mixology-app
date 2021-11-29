@@ -2,21 +2,23 @@ import {
   createLoginStartAction,
   createLoginSuccessAction,
   createLoginFailAction,
-  createLogoutUserAction
-} from './Types';
-import { IDispatch } from '../Globals';
+  createLogoutUserAction,
+  IDispatch,
+  ILoginCredentials,
+  TokenResult
+} from '../types';
 import { UserApi } from '../api';
 import { StorageHelper } from '../utils';
-import { ILoginModel } from '../models';
-import { TokenResult } from '../models/ResultTypes';
 
-export const login: (model: ILoginModel) => (dispatch: IDispatch) => Promise<void> = (model: ILoginModel) => {
+export const login: (credentials: ILoginCredentials) => (dispatch: IDispatch) => Promise<void> = (
+  credentials: ILoginCredentials
+) => {
   const api = new UserApi();
   return async (dispatch: IDispatch): Promise<void> => {
     try {
       const loginStartAction = createLoginStartAction();
       dispatch(loginStartAction);
-      const result: TokenResult = await api.login(model);
+      const result: TokenResult = await api.login(credentials);
       if (result.statusCode == 200) {
         const loginSuccessAction = createLoginSuccessAction(result.data[0]);
         dispatch(loginSuccessAction);
@@ -32,7 +34,7 @@ export const login: (model: ILoginModel) => (dispatch: IDispatch) => Promise<voi
   };
 };
 
-export function signOut(): (dispatch: IDispatch) => Promise<void> {
+export const signOut: () => (dispatch: IDispatch) => Promise<void> = () => {
   return async (dispatch: IDispatch): Promise<void> => {
     try {
       StorageHelper.onSignOut();
@@ -42,4 +44,4 @@ export function signOut(): (dispatch: IDispatch) => Promise<void> {
       console.log({ error: error });
     }
   };
-}
+};

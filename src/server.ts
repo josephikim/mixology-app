@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express';
+import db from './db/connection';
 
 const BUILD_DIR = __dirname;
 const HTML_FILE = path.join(BUILD_DIR, 'index.html');

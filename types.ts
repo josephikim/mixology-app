@@ -1,3 +1,10 @@
+// Express.js types
+declare module 'express-serve-static-core' {
+  interface Request {
+    id?: string
+  }
+}
+
 // API types
 export type TokenResult = IApiResultBaseOf<IAuthToken>;
 export type AddBottleResult = IApiResultBaseOf<IBottle>;

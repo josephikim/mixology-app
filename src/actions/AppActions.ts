@@ -18,7 +18,7 @@ export const login: (credentials: ILoginCredentials) => (dispatch: IDispatch) =>
     try {
       const loginStartAction = createLoginStartAction();
       dispatch(loginStartAction);
-      const result: TokenResult = await api.login(credentials);
+      const result: TokenResult = await api.loginUser(credentials);
       if (result.statusCode == 200) {
         const loginSuccessAction = createLoginSuccessAction(result.data[0]);
         dispatch(loginSuccessAction);

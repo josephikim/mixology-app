@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import db from '../db';
-import config from '../config/auth.config';
+import config from '../config/authConfig';
 import { IRole } from '../db/Role';
 import { HydratedDocument } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';

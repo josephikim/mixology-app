@@ -1,13 +1,12 @@
-import mongoose from 'mongoose';
-import Role from './Role';
+import connection from './connection';
 import User from './User';
-
-mongoose.Promise = global.Promise;
+import Role from './Role';
 
 const db = {
-  mongoose,
+  connection,
   user: User,
   role: Role,
+  event: Event,
   roles: ['user', 'admin', 'moderator']
 };
 

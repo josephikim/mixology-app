@@ -1,12 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import db from '../db';
-import config from '../config/auth.config';
+import Role from '../db/Role';
+import User from '../db/User';
+import config from '../config/authConfig';
 
 const { TokenExpiredError } = jwt;
-
-const User = db.user;
-const Role = db.role;
 
 const catchError = (err, res): Response => {
   if (err instanceof TokenExpiredError) {

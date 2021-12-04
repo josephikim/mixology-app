@@ -32,7 +32,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): Response 
   });
 };
 
-const isAdmin = (req: Request, res: Response, next: NextFunction): Response | void => {
+const isAdmin = (req: Request, res: Response, next: NextFunction): NextFunction | void => {
   User.findById(req.id).exec((err, user) => {
     if (err) {
       return next(err);
@@ -60,7 +60,7 @@ const isAdmin = (req: Request, res: Response, next: NextFunction): Response | vo
   });
 };
 
-const isModerator = (req: Request, res: Response, next: NextFunction): void => {
+const isModerator = (req: Request, res: Response, next: NextFunction): NextFunction | void => {
   User.findById(req.id).exec((err, user) => {
     if (err) {
       return next(err);

@@ -1,18 +1,14 @@
 export interface ISettings {
-  projectName: string;
-  description: string;
   apiBaseUrl: string;
-  authBaseUrl: string;
+  apiAuthUrl: string;
 }
 
 const createSettings = (): ISettings => {
-  const authUrl = 'localhost:8080/api/login';
-  const baseUrl = '';
+  const baseUrl = 'localhost:3000/api';
+  const authUrl = baseUrl + '/auth';
   return <ISettings>{
-    projectName: 'drink-cellar-app',
-    description: '',
     apiBaseUrl: baseUrl,
-    authBaseUrl: authUrl
+    apiAuthUrl: authUrl
   };
 };
 

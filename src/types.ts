@@ -1,7 +1,7 @@
 // Express.js types
 declare module 'express-serve-static-core' {
   interface Request {
-    id?: string
+    id?: string;
   }
 }
 
@@ -20,15 +20,20 @@ export interface IApiResultBaseOf<T extends IAuthToken | IBottle> extends IApiRe
   data: T[];
 }
 
-export interface IAuthToken {
-  access_token: string;
-  expires_in: number;
-  token_type: string;
+export interface IRegistration {
+  email: string;
+  password: string;
 }
 
 export interface ILoginCredentials {
   email: string;
   password: string;
+}
+
+export interface IAuthToken {
+  access_token: string;
+  expires_in: number;
+  token_type: string;
 }
 
 export interface IBottle {

@@ -7,13 +7,13 @@ import {
   ILoginCredentials,
   TokenResult
 } from '../types';
-import { UserApi } from '../api';
+import { AuthApi } from '../api';
 import { StorageHelper } from '../utils';
 
 export const login: (credentials: ILoginCredentials) => (dispatch: IDispatch) => Promise<void> = (
   credentials: ILoginCredentials
 ) => {
-  const api = new UserApi();
+  const api = new AuthApi();
   return async (dispatch: IDispatch): Promise<void> => {
     try {
       const loginStartAction = createLoginStartAction();

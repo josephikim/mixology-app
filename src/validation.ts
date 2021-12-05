@@ -1,14 +1,14 @@
 import validator from 'validator';
 
 class ValidateFields {
-  validateTitle(title): string | boolean {
+  validateTitle(title): string | false {
     if (validator.isEmpty(title)) {
       return 'Title is required';
     }
     return false;
   }
 
-  validateUsername(username): string | boolean {
+  validateUsername(username): string | false {
     if (!validator.isAlphanumeric(username)) {
       return 'Username should only contain letters and numbers';
     }
@@ -18,7 +18,7 @@ class ValidateFields {
     return false;
   }
 
-  validatePassword(password): string | boolean {
+  validatePassword(password): string | false {
     if (!validator.isAlphanumeric(password)) {
       return 'Password should only contain letters and numbers';
     }
@@ -28,14 +28,14 @@ class ValidateFields {
     return false;
   }
 
-  validatePasswordConfirm(confirm, password): string | boolean {
+  validatePasswordConfirm(confirm, password): string | false {
     if (confirm !== password) {
       return "Passwords don't match";
     }
     return false;
   }
 
-  validateCalendarName(calendarName): string | boolean {
+  validateCalendarName(calendarName): string | false {
     if (!validator.matches(calendarName, /^[\w\-\s]*$/)) {
       return 'Calendar name should include letters, numbers and spaces only';
     }

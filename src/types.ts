@@ -59,6 +59,9 @@ export interface ISpirit extends IBottle {
 }
 
 // Redux types
+const RegistrationStartActionType = 'RegistrationStart';
+const RegistrationSuccessActionType = 'RegistrationSuccess';
+const RegistrationFailActionType = 'RegistrationFail';
 const LoginStartActionType = 'LoginStart';
 const LoginSuccessActionType = 'LoginSuccess';
 const LoginFailActionType = 'LoginFail';
@@ -71,6 +74,9 @@ export interface IBaseAction<T, P> {
   readonly payload: P;
 }
 
+export type RegistrationStartAction = IBaseAction<typeof RegistrationStartActionType, null>;
+export type RegistrationSuccessAction = IBaseAction<typeof RegistrationSuccessActionType, IAuthToken>;
+export type RegistrationFailAction = IBaseAction<typeof RegistrationFailActionType, null>;
 export type LoginStartAction = IBaseAction<typeof LoginStartActionType, null>;
 export type LoginSuccessAction = IBaseAction<typeof LoginSuccessActionType, IAuthToken>;
 export type LoginFailAction = IBaseAction<typeof LoginFailActionType, null>;
@@ -79,6 +85,9 @@ export type AddBottleAction = IBaseAction<typeof AddBottleActionType, IBottle>;
 export type SetCellarViewAction = IBaseAction<typeof SetCellarViewActionType, string>;
 
 export type IAction =
+  | RegistrationStartAction
+  | RegistrationSuccessAction
+  | RegistrationFailAction
   | LoginStartAction
   | LoginSuccessAction
   | LoginFailAction
@@ -89,6 +98,18 @@ export type IAction =
 export type IDispatch = (action: IAction) => void;
 
 // Redux action creators
+export const createRegistrationStartAction = (): RegistrationStartAction => {
+  return createAction(RegistrationStartActionType, null);
+};
+
+export const createRegistrationSuccessAction = (payload: IAuthToken): RegistrationSuccessAction => {
+  return createAction(RegistrationSuccessActionType, payload);
+};
+
+export const createRegistrationFailAction = (): RegistrationFailAction => {
+  return createAction(RegistrationFailActionType, null);
+};
+
 export const createLoginStartAction = (): LoginStartAction => {
   return createAction(LoginStartActionType, null);
 };

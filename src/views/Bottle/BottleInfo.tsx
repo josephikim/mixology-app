@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
 import { Layout } from 'antd';
-import { IBottle } from '../types';
+import { IBottle } from '../../types';
 
 const { Content } = Layout;
 

@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Row, Col } from 'antd';
-import { IBottle } from '../types';
-import BottleCard from './BottleCard';
+import { IBottle } from '../../types';
+import BottleCard from './CellarCard';
 
 const wines = [
   {

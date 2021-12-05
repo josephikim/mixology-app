@@ -1,9 +1,9 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 
-import ContentWrapper from '../../components/Layout/ContentWrapper';
-import CellarOptions from '../../components/CellarOptions';
-import CellarDisplay from '../../components/CellarDisplay';
+import ContentWrapper from '../../Layout/ContentWrapper';
+import CellarOptions from './CellarOptions';
+import CellarDisplay from './CellarDisplay';
 
 const CellarView: React.FC = () => {
   return (

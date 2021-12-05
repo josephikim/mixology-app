@@ -1,5 +1,6 @@
-import { createAddBottleAction, createSetCellarViewAction, IDispatch, IBottle } from '../types';
+import { createAddBottleAction, createSetCellarViewAction, createLogoutUserAction, IDispatch, IBottle } from '../types';
 import { UserApi } from '../api';
+import { StorageHelper } from '../utils';
 
 export const addBottle: (bottle: IBottle) => (dispatch: IDispatch) => Promise<void> =
   (bottle: IBottle) =>
@@ -24,3 +25,15 @@ export const setCellarView: (view: string) => (dispatch: IDispatch) => void =
     const setCellarViewAction = createSetCellarViewAction(view);
     dispatch(setCellarViewAction);
   };
+
+export const signOut: () => (dispatch: IDispatch) => Promise<void> = () => {
+  return async (dispatch: IDispatch): Promise<void> => {
+    try {
+      StorageHelper.onSignOut();
+      const logoutUserAction = createLogoutUserAction();
+      dispatch(logoutUserAction);
+    } catch (error) {
+      console.log({ error: error });
+    }
+  };
+};

@@ -1,11 +1,11 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 
-import ContentWrapper from '../../components/Layout/ContentWrapper';
+import ContentWrapper from '../../Layout/ContentWrapper';
 
-import BottleImage from '../../components/BottleImage';
-import BottleInfo from '../../components/BottleInfo';
-import BottleOptions from '../../components/BottleOptions';
+import BottleImage from './BottleImage';
+import BottleInfo from './BottleInfo';
+import BottleOptions from './BottleOptions';
 
 const bottle = {
   id: 101,

@@ -4,7 +4,7 @@ import RegistrationForm from './RegistrationForm';
 
 import img from '../../assets/cellar-img.jpg';
 
-const RegistrationView: FC = () => (
+const Registration: FC = () => (
   <div className="registration-view">
     <Container>
       <Row>
@@ -27,4 +27,4 @@ const RegistrationView: FC = () => (
   </div>
 );
 
-export default RegistrationView;
+export default Registration;

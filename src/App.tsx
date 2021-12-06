@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
-import RegistrationView from './views/Registration/RegistrationView';
-import CellarView from './views/Cellar/CellarView';
-import BottleView from './views/Bottle/BottleView';
+import Cellar from './views/Cellar/Cellar';
+import Bottle from './views/Bottle/Bottle';
+import Login from './views/Login/Login';
+import Registration from './views/Registration/Registration';
 import 'font-awesome/css/font-awesome.min.css';
 
 const App: React.FC = () => {
@@ -11,17 +11,20 @@ const App: React.FC = () => {
     <div className="h-100">
       <Router>
         <Switch>
-          <Route path="/" exact>
-            <h2>Home</h2>
-          </Route>
-          <Route path="/register" exact>
-            <RegistrationView />
-          </Route>
           <Route path="/cellar">
-            <CellarView />
+            <Cellar />
           </Route>
           <Route path="/bottle">
-            <BottleView />
+            <Bottle />
+          </Route>
+          <Route path="/login" exact>
+            <Login />
+          </Route>
+          <Route path="/register" exact>
+            <Registration />
+          </Route>
+          <Route path="/" exact>
+            <h2>Home</h2>
           </Route>
         </Switch>
       </Router>

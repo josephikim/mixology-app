@@ -1,4 +1,4 @@
-import { IRegistration, ILoginCredentials, TokenResult } from '../types';
+import { IRegistration, ILogin, TokenResult } from '../types';
 import * as ApiHelper from '../utils/apiHelper';
 import axios from 'axios';
 import settings from './settings';
@@ -10,15 +10,15 @@ const authApiClient = axios.create({
 
 export class AuthApi {
   async registerUser(registration: IRegistration): Promise<TokenResult> {
-    const body = { email: registration.email, password: registration.password };
+    const body = { username: registration.username, password: registration.password };
 
     const response: TokenResult = await axios.post(`${authApiClient.defaults.baseURL}/register`, body);
 
     return response;
   }
 
-  async loginUser(credentials: ILoginCredentials): Promise<TokenResult> {
-    const body = { email: credentials.email, password: credentials.password };
+  async loginUser(credentials: ILogin): Promise<TokenResult> {
+    const body = { username: credentials.username, password: credentials.password };
 
     const response: TokenResult = await axios.post(`${authApiClient.defaults.baseURL}/login`, body);
 

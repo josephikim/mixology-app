@@ -7,9 +7,9 @@
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
-    "baseUrl": "src",
+    "baseUrl": ".",
     "strictNullChecks": true,
-    "declaration": true,
+    "declaration": false,
     "noEmit": true,
     "jsx": "react"
   }

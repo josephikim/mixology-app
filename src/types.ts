@@ -1,4 +1,4 @@
-// Express.js types
+// Express.js
 declare module 'express-serve-static-core' {
   interface Request {
     id?: string;
@@ -21,12 +21,13 @@ export interface IApiResultBaseOf<T extends IAuthToken | IBottle> extends IApiRe
 }
 
 export interface IRegistration {
-  email: string;
+  username: string;
   password: string;
+  confirmPassword: string;
 }
 
-export interface ILoginCredentials {
-  email: string;
+export interface ILogin {
+  username: string;
   password: string;
 }
 
@@ -57,83 +58,3 @@ export interface ISpirit extends IBottle {
   proof: number;
   year?: number;
 }
-
-// Redux types
-const RegistrationStartActionType = 'RegistrationStart';
-const RegistrationSuccessActionType = 'RegistrationSuccess';
-const RegistrationFailActionType = 'RegistrationFail';
-const LoginStartActionType = 'LoginStart';
-const LoginSuccessActionType = 'LoginSuccess';
-const LoginFailActionType = 'LoginFail';
-const LogoutUserActionType = 'LogoutUser';
-const AddBottleActionType = 'AddBottle';
-const SetCellarViewActionType = 'SetCellarView';
-
-export interface IBaseAction<T, P> {
-  readonly type: T;
-  readonly payload: P;
-}
-
-export type RegistrationStartAction = IBaseAction<typeof RegistrationStartActionType, null>;
-export type RegistrationSuccessAction = IBaseAction<typeof RegistrationSuccessActionType, IAuthToken>;
-export type RegistrationFailAction = IBaseAction<typeof RegistrationFailActionType, null>;
-export type LoginStartAction = IBaseAction<typeof LoginStartActionType, null>;
-export type LoginSuccessAction = IBaseAction<typeof LoginSuccessActionType, IAuthToken>;
-export type LoginFailAction = IBaseAction<typeof LoginFailActionType, null>;
-export type LogoutUserAction = IBaseAction<typeof LogoutUserActionType, null>;
-export type AddBottleAction = IBaseAction<typeof AddBottleActionType, IBottle>;
-export type SetCellarViewAction = IBaseAction<typeof SetCellarViewActionType, string>;
-
-export type IAction =
-  | RegistrationStartAction
-  | RegistrationSuccessAction
-  | RegistrationFailAction
-  | LoginStartAction
-  | LoginSuccessAction
-  | LoginFailAction
-  | LogoutUserAction
-  | AddBottleAction
-  | SetCellarViewAction;
-
-export type IDispatch = (action: IAction) => void;
-
-// Redux action creators
-export const createRegistrationStartAction = (): RegistrationStartAction => {
-  return createAction(RegistrationStartActionType, null);
-};
-
-export const createRegistrationSuccessAction = (payload: IAuthToken): RegistrationSuccessAction => {
-  return createAction(RegistrationSuccessActionType, payload);
-};
-
-export const createRegistrationFailAction = (): RegistrationFailAction => {
-  return createAction(RegistrationFailActionType, null);
-};
-
-export const createLoginStartAction = (): LoginStartAction => {
-  return createAction(LoginStartActionType, null);
-};
-
-export const createLoginSuccessAction = (payload: IAuthToken): LoginSuccessAction => {
-  return createAction(LoginSuccessActionType, payload);
-};
-
-export const createLoginFailAction = (): LoginFailAction => {
-  return createAction(LoginFailActionType, null);
-};
-
-export const createLogoutUserAction = (): LogoutUserAction => {
-  return createAction(LogoutUserActionType, null);
-};
-
-export const createAddBottleAction = (payload: IBottle): AddBottleAction => {
-  return createAction(AddBottleActionType, payload);
-};
-
-export const createSetCellarViewAction = (payload: string): SetCellarViewAction => {
-  return createAction(SetCellarViewActionType, payload);
-};
-
-const createAction = <T extends string, P>(type: T, payload: P): IBaseAction<T, P> => {
-  return { type, payload };
-};

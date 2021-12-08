@@ -23,7 +23,6 @@ export interface IApiResultBaseOf<T extends IAuthToken | IBottle> extends IApiRe
 export interface IRegistration {
   username: string;
   password: string;
-  confirmPassword: string;
 }
 
 export interface ILogin {

@@ -8,7 +8,7 @@ export type PrivateRouteProps = {
 };
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ component: Component, ...routeProps }) => {
-  const authenticated = useAppSelector((state) => state.user.isAuthenticated);
+  const authenticated = useAppSelector((state) => state.user.status === 'succeeded');
 
   return (
     <Route

@@ -1,14 +1,31 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+import { AuthApi } from '../api';
+import { IRegistration } from '../types';
 
+enum Status {
+  idle = 'IDLE',
+  loading = 'LOADING',
+  succeeded = 'SUCCEEDED',
+  failed = 'FAILED'
+}
 interface UserState {
   userId: string | null;
-  isAuthenticated: boolean;
+  status: keyof typeof Status;
+  error: string | null;
 }
 
 const initialState: UserState = {
   userId: null,
-  isAuthenticated: false
+  status: 'idle',
+  error: null
 };
+
+export const register = createAsyncThunk('user/register', async ({ username, password }: IRegistration) => {
+  const api = new AuthApi();
+  const res = await api.registerUser({ username, password });
+  console.log('res', res);
+  return res.data;
+});
 
 export const userSlice = createSlice({
   name: 'user',
@@ -16,12 +33,27 @@ export const userSlice = createSlice({
   reducers: {
     loginSuccess: (state, action: PayloadAction<string>) => {
       state.userId = action.payload;
-      state.isAuthenticated = true;
+      state.status = 'succeeded';
     },
     logoutSuccess: (state) => {
       state.userId = null;
-      state.isAuthenticated = false;
+      state.status = 'idle';
     }
+  },
+  // Reducers for handling thunk-dispatched actions (ie. 'user/register')
+  extraReducers: (builder) => {
+    builder
+      .addCase(register.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        // update state.userId
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message!;
+      });
   }
 });
 

@@ -8,7 +8,7 @@
     "start:dev-server": "node-dev dist/server.cjs",
     "watch:dev-client": "webpack serve --open --mode=development --config webpack.development.js --config-name client",
     "dev": "npm run lint && npm run check-types && npm run build:dev && npm-run-all --parallel start:dev-server watch:dev-client",
-    "build:dev": "rm -rf dist && webpack --mode=development --config webpack.development.js --config-name server",
+    "build:dev": "rm -rf dist && webpack --config webpack.development.js --config-name server",
     "check-types": "tsc",
     "prettier": "prettier \"src/**/*.{ts,tsx,css}\"",
     "prettier:fix": "npm run prettier -- --write",

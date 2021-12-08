@@ -1,9 +1,14 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { useAppSelector, useAppDispatch } from '../../hooks';
+import { register } from '../../store/userSlice';
 import { useInput } from '../../hooks/useInput';
 import { validateFields } from '../../validation';
 
 const RegistrationForm: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const userStatus = useAppSelector((state) => state.user.status);
+
   const { value: username, bind: bindUsername, reset: resetUsername } = useInput('');
   const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');
   const { value: passwordConfirm, bind: bindPasswordConfirm, reset: resetPasswordConfirm } = useInput('');
@@ -21,7 +26,10 @@ const RegistrationForm: React.FC = () => {
 
     if (validationErrors.length === 0) {
       // no input errors, submit the form
-      alert(`Submitting username, password, pwconfirm: ${username} ${password} ${passwordConfirm}`);
+      if (userStatus === 'idle') {
+        alert(`Submitting username, password, pwconfirm: ${username} ${password} ${passwordConfirm}`);
+        dispatch(register({ username, password }));
+      }
 
       // reset fields
       resetUsername();

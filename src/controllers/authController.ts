@@ -36,7 +36,9 @@ const register = (req: Request, res: Response, next: NextFunction): NextFunction
               return next(err);
             }
 
-            next();
+            res.status(200).send({
+              id: user._id
+            });
           });
         }
       );
@@ -52,7 +54,9 @@ const register = (req: Request, res: Response, next: NextFunction): NextFunction
             return next(err);
           }
 
-          next();
+          res.status(200).send({
+            id: user._id
+          });
         });
       });
     }

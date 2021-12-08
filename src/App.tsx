@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import PrivateRoute from './components/PrivateRoute';
 import Cellar from './views/Cellar/Cellar';
 import Bottle from './views/Bottle/Bottle';
 import Login from './views/Login/Login';
@@ -11,12 +12,8 @@ const App: React.FC = () => {
     <div className="h-100">
       <Router>
         <Switch>
-          <Route path="/cellar">
-            <Cellar />
-          </Route>
-          <Route path="/bottle">
-            <Bottle />
-          </Route>
+          <PrivateRoute component={Cellar} path="/cellar" />
+          <PrivateRoute component={Bottle} path="/bottle" />
           <Route path="/login" exact>
             <Login />
           </Route>

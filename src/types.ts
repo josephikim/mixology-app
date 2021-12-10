@@ -12,28 +12,16 @@ export type AddBottleResult = IApiResultBaseOf<IBottle>;
 export interface IApiResultBase {
   statusCode: number;
   message: string;
-  success: boolean;
-  errorCode: string;
 }
 
 export interface IApiResultBaseOf<T extends IAuthToken | IBottle> extends IApiResultBase {
   data: T[];
 }
 
-export interface IRegistration {
-  username: string;
-  password: string;
-}
-
-export interface ILogin {
-  username: string;
-  password: string;
-}
-
 export interface IAuthToken {
-  access_token: string;
-  expires_in: number;
-  token_type: string;
+  accessToken: string;
+  expiresIn: number;
+  tokenType: string;
 }
 
 export interface IBottle {
@@ -56,4 +44,14 @@ export interface ISpirit extends IBottle {
   type: string;
   proof: number;
   year?: number;
+}
+
+export interface IRegistration {
+  username: string;
+  password: string;
+}
+
+export interface ILogin {
+  username: string;
+  password: string;
 }

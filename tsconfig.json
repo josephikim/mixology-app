@@ -4,7 +4,7 @@
     "esModuleInterop": true,
     "alwaysStrict": true,
     "moduleResolution": "node",
-    "sourceMap": true,
+    "inlineSourceMap": true,
     "outDir": "dist",
     "baseUrl": ".",
     "strictNullChecks": true,

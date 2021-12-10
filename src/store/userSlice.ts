@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { AuthApi } from '../api';
+import { AuthApi, UserApi } from '../api';
 import { IRegistration } from '../types';
 
 enum Status {
@@ -23,7 +23,6 @@ const initialState: UserState = {
 export const register = createAsyncThunk('user/register', async ({ username, password }: IRegistration) => {
   const api = new AuthApi();
   const res = await api.registerUser({ username, password });
-  console.log('res', res);
   return res.data;
 });
 

@@ -6,7 +6,7 @@ export async function createHeaders(): Promise<any> {
   headers['Access-Control-Allow-Headers'] = 'x-access-token, Origin, Content-Type, Accept';
   const tokenResult = await StorageHelper.tryGetTokenResult();
   if (tokenResult != null) {
-    headers['Authorization'] = 'Bearer ' + tokenResult.access_token;
+    headers['Authorization'] = 'Bearer ' + tokenResult.accessToken;
   }
   return headers;
 }

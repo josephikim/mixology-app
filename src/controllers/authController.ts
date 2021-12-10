@@ -36,9 +36,7 @@ const register = (req: Request, res: Response, next: NextFunction): NextFunction
               return next(err);
             }
 
-            res.status(200).send({
-              id: user._id
-            });
+            next();
           });
         }
       );
@@ -54,9 +52,7 @@ const register = (req: Request, res: Response, next: NextFunction): NextFunction
             return next(err);
           }
 
-          res.status(200).send({
-            id: user._id
-          });
+          next();
         });
       });
     }
@@ -97,7 +93,9 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
         id: user._id,
         username: user.username,
         roles: authorities,
-        accessToken: token
+        accessToken: token,
+        expiresIn: config.jwtExpiration,
+        tokenType: 'jwt'
       });
     });
 };

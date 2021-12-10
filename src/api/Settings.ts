@@ -1,17 +1,15 @@
-export interface ISettings {
-  apiBaseUrl: string;
-  apiTestUrl: string;
-  apiAuthUrl: string;
+export interface IApiSettings {
+  baseUrl: string;
+  authUrl: string;
 }
 
-const createSettings = (): ISettings => {
-  const baseUrl = 'localhost:3000/api';
-  const testUrl = baseUrl + '/test';
+const createSettings = (): IApiSettings => {
+  const baseUrl = 'http://localhost:3000/api';
   const authUrl = baseUrl + '/auth';
-  return <ISettings>{
-    apiBaseUrl: baseUrl,
-    apiTestUrl: testUrl,
-    apiAuthUrl: authUrl
+
+  return <IApiSettings>{
+    baseUrl,
+    authUrl
   };
 };
 

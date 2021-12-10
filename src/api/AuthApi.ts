@@ -13,11 +13,10 @@ export class AuthApi {
     const body = { username: registration.username, password: registration.password };
     const url = `${authApiClient.defaults.baseURL}/register`;
     const response = await axios.post(url, body);
-    const tokenData = response.data;
     const tokenResult = {
       statusCode: response.status,
       message: response.statusText,
-      data: [tokenData]
+      data: [response.data]
     };
     return tokenResult as TokenResult;
   }

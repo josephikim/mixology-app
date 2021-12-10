@@ -90,8 +90,7 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
         authorities.push('ROLE_' + user.roles[i].name.toUpperCase());
       }
       res.status(200).send({
-        id: user._id,
-        username: user.username,
+        userId: user._id,
         roles: authorities,
         accessToken: token,
         expiresIn: config.jwtExpiration,

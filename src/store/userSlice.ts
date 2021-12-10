@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
-import { AuthApi, UserApi } from '../api';
+import { AuthApi } from '../api';
 import { IRegistration } from '../types';
 
 enum Status {
@@ -23,7 +23,7 @@ const initialState: UserState = {
 export const register = createAsyncThunk('user/register', async ({ username, password }: IRegistration) => {
   const api = new AuthApi();
   const res = await api.registerUser({ username, password });
-  return res.data;
+  return res;
 });
 
 export const userSlice = createSlice({
@@ -47,7 +47,8 @@ export const userSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        // update state.userId
+        const tokenData = action.payload.data[0];
+        state.userId = tokenData.userId;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';

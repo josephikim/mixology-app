@@ -19,6 +19,8 @@ export interface IApiResultBaseOf<T extends IAuthToken | IBottle> extends IApiRe
 }
 
 export interface IAuthToken {
+  userId: string;
+  roles: string[];
   accessToken: string;
   expiresIn: number;
   tokenType: string;

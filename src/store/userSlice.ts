@@ -9,12 +9,14 @@ enum Status {
   failed = 'FAILED'
 }
 interface UserState {
+  accessToken: string | null;
   userId: string | null;
   status: keyof typeof Status;
   error: string | null;
 }
 
 const initialState: UserState = {
+  accessToken: null,
   userId: null,
   status: 'idle',
   error: null
@@ -46,9 +48,10 @@ export const userSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(register.fulfilled, (state, action) => {
-        state.status = 'succeeded';
         const tokenData = action.payload.data[0];
+        state.status = 'succeeded';
         state.userId = tokenData.userId;
+        state.accessToken = tokenData.accessToken;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';

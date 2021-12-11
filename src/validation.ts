@@ -34,16 +34,6 @@ class ValidateFields {
     }
     return false;
   }
-
-  validateCalendarName(calendarName): string | false {
-    if (!validator.matches(calendarName, /^[\w\-\s]*$/)) {
-      return 'Calendar name should include letters, numbers and spaces only';
-    }
-    if (!validator.isLength(calendarName, { min: 4 })) {
-      return 'Calendar name should be at least four characters';
-    }
-    return false;
-  }
 }
 
 const validateFields = new ValidateFields();

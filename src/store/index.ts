@@ -1,5 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
-import userReducer from './userSlice';
+import authReducer from './authSlice';
 import { loadState, saveState } from './localStorage';
 import throttle from 'lodash/throttle';
 
@@ -8,7 +8,7 @@ const persistedState = loadState();
 const preloadedState = persistedState ? persistedState : {};
 
 const reducer = {
-  user: userReducer
+  auth: authReducer
 };
 
 const store = configureStore({

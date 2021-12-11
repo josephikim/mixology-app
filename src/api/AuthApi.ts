@@ -28,4 +28,8 @@ export class AuthApi {
 
     return response;
   }
+
+  async logoutUser(): Promise<void> {
+    localStorage.removeItem('user');
+  }
 }

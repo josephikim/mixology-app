@@ -1,13 +1,13 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { register } from '../../store/userSlice';
+import { register } from '../../store/authSlice';
 import { useInput } from '../../hooks/useInput';
 import { validateFields } from '../../validation';
 
 const RegistrationForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const userStatus = useAppSelector((state) => state.user.status);
+  const userStatus = useAppSelector((state) => state.auth.status);
 
   const { value: username, bind: bindUsername, reset: resetUsername } = useInput('');
   const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');

@@ -8,28 +8,33 @@ enum Status {
   succeeded = 'SUCCEEDED',
   failed = 'FAILED'
 }
-interface UserState {
+interface AuthState {
   accessToken: string | null;
   userId: string | null;
   status: keyof typeof Status;
   error: string | null;
 }
 
-const initialState: UserState = {
+const initialState: AuthState = {
   accessToken: null,
   userId: null,
   status: 'idle',
   error: null
 };
 
-export const register = createAsyncThunk('user/register', async ({ username, password }: IRegistration) => {
+export const register = createAsyncThunk('auth/register', async ({ username, password }: IRegistration) => {
   const api = new AuthApi();
   const res = await api.registerUser({ username, password });
   return res;
 });
 
-export const userSlice = createSlice({
-  name: 'user',
+export const logout = createAsyncThunk('auth/logout', async () => {
+  const api = new AuthApi();
+  await api.logoutUser();
+});
+
+export const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {
     loginSuccess: (state, action: PayloadAction<string>) => {
@@ -41,7 +46,7 @@ export const userSlice = createSlice({
       state.status = 'idle';
     }
   },
-  // Reducers for handling thunk-dispatched actions (ie. 'user/register')
+  // Reducers for handling thunk-dispatched actions (ie. 'auth/register')
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state, action) => {
@@ -56,10 +61,18 @@ export const userSlice = createSlice({
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.accessToken = null;
+        (state.userId = null), (state.status = 'idle');
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message!;
       });
   }
 });
 
-export const { loginSuccess, logoutSuccess } = userSlice.actions;
+export const { loginSuccess, logoutSuccess } = authSlice.actions;
 
-export default userSlice.reducer;
+export default authSlice.reducer;

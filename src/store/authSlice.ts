@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 import { AuthApi } from '../api';
-import { IRegistration } from '../types';
+import { IRegistration, ILogin } from '../types';
 
 enum Status {
   idle = 'IDLE',
@@ -25,6 +25,12 @@ const initialState: AuthState = {
 export const register = createAsyncThunk('auth/register', async ({ username, password }: IRegistration) => {
   const api = new AuthApi();
   const res = await api.registerUser({ username, password });
+  return res;
+});
+
+export const login = createAsyncThunk('auth/login', async ({ username, password }: ILogin) => {
+  const api = new AuthApi();
+  const res = await api.loginUser({ username, password });
   return res;
 });
 
@@ -59,6 +65,19 @@ export const authSlice = createSlice({
         state.accessToken = tokenData.accessToken;
       })
       .addCase(register.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message!;
+      })
+      .addCase(login.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(login.fulfilled, (state, action) => {
+        const tokenData = action.payload.data[0];
+        state.status = 'succeeded';
+        state.userId = tokenData.userId;
+        state.accessToken = tokenData.accessToken;
+      })
+      .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
       })

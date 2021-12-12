@@ -23,10 +23,14 @@ export class AuthApi {
 
   async loginUser(credentials: ILogin): Promise<TokenResult> {
     const body = { username: credentials.username, password: credentials.password };
-
-    const response: TokenResult = await axios.post(`${authApiClient.defaults.baseURL}/login`, body);
-
-    return response;
+    const url = `${authApiClient.defaults.baseURL}/login`;
+    const response = await axios.post(url, body);
+    const tokenResult = {
+      statusCode: response.status,
+      message: response.statusText,
+      data: [response.data]
+    };
+    return tokenResult as TokenResult;
   }
 
   async logoutUser(): Promise<void> {

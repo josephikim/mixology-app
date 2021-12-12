@@ -1,6 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import PrivateRoute from './components/PrivateRoute';
+import AuthRoute from './components/AuthRoute';
 import Header from './components/Header';
 import Cellar from './views/Cellar/Cellar';
 import Bottle from './views/Bottle/Bottle';
@@ -14,16 +14,11 @@ const App: React.FC = () => {
       <Header />
       <Router>
         <Switch>
-          <PrivateRoute component={Cellar} path="/cellar" />
-          <PrivateRoute component={Bottle} path="/bottle" />
-          <Route path="/login" exact>
-            <Login />
-          </Route>
-          <Route path="/register" exact>
-            <Registration />
-          </Route>
+          <AuthRoute component={Login} path="/login" type="guest" />
+          <AuthRoute component={Cellar} path="/cellar" type="private" />
+          <AuthRoute component={Bottle} path="/bottle" type="private" />
           <Route path="/" exact>
-            <h2>Home</h2>
+            <Registration />
           </Route>
         </Switch>
       </Router>

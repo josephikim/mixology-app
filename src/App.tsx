@@ -17,9 +17,7 @@ const App: React.FC = () => {
           <AuthRoute component={Login} path="/login" type="guest" />
           <AuthRoute component={Cellar} path="/cellar" type="private" />
           <AuthRoute component={Bottle} path="/bottle" type="private" />
-          <Route path="/" exact>
-            <Registration />
-          </Route>
+          <AuthRoute component={Registration} path="/" type="guest" />
         </Switch>
       </Router>
     </div>

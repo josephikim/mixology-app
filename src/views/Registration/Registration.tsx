@@ -15,7 +15,7 @@ const Registration: FC = () => (
               and spirits. Cheers!
             </p>
             <p>Please register to get started:</p>
-            <img id="cellar-img" src={img}></img>
+            <img id="cellar-img" width="500" src={img}></img>
           </div>
         </Col>
 

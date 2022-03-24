@@ -7,17 +7,20 @@ declare module 'express-serve-static-core' {
 
 // API types
 export type TokenResult = IApiResultBaseOf<IAuthToken>;
-export type AddBottleResult = IApiResultBaseOf<IBottle>;
+// export type AddBottleResult = IApiResultBaseOf<IBottle>;
 
 export interface IApiResultBase {
   statusCode: number;
   message: string;
 }
 
-export interface IApiResultBaseOf<T extends IAuthToken | IBottle> extends IApiResultBase {
+export interface IApiResultBaseOf<T extends IAuthToken> extends IApiResultBase {
   data: T[];
 }
 
+// export interface IApiResultBaseOf<T extends IAuthToken | IBottle> extends IApiResultBase {
+//   data: T[];
+// }
 export interface IAuthToken {
   userId: string;
   roles: string[];
@@ -26,27 +29,27 @@ export interface IAuthToken {
   tokenType: string;
 }
 
-export interface IBottle {
-  id: number;
-  category: string;
-  name: string;
-  producer: string;
-  country: string;
-  price: number;
-  rating?: number;
-}
+// export interface IBottle {
+//   id: number;
+//   category: string;
+//   name: string;
+//   producer: string;
+//   country: string;
+//   price: number;
+//   rating?: number;
+// }
 
-export interface IWine extends IBottle {
-  style: string;
-  abv: number;
-  vintage?: number;
-}
+// export interface IWine extends IBottle {
+//   style: string;
+//   abv: number;
+//   vintage?: number;
+// }
 
-export interface ISpirit extends IBottle {
-  type: string;
-  proof: number;
-  year?: number;
-}
+// export interface ISpirit extends IBottle {
+//   type: string;
+//   proof: number;
+//   year?: number;
+// }
 
 export interface IRegistration {
   username: string;

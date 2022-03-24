@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import RegistrationForm from './RegistrationForm';
 
-import img from '../../assets/cellar-img.jpg';
+// import img from '../../assets/cellar-img.jpg';
 
 const Registration: FC = () => (
   <div className="registration-view">
@@ -11,11 +11,11 @@ const Registration: FC = () => (
         <Col md={6}>
           <div id="about">
             <p>
-              <strong>Drink Cellar</strong> is an easy-to-use online app for curating your personal collection of wines
-              and spirits. Cheers!
+              <strong>Mixology App</strong> is a convenient way to curate your favorite cocktails, research recipes and
+              ingredients, and submit reviews and tasting notes. Cheers!
             </p>
             <p>Please register to get started:</p>
-            <img id="cellar-img" width="500" src={img}></img>
+            {/* <img id="mixology-img" width="500" src={img}></img> */}
           </div>
         </Col>
 

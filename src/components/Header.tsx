@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     <div className="Header fixed-header">
       <Navbar collapseOnSelect bg="primary" variant="dark">
         <Container>
-          <Navbar.Brand href="/">Drink Cellar App</Navbar.Brand>
+          <Navbar.Brand href="/">Mixology App</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
             <Nav>

@@ -1,4 +1,4 @@
-import { RootState } from './index';
+import { RootState } from '.';
 
 export const loadState = (): JSON | undefined => {
   try {

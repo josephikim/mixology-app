@@ -1,4 +1,4 @@
-import { IBottle, AddBottleResult } from '../types';
+// import { IBottle, AddBottleResult } from '../types';
 import * as ApiHelper from '../utils/apiHelper';
 import axios from 'axios';
 import settings from './settings';
@@ -9,11 +9,10 @@ const userApiClient = axios.create({
 });
 
 export class UserApi {
-  async addBottle(bottle: IBottle): Promise<AddBottleResult> {
-    const url = `${userApiClient.defaults.baseURL}/user/bottle`;
-    const body = { ...bottle };
-    const response: AddBottleResult = await userApiClient.post(url, body);
-
-    return response;
-  }
+  // async addBottle(bottle: IBottle): Promise<AddBottleResult> {
+  //   const url = `${userApiClient.defaults.baseURL}/user/bottle`;
+  //   const body = { ...bottle };
+  //   const response: AddBottleResult = await userApiClient.post(url, body);
+  //   return response;
+  // }
 }

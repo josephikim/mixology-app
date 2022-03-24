@@ -3,10 +3,6 @@ import { Row, Col } from 'antd';
 
 import ContentWrapper from '../../Layout/ContentWrapper';
 
-import BottleImage from './BottleImage';
-import BottleInfo from './BottleInfo';
-import BottleOptions from './BottleOptions';
-
 const bottle = {
   id: 101,
   category: 'wine',
@@ -24,17 +20,9 @@ const BottleView: React.FC = () => {
   return (
     <ContentWrapper>
       <Row>
-        <Col span={6}>
-          <BottleImage imgSrc="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/256x256/wine.png" />
-        </Col>
+        <Col span={6}>{/* <DrinkImage /> */}</Col>
 
-        <Col span={12}>
-          <BottleInfo {...bottle} />
-        </Col>
-
-        <Col span={6}>
-          <BottleOptions />
-        </Col>
+        <Col span={12}>{/* <DrinkInfo /> */}</Col>
       </Row>
     </ContentWrapper>
   );

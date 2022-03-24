@@ -1,5 +1,7 @@
-# drink-cellar-app
-Build and manage your personal drink cellar, create wish lists, add tasting notes and more!
+# Mixology App
+Curate your favorite cocktails, research ingredients and recipes, and submit reviews and tasting notes!
 
-## Production Mode
-1. Create a .env.production file in your host directory. This file should contain values for the environment variables listed in .env.example (e.g. DB_HOST). Alternatively, you can set those environment variables directly in your host environment before starting the app.
+Powered by [TheCocktailDB API](https://www.thecocktaildb.com/api.php).
+
+## Production Notes
+1. Create a .env.production file in your host directory. This file should contain environment variables for your production deployment (see .env.example for sample values). Alternatively, you can set those environment variables directly in your host environment before starting the app.

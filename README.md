@@ -1,5 +1,5 @@
 # Mixology App
-Curate your favorite cocktails, research ingredients and recipes, and submit reviews and tasting notes!
+Curate your favorite cocktails, research recipes and ingredients, and submit reviews and tasting notes. Cheers!
 
 Powered by [TheCocktailDB API](https://www.thecocktaildb.com/api.php).
 

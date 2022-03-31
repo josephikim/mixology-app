@@ -1,28 +1,27 @@
-import { IAuthToken } from '../types';
+import { AxiosInstance } from 'axios';
+import { Response } from 'express';
 
-const TOKEN_RESULT = 'TOKEN_RESULT';
+import store from '../store/index';
 
+export interface IRefreshTokenResponse extends Response {
+  data: {
+    accessToken: string;
+  };
+}
 export class StorageHelper {
-  static setTokenResult(token: IAuthToken): void {
-    localStorage.setItem(TOKEN_RESULT, JSON.stringify(token));
-  }
+  static getLocalAccessToken = (): string | null => {
+    const accessToken = store.getState().auth.accessToken;
+    return accessToken;
+  };
 
-  static onSignOut(): void {
-    localStorage.removeItem(TOKEN_RESULT);
-  }
+  static getLocalRefreshToken = (): string | null => {
+    const refreshToken = store.getState().auth.refreshToken;
+    return refreshToken;
+  };
 
-  static tryGetTokenResult(): Promise<IAuthToken | null> {
-    return new Promise((resolve, reject) => {
-      try {
-        const res = localStorage.getItem(TOKEN_RESULT);
-        if (res !== null) {
-          resolve(<IAuthToken>JSON.parse(res));
-        } else {
-          resolve(null);
-        }
-      } catch (err) {
-        reject(err);
-      }
+  static refreshToken = (userApiClient: AxiosInstance): Promise<IRefreshTokenResponse> => {
+    return userApiClient.post('/refreshtoken', {
+      refreshToken: this.getLocalRefreshToken()
     });
-  }
+  };
 }

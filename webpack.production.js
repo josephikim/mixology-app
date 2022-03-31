@@ -7,7 +7,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 const client = merge(common, {
   plugins: [
     new Dotenv({
-      path: '.env'
+      path: '.env.production'
     }),
     new HtmlWebpackPlugin()
   ]

@@ -1,5 +1,5 @@
 import express from 'express';
-import { verifyRegistration } from '../middleware';
+import { authJwt, verifyRegistration } from '../middleware';
 import authController from '../controllers/authController';
 import { Request, Response, NextFunction } from 'express';
 
@@ -19,5 +19,8 @@ authRouter.post(
 
 // POST request to login user
 authRouter.post('/login', authController.login);
+
+// POST request to refresh access token
+authRouter.post('refreshtoken', [authJwt.verifyToken], authController.refreshToken);
 
 export default authRouter;

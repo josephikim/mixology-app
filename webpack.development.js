@@ -39,7 +39,7 @@ const server = merge(common, {
   target: 'node',
   node: {
     __dirname: false,
-    __filename: false,
+    __filename: false
   },
   entry: './src/server.ts',
   output: {

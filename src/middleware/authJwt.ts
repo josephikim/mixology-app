@@ -1,8 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import Role from '../db/Role';
-import User from '../db/User';
-import config from '../config/authConfig';
+import db from '../db';
+import { jwtSecretKey } from '../config/authConfig';
+
+const User = db.user;
+const Role = db.role;
 
 const { TokenExpiredError } = jwt;
 
@@ -21,7 +23,7 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): Response 
     return res.status(403).send({ message: 'No token provided!' });
   }
 
-  jwt.verify(token, config.jwtSecretKey, (err, decoded) => {
+  jwt.verify(token, jwtSecretKey, (err, decoded) => {
     if (err) {
       return catchError(err, res);
     }
@@ -36,25 +38,27 @@ const isAdmin = (req: Request, res: Response, next: NextFunction): NextFunction 
       return next(err);
     }
 
-    Role.find(
-      {
-        _id: { $in: user.roles }
-      },
-      (err, roles) => {
-        if (err) {
-          return next(err);
-        }
-
-        for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === 'admin') {
-            next();
+    if (user) {
+      Role.find(
+        {
+          _id: { $in: user.roles }
+        },
+        (err, roles) => {
+          if (err) {
+            return next(err);
           }
-        }
 
-        res.status(403).send({ message: 'Require Admin Role!' });
-        return;
-      }
-    );
+          for (let i = 0; i < roles.length; i++) {
+            if (roles[i].name === 'admin') {
+              next();
+            }
+          }
+
+          res.status(403).send({ message: 'Require Admin Role!' });
+          return;
+        }
+      );
+    }
   });
 };
 
@@ -64,26 +68,28 @@ const isModerator = (req: Request, res: Response, next: NextFunction): NextFunct
       return next(err);
     }
 
-    Role.find(
-      {
-        _id: { $in: user.roles }
-      },
-      (err, roles) => {
-        if (err) {
-          return next(err);
-        }
-
-        for (let i = 0; i < roles.length; i++) {
-          if (roles[i].name === 'moderator') {
-            next();
-            return;
+    if (user) {
+      Role.find(
+        {
+          _id: { $in: user.roles }
+        },
+        (err, roles) => {
+          if (err) {
+            return next(err);
           }
-        }
 
-        res.status(403).send({ message: 'Require Moderator Role!' });
-        return;
-      }
-    );
+          for (let i = 0; i < roles.length; i++) {
+            if (roles[i].name === 'moderator') {
+              next();
+              return;
+            }
+          }
+
+          res.status(403).send({ message: 'Require Moderator Role!' });
+          return;
+        }
+      );
+    }
   });
 };
 

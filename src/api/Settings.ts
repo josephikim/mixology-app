@@ -4,7 +4,7 @@ export interface IApiSettings {
 }
 
 const createSettings = (): IApiSettings => {
-  const baseUrl = 'http://localhost:3000/api';
+  const baseUrl = `${process.env.API_URL}`;
   const authUrl = baseUrl + '/auth';
 
   return <IApiSettings>{

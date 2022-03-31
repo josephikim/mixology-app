@@ -20,7 +20,8 @@ const Header: React.FC = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
             <Nav>
-              <Nav.Link href="/">Home</Nav.Link>
+              <Nav.Link href="/mydrinks">Home</Nav.Link>
+              <Nav.Link href="/search">Search</Nav.Link>
               {authenticated ? (
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               ) : (

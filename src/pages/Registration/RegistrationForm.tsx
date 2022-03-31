@@ -24,10 +24,9 @@ const RegistrationForm: React.FC = () => {
     if (passwordError) validationErrors.push({ type: 'password error', msg: passwordError });
     if (passwordConfirmError) validationErrors.push({ type: 'password confirm error', msg: passwordConfirmError });
 
-    if (validationErrors.length === 0) {
+    if (validationErrors.length < 1) {
       // no input errors, submit the form
       if (userStatus === 'idle') {
-        alert(`Submitting username, password, pwconfirm: ${username} ${password} ${passwordConfirm}`);
         dispatch(register({ username, password }));
       }
 

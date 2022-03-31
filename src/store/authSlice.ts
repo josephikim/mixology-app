@@ -10,6 +10,7 @@ enum Status {
 }
 interface AuthState {
   accessToken: string | null;
+  refreshToken: string | null;
   userId: string | null;
   status: keyof typeof Status;
   error: string | null;
@@ -17,6 +18,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   accessToken: null,
+  refreshToken: null,
   userId: null,
   status: 'idle',
   error: null
@@ -50,9 +52,12 @@ export const authSlice = createSlice({
     logoutSuccess: (state) => {
       state.userId = null;
       state.status = 'idle';
+    },
+    accessTokenUpdated: (state, action: PayloadAction<string>) => {
+      state.accessToken = action.payload;
     }
   },
-  // Reducers for handling thunk-dispatched actions (ie. 'auth/register')
+  // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {
     builder
       .addCase(register.pending, (state, action) => {
@@ -76,6 +81,7 @@ export const authSlice = createSlice({
         state.status = 'succeeded';
         state.userId = tokenData.userId;
         state.accessToken = tokenData.accessToken;
+        state.refreshToken = tokenData.refreshToken;
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
@@ -92,6 +98,6 @@ export const authSlice = createSlice({
   }
 });
 
-export const { loginSuccess, logoutSuccess } = authSlice.actions;
+export const { loginSuccess, logoutSuccess, accessTokenUpdated } = authSlice.actions;
 
 export default authSlice.reducer;

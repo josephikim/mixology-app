@@ -1,12 +1,14 @@
 import jwt from 'jsonwebtoken';
-import db from '../db';
-import config from '../config/authConfig';
-import { IRole } from '../db/Role';
 import { HydratedDocument } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
 
+import db from '../db';
+import { jwtSecretKey, jwtExpiration } from '../config/authConfig';
+import { IRole } from '../db/Role';
+
 const User = db.user;
 const Role = db.role;
+const RefreshToken = db.refreshToken;
 
 const register = (req: Request, res: Response, next: NextFunction): NextFunction | void => {
   const user = new User({
@@ -80,9 +82,11 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
       }
 
       // If password is valid, create JWT token
-      const token = jwt.sign({ id: user.id }, config.jwtSecretKey, {
-        expiresIn: config.jwtExpiration
+      const token = jwt.sign({ id: user.id }, jwtSecretKey, {
+        expiresIn: jwtExpiration
       });
+
+      const refreshToken = await RefreshToken.createToken(user._id);
 
       const authorities: string[] = [];
 
@@ -93,14 +97,52 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
         userId: user._id,
         roles: authorities,
         accessToken: token,
-        expiresIn: config.jwtExpiration,
+        refreshToken: refreshToken,
+        expiresIn: jwtExpiration,
         tokenType: 'jwt'
       });
     });
 };
 
+const refreshToken = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  const { refreshToken: requestToken } = req.body;
+
+  if (requestToken == null) {
+    // Refresh token is required
+    return res.redirect('/login');
+  }
+
+  try {
+    const refreshToken = await RefreshToken.findOne({ token: requestToken });
+
+    if (!refreshToken) {
+      // Refresh token not found in database
+      return res.redirect('/login');
+    }
+
+    if (RefreshToken.verifyExpiration(refreshToken)) {
+      RefreshToken.findByIdAndRemove(refreshToken._id, {
+        useFindAndModify: false
+      }).exec();
+
+      return res.redirect('/login');
+    }
+
+    const newAccessToken = jwt.sign({ id: refreshToken.user._id }, jwtSecretKey, {
+      expiresIn: jwtExpiration
+    });
+
+    return res.status(200).send({
+      accessToken: newAccessToken
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const authController = {
   register,
-  login
+  login,
+  refreshToken
 };
 export default authController;

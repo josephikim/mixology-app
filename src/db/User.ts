@@ -1,13 +1,16 @@
-import { Schema, model } from 'mongoose';
+import { Schema, Document, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
+
+import { IRole } from './Role';
+
+const SALT_WORK_FACTOR = 10;
 
 export interface IUser extends Document {
   username: string;
   password: string;
-  roles: string[];
+  roles: IRole[];
+  validatePassword(candidatePassword: string): boolean;
 }
-
-const SALT_WORK_FACTOR = 10;
 
 const userSchema = new Schema(
   {
@@ -64,10 +67,10 @@ const handleE11000 = (error, res, next): void => {
 userSchema.post('save', handleE11000);
 userSchema.post('findOneAndUpdate', handleE11000);
 
-userSchema.methods.validatePassword = async function validatePassword(data): Promise<void> {
-  return bcrypt.compare(data, this.password);
+userSchema.methods.validatePassword = function (candidatePassword: string): boolean {
+  return bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = model('User', userSchema);
+const User = model<IUser>('User', userSchema);
 
 export default User;

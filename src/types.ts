@@ -7,7 +7,6 @@ declare module 'express-serve-static-core' {
 
 // API types
 export type TokenResult = IApiResultBaseOf<IAuthToken>;
-// export type AddBottleResult = IApiResultBaseOf<IBottle>;
 
 export interface IApiResultBase {
   statusCode: number;
@@ -17,39 +16,14 @@ export interface IApiResultBase {
 export interface IApiResultBaseOf<T extends IAuthToken> extends IApiResultBase {
   data: T[];
 }
-
-// export interface IApiResultBaseOf<T extends IAuthToken | IBottle> extends IApiResultBase {
-//   data: T[];
-// }
 export interface IAuthToken {
   userId: string;
   roles: string[];
   accessToken: string;
+  refreshToken: string;
   expiresIn: number;
   tokenType: string;
 }
-
-// export interface IBottle {
-//   id: number;
-//   category: string;
-//   name: string;
-//   producer: string;
-//   country: string;
-//   price: number;
-//   rating?: number;
-// }
-
-// export interface IWine extends IBottle {
-//   style: string;
-//   abv: number;
-//   vintage?: number;
-// }
-
-// export interface ISpirit extends IBottle {
-//   type: string;
-//   proof: number;
-//   year?: number;
-// }
 
 export interface IRegistration {
   username: string;
@@ -59,4 +33,44 @@ export interface IRegistration {
 export interface ILogin {
   username: string;
   password: string;
+}
+
+export interface SearchResult {
+  drinkId: string;
+  drinkName: string;
+  drinkTags: [string];
+  drinkGlass: string;
+  drinkInstructions: string;
+  drinkThumbSrc: string;
+  drinkIngredient1: string;
+  drinkIngredient2: string;
+  drinkIngredient3: string;
+  drinkIngredient4: string;
+  drinkIngredient5: string;
+  drinkIngredient6: string;
+  drinkIngredient7: string;
+  drinkIngredient8: string;
+  drinkIngredient9: string;
+  drinkIngredient10: string;
+  drinkIngredient11: string;
+  drinkIngredient12: string;
+  drinkIngredient13: string;
+  drinkIngredient14: string;
+  drinkIngredient15: string;
+  drinkMeasure1: string;
+  drinkMeasure2: string;
+  drinkMeasure3: string;
+  drinkMeasure4: string;
+  drinkMeasure5: string;
+  drinkMeasure6: string;
+  drinkMeasure7: string;
+  drinkMeasure8: string;
+  drinkMeasure9: string;
+  drinkMeasure10: string;
+  drinkMeasure11: string;
+  drinkMeasure12: string;
+  drinkMeasure13: string;
+  drinkMeasure14: string;
+  drinkMeasure15: string;
+  drinkImgSrc: string;
 }

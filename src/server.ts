@@ -17,13 +17,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// serve static files
-app.use(express.static(BUILD_DIR));
-
 // Use API routes
 app.use('/api', apiRouter);
 
-app.get('*', (_req: express.Request, res: express.Response) => {
+// serve static files
+app.use(express.static(BUILD_DIR));
+
+app.get('*', (req: express.Request, res: express.Response) => {
   res.sendFile(HTML_FILE);
 });
 

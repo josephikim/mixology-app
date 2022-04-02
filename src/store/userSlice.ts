@@ -10,15 +10,15 @@ enum Status {
 }
 
 interface UserState {
-  searchResults: [SearchResult] | null;
   status: keyof typeof Status;
   error: string | null;
+  searchResults: [SearchResult] | null;
 }
 
 const initialState: UserState = {
-  searchResults: null,
   status: 'idle',
-  error: null
+  error: null,
+  searchResults: null
 };
 
 export const getSearchResults = createAsyncThunk('user/getSearchResults', async (query: string) => {

@@ -39,6 +39,8 @@ export interface SearchResult {
   drinkId: string;
   drinkName: string;
   drinkTags: [string];
+  drinkIBA: string;
+  drinkAlcoholic: string;
   drinkGlass: string;
   drinkInstructions: string;
   drinkThumbSrc: string;

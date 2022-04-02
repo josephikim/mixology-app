@@ -45,14 +45,6 @@ export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    loginSuccess: (state, action: PayloadAction<string>) => {
-      state.userId = action.payload;
-      state.status = 'succeeded';
-    },
-    logoutSuccess: (state) => {
-      state.userId = null;
-      state.status = 'idle';
-    },
     accessTokenUpdated: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload;
     }
@@ -60,7 +52,7 @@ export const authSlice = createSlice({
   // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {
     builder
-      .addCase(register.pending, (state, action) => {
+      .addCase(register.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(register.fulfilled, (state, action) => {
@@ -73,7 +65,7 @@ export const authSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message!;
       })
-      .addCase(login.pending, (state, action) => {
+      .addCase(login.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(login.fulfilled, (state, action) => {
@@ -87,9 +79,9 @@ export const authSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message!;
       })
-      .addCase(logout.fulfilled, (state, action) => {
-        state.accessToken = null;
-        (state.userId = null), (state.status = 'idle');
+      .addCase(logout.fulfilled, (state) => {
+        state.status = 'idle';
+        state = initialState;
       })
       .addCase(logout.rejected, (state, action) => {
         state.status = 'failed';
@@ -98,6 +90,6 @@ export const authSlice = createSlice({
   }
 });
 
-export const { loginSuccess, logoutSuccess, accessTokenUpdated } = authSlice.actions;
+export const { accessTokenUpdated } = authSlice.actions;
 
 export default authSlice.reducer;

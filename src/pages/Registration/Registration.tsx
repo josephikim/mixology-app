@@ -11,8 +11,8 @@ const Registration: FC = () => (
         <Col md={6}>
           <div id="about">
             <p>
-              <strong>Mixology App</strong> is a convenient way to curate your favorite cocktails, research recipes and
-              ingredients, and submit reviews and tasting notes. Cheers!
+              <strong>Mixology App</strong> is a convenient way to curate your favorite cocktails, research drink
+              recipes, and submit reviews and tasting notes. Cheers!
             </p>
             <p>Please register to get started:</p>
             {/* <img id="mixology-img" width="500" src={img}></img> */}

@@ -21,6 +21,6 @@ authRouter.post(
 authRouter.post('/login', authController.login);
 
 // POST request to refresh access token
-authRouter.post('refreshtoken', [authJwt.verifyToken], authController.refreshToken);
+authRouter.post('/refreshtoken', authController.refreshToken);
 
 export default authRouter;

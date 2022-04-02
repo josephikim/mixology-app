@@ -117,15 +117,22 @@ const refreshToken = async (req: Request, res: Response, next: NextFunction): Pr
 
     if (!refreshToken) {
       // Refresh token not found in database
-      return res.redirect('/login');
+      res.status(403).json({ message: 'Refresh token is not in database!' });
+      return;
     }
 
+    const verifyExpTest = RefreshToken.verifyExpiration(refreshToken);
+
+    // Refresh token expired
     if (RefreshToken.verifyExpiration(refreshToken)) {
       RefreshToken.findByIdAndRemove(refreshToken._id, {
         useFindAndModify: false
       }).exec();
 
-      return res.redirect('/login');
+      res.status(403).json({
+        message: 'Refresh token was expired. Please make a new signin request'
+      });
+      return;
     }
 
     const newAccessToken = jwt.sign({ id: refreshToken.user._id }, jwtSecretKey, {

@@ -25,8 +25,7 @@ const client = merge(common, {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.resolve('src', 'index.html'),
-      filename: 'index.html',
-      excludeChunks: ['server']
+      filename: 'index.html'
     }),
     new Dotenv({
       path: '.env.development'

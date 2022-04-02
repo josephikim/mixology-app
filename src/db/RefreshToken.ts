@@ -1,7 +1,7 @@
 import { Schema, Model, model, Types } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { jwtExpiration } from '../config/authConfig';
+import { jwtRefreshExpiration } from '../config/authConfig';
 
 export interface IRefreshToken {
   token: string;
@@ -26,7 +26,7 @@ const refreshTokenSchema = new Schema<IRefreshToken>({
 refreshTokenSchema.statics.createToken = async function (user: Types.ObjectId): Promise<string> {
   const expiredAt = new Date();
 
-  expiredAt.setSeconds(expiredAt.getSeconds() + parseInt(jwtExpiration ? jwtExpiration : '86400'));
+  expiredAt.setSeconds(expiredAt.getSeconds() + parseInt(jwtRefreshExpiration ? jwtRefreshExpiration : '86400'));
 
   const _token = uuidv4();
 

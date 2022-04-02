@@ -1,7 +1,9 @@
 import axios from 'axios';
+import { response } from 'express';
 
 import { IRegistration, ILogin, TokenResult } from '../types';
 import * as ApiHelper from '../utils/apiHelper';
+import { StorageHelper } from '../utils';
 import settings from './settings';
 
 const authApiClient = axios.create({
@@ -14,7 +16,7 @@ export class AuthApi {
     const body = { username: registration.username, password: registration.password };
     const url = `${authApiClient.defaults.baseURL}/register`;
 
-    const response = await axios.post(url, body);
+    const response = await authApiClient.post(url, body);
 
     const tokenResult = {
       statusCode: response.status,
@@ -29,7 +31,7 @@ export class AuthApi {
     const body = { username: credentials.username, password: credentials.password };
     const url = `${authApiClient.defaults.baseURL}/login`;
 
-    const response = await axios.post(url, body);
+    const response = await authApiClient.post(url, body);
 
     const tokenResult = {
       statusCode: response.status,
@@ -41,6 +43,6 @@ export class AuthApi {
   }
 
   async logoutUser(): Promise<void> {
-    localStorage.removeItem('user');
+    localStorage.removeItem('state');
   }
 }

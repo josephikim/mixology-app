@@ -19,15 +19,15 @@ const SearchResults: React.FC = () => {
           ? searchResults.map((result) => {
               return (
                 <Card
-                  id={`card-${result.drinkId}`}
+                  id={`card-${result.idDrink}`}
                   style={{ width: 300 }}
-                  cover={<img alt="example" src={result.drinkThumbSrc} />}
+                  cover={<img alt="example" src={result.strDrinkThumb} />}
                   actions={[<PlusOutlined key="add" />]}
                 >
                   <Meta
-                    key={`card-meta-${result.drinkId}`}
-                    title={result.drinkName}
-                    description={result.drinkInstructions}
+                    key={`card-meta-${result.idDrink}`}
+                    title={result.strDrink}
+                    description={result.strInstructions}
                   />
                 </Card>
               );

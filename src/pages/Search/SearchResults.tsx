@@ -1,16 +1,25 @@
 import React from 'react';
-import { useSelector } from 'react-redux';
 import { Space, Card } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 
-import { RootState } from 'src/store';
+import { addDrink } from '../../store/userSlice';
+import { useAppSelector, useAppDispatch } from '../../hooks';
 
 import './SearchResults.css';
 
 const { Meta } = Card;
 
 const SearchResults: React.FC = () => {
-  const searchResults = useSelector((state: RootState) => state.user.searchResults);
+  const dispatch = useAppDispatch();
+
+  const searchResults = useAppSelector((state) => state.user.searchResults);
+
+  const handleAdd = (event): void => {
+    const drinkId = event.currentTarget.id;
+    if (!drinkId) return;
+
+    dispatch(addDrink(drinkId));
+  };
 
   return (
     <div className="SearchResults">
@@ -19,16 +28,13 @@ const SearchResults: React.FC = () => {
           ? searchResults.map((result) => {
               return (
                 <Card
-                  id={`card-${result.idDrink}`}
+                  key={result.idDrink}
+                  id={result.idDrink}
                   style={{ width: 300 }}
                   cover={<img alt="example" src={result.strDrinkThumb} />}
-                  actions={[<PlusOutlined key="add" />]}
+                  actions={[<PlusOutlined key="add" id={result.idDrink} onClick={(event) => handleAdd(event)} />]}
                 >
-                  <Meta
-                    key={`card-meta-${result.idDrink}`}
-                    title={result.strDrink}
-                    description={result.strInstructions}
-                  />
+                  <Meta key={result.idDrink} title={result.strDrink} description={result.strInstructions} />
                 </Card>
               );
             })

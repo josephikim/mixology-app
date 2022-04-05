@@ -22,4 +22,6 @@ userRouter.get('/admin', [authJwt.verifyToken, authJwt.isAdmin], userController.
 // user routes
 userRouter.get('/search/:query', [authJwt.verifyToken], userController.getSearchResults);
 
+userRouter.post('/addDrink', [authJwt.verifyToken], userController.addDrink);
+
 export default userRouter;

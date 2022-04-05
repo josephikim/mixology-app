@@ -1,6 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
-import { rmSync } from 'fs';
+
+import db from '../db';
+
+const Drink = db.drink;
 
 const allAccess = (req: Request, res: Response): void => {
   res.status(200).send('Public Content.');
@@ -37,11 +40,30 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
   }
 };
 
+const addDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  try {
+    const data = req.body;
+
+    const drink = new Drink(data);
+
+    const saved = await drink.save((err, doc) => {
+      if (err) {
+        return next(err);
+      }
+
+      res.status(200).send(doc);
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const userController = {
   allAccess,
   userAccess,
   adminAccess,
   moderatorAccess,
-  getSearchResults
+  getSearchResults,
+  addDrink
 };
 export default userController;

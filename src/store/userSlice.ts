@@ -1,4 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+
+import { IDrink } from '../db/drink';
 import { UserApi } from '../api';
 import { SearchResult } from '../types';
 
@@ -12,13 +14,15 @@ enum Status {
 interface UserState {
   status: keyof typeof Status;
   error: string | null;
-  searchResults: [SearchResult] | null;
+  drinks: IDrink[];
+  searchResults: SearchResult[];
 }
 
 const initialState: UserState = {
   status: 'idle',
   error: null,
-  searchResults: null
+  drinks: [],
+  searchResults: []
 };
 
 export const getSearchResults = createAsyncThunk('user/getSearchResults', async (query: string) => {
@@ -26,6 +30,13 @@ export const getSearchResults = createAsyncThunk('user/getSearchResults', async 
   const results = await api.getSearchResults(query);
 
   return results;
+});
+
+export const addDrink = createAsyncThunk('user/addDrink', async (drinkId: string) => {
+  const api = new UserApi();
+  const result = await api.addDrink(drinkId);
+
+  return result;
 });
 
 export const userSlice = createSlice({
@@ -44,6 +55,19 @@ export const userSlice = createSlice({
         state.searchResults = results;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message!;
+      })
+      .addCase(addDrink.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(addDrink.fulfilled, (state, action) => {
+        const result = action.payload;
+        const newState = [...state.drinks, result];
+        state.status = 'succeeded';
+        state.drinks = newState;
+      })
+      .addCase(addDrink.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
       });

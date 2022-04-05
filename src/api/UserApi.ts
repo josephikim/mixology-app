@@ -74,10 +74,27 @@ userApiClient.interceptors.response.use(
 );
 
 export class UserApi {
-  async getSearchResults(query: string): Promise<[SearchResult] | null> {
+  async addDrink(drinkId: string): Promise<any> {
+    const userId = store.getState().auth.userId;
+    const storedResults = store.getState().user.searchResults;
+    const storedResultsMatch = storedResults ? storedResults.filter((result) => result.idDrink == drinkId)[0] : {};
+    const drink = {
+      ...storedResultsMatch,
+      user: userId,
+      idDrink: drinkId,
+      rating: null
+    };
+    const url = `${userApiClient.defaults.baseURL}/addDrink`;
+    const response = await userApiClient.post(url, drink);
+
+    return response.data;
+  }
+
+  async getSearchResults(query: string): Promise<SearchResult[]> {
     const url = `${userApiClient.defaults.baseURL}/search/${query}`;
     const response = await userApiClient.get(url);
-    let searchResults = null;
+
+    let searchResults: SearchResult[] = [];
 
     if (response.data.length > 0) {
       searchResults = response.data.map((drink) => {

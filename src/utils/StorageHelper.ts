@@ -1,13 +1,4 @@
-import axios from 'axios';
-import { Response } from 'express';
-
 import store from '../store/index';
-
-export interface IRefreshTokenResponse extends Response {
-  data: {
-    accessToken: string;
-  };
-}
 
 export class StorageHelper {
   static getLocalAccessToken = (): string | null => {

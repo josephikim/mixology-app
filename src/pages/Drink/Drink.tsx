@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 
-import ContentWrapper from '../../Layout/ContentWrapper';
+import ContentWrapper from '../../layout/ContentWrapper';
 
 const bottle = {
   id: 101,

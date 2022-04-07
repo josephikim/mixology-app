@@ -4,7 +4,7 @@ import { Row, Col } from 'antd';
 import SearchBox from './SearchBox';
 import SearchResults from './SearchResults';
 
-import ContentWrapper from '../../Layout/ContentWrapper';
+import ContentWrapper from '../../layout/ContentWrapper';
 
 const Search: React.FC = () => {
   return (

@@ -5,6 +5,7 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { register } from '../../store/authSlice';
 import { useInput } from '../../hooks/useInput';
 import { validateFields } from '../../validation';
+import ContentWrapper from '../../layout/ContentWrapper';
 
 const RegistrationForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -48,8 +49,8 @@ const RegistrationForm: React.FC = () => {
   };
 
   return (
-    <div className="registration-form">
-      <Form>
+    <ContentWrapper>
+      <Form className="registration-form">
         <div className="text-primary">
           <h4>New User Registration</h4>
         </div>
@@ -82,7 +83,7 @@ const RegistrationForm: React.FC = () => {
       <span>
         Already registered? Please <a href="/login">login</a>.
       </span>
-    </div>
+    </ContentWrapper>
   );
 };
 

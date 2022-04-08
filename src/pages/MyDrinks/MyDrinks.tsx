@@ -5,12 +5,14 @@ import { useAppSelector } from '../../hooks';
 import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkRecipe from '../../components/DrinkRecipe';
 
+import './MyDrinks.css';
+
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
 const { TextArea } = Input;
 
 const handleChange = (event) => {
-  event.preventDefault();
+  console.log('handle change');
 };
 
 const MyDrinks: React.FC = () => {
@@ -23,11 +25,11 @@ const MyDrinks: React.FC = () => {
           drink && index === undefined ? (
             <p>Data missing!</p>
           ) : (
-            <Collapse defaultActiveKey={drinks[0]._id} onChange={(event) => handleChange(event)}>
+            <Collapse className="MyDrinks" defaultActiveKey={drinks[0]._id} onChange={(event) => handleChange(event)}>
               <Panel header={drink.strDrink} key={drink._id}>
                 <Tabs defaultActiveKey="1" onChange={(event) => handleChange(event)}>
                   <TabPane tab="Info" key="1">
-                    <Row>
+                    <Row className="infoWrapper">
                       <Col span={12}>
                         <Row>
                           <Col span={8}>
@@ -65,11 +67,21 @@ const MyDrinks: React.FC = () => {
                       </Col>
                     </Row>
                   </TabPane>
+
                   <TabPane tab="Recipe" key="2">
-                    <DrinkRecipe data={drink} />
+                    <Row>
+                      <Col span={12}>
+                        <DrinkRecipe data={drink} />
+                      </Col>
+                    </Row>
                   </TabPane>
+
                   <TabPane tab="Notes" key="3">
-                    <TextArea rows={6} placeholder="enter text" />
+                    <Row>
+                      <Col span={12}>
+                        <TextArea rows={6} placeholder="enter text" />
+                      </Col>
+                    </Row>
                   </TabPane>
                 </Tabs>
               </Panel>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 
-const style = { marginRight: '15%', marginLeft: '15%' };
+const style = { marginRight: '15%', marginLeft: '15%', marginTop: '30px', marginBottom: '30px' };
 
 type ContentWrapperProps = {
   children?: React.ReactNode;

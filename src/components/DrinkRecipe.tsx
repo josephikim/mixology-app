@@ -1,9 +1,9 @@
 import React from 'react';
-import { Table } from 'antd';
+import { Row, Table, List, Divider } from 'antd';
 
 import { IDrink } from '../db/drink';
-import ContentWrapper from '../layout/ContentWrapper';
 
+import '../styles/DrinkRecipe.css';
 interface DrinkRecipeProps {
   data: IDrink;
 }
@@ -16,16 +16,17 @@ const buildRecipe = (drink) => {
     if (Object.prototype.hasOwnProperty.call(drink, prop)) {
       if (prop.startsWith('strIngredient')) {
         // parse numeric key from property name e.g '2' from 'strIngredient2'
-        const obj = {};
         const matches = prop.match(/\d+$/);
         if (!matches) continue;
 
         const key = matches[0];
-        obj['key'] = key;
-        obj['ingredient'] = drink[prop];
-        obj['measure'] = drink[`strMeasure${key}`];
+        const strMeasureProp = `strMeasure${key}`;
+        const str = `${drink[strMeasureProp]} ${drink[prop]}`;
 
-        data.push(obj);
+        data.push({
+          key: key,
+          entry: str
+        });
       }
     }
   }
@@ -36,12 +37,19 @@ const DrinkRecipe: React.FC<DrinkRecipeProps> = (props) => {
   const recipeData = buildRecipe(props.data);
 
   return (
-    <ContentWrapper>
-      <Table dataSource={recipeData}>
-        <Column title="Ingredient" dataIndex="ingredient" key="ingredient" />
-        <Column title="Measure" dataIndex="measure" key="measure" />
-      </Table>
-    </ContentWrapper>
+    <div className="DrinkRecipe">
+      <Divider orientation="left">Ingredients</Divider>
+      <Row>
+        <List dataSource={recipeData} rowKey="key" renderItem={(item) => <List.Item>{item.entry}</List.Item>} />
+      </Row>
+
+      <Divider orientation="left">Instructions</Divider>
+      <Row>
+        <div id="instructions">
+          <p>{props.data.strInstructions}</p>
+        </div>
+      </Row>
+    </div>
   );
 };
 

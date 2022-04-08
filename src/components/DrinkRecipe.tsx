@@ -38,12 +38,12 @@ const DrinkRecipe: React.FC<DrinkRecipeProps> = (props) => {
 
   return (
     <div className="DrinkRecipe">
-      <Divider orientation="left">Ingredients</Divider>
+      <h6>Ingredients</h6>
       <Row>
         <List dataSource={recipeData} rowKey="key" renderItem={(item) => <List.Item>{item.entry}</List.Item>} />
       </Row>
 
-      <Divider orientation="left">Instructions</Divider>
+      <h6>Instructions</h6>
       <Row>
         <div id="instructions">
           <p>{props.data.strInstructions}</p>

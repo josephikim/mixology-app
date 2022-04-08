@@ -15,7 +15,7 @@ const Header: React.FC = () => {
 
   return (
     <div className="Header fixed-header">
-      <Navbar collapseOnSelect bg="primary" variant="dark">
+      <Navbar collapseOnSelect bg="dark" variant="dark">
         <Container>
           <Navbar.Brand href="/">Mixology App</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />

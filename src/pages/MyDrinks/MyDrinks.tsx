@@ -61,10 +61,10 @@ const MyDrinks: React.FC = () => {
                       </Col>
                       <Col span={12}>
                         <Image
-                          width={420}
-                          height={420}
+                          width={250}
+                          height={250}
                           src={drink.strDrinkThumb}
-                          fallback="src/assets/missingimage.png"
+                          fallback="../../assets/missingimage.png"
                         />
                       </Col>
                     </Row>
@@ -74,6 +74,14 @@ const MyDrinks: React.FC = () => {
                     <Row>
                       <Col span={12}>
                         <DrinkRecipe data={drink} />
+                      </Col>
+                      <Col span={12}>
+                        <Image
+                          width={250}
+                          height={250}
+                          src={drink.strDrinkThumb}
+                          fallback="../../assets/missingimage.png"
+                        />
                       </Col>
                     </Row>
                   </TabPane>

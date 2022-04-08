@@ -3,20 +3,7 @@ import { Row, Col } from 'antd';
 
 import ContentWrapper from '../../layout/ContentWrapper';
 
-const bottle = {
-  id: 101,
-  category: 'wine',
-  name: 'Scarlet Red',
-  producer: 'Moms Wineries',
-  country: 'US',
-  price: 2099,
-  style: 'cabernet',
-  abv: '13',
-  rating: 91,
-  vintage: 1999
-};
-
-const BottleView: React.FC = () => {
+const Drink: React.FC = () => {
   return (
     <ContentWrapper>
       <Row>
@@ -28,4 +15,4 @@ const BottleView: React.FC = () => {
   );
 };
 
-export default BottleView;
+export default Drink;

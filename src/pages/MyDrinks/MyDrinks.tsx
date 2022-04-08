@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Collapse, Tabs, Input } from 'antd';
+import { Row, Col, Collapse, Tabs, Input, Image } from 'antd';
 
 import { useAppSelector } from '../../hooks';
 import ContentWrapper from '../../layout/ContentWrapper';
@@ -59,11 +59,13 @@ const MyDrinks: React.FC = () => {
                           <Col span={16}>{drink.strTags}</Col>
                         </Row>
                       </Col>
-
                       <Col span={12}>
-                        <ContentWrapper>
-                          <img src={drink.strDrinkThumb} />
-                        </ContentWrapper>
+                        <Image
+                          width={420}
+                          height={420}
+                          src={drink.strDrinkThumb}
+                          fallback="src/assets/missingimage.png"
+                        />
                       </Col>
                     </Row>
                   </TabPane>

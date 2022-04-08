@@ -70,6 +70,9 @@ const drinkSchema = new Schema(
     strInstructions: {
       type: String
     },
+    strDrinkThumb: {
+      type: String
+    },
     strIngredient1: {
       type: String
     },

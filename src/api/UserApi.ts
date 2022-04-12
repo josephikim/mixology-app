@@ -82,10 +82,10 @@ export class UserApi {
   async addDrink(drinkId: string): Promise<IDrinkDoc> {
     const userId = store.getState().auth.userId;
     const storedResults = store.getState().user.searchResults;
-    const storedResultsMatch = storedResults.filter((result) => result.idDrink == drinkId)[0];
+    const matched = storedResults.filter((result) => result.idDrink == drinkId)[0];
 
     const drink = {
-      ...storedResultsMatch,
+      ...matched,
       user: userId,
       idDrink: drinkId,
       rating: undefined

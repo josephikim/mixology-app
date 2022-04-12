@@ -54,7 +54,7 @@ const MyDrinks: React.FC = () => {
                             <strong>Tags:</strong>
                           </Col>
                           <Col span={16}>
-                            <DrinkTags tags={drink.strTags} />
+                            <DrinkTags tags={drink.strTags as string[]} />
                           </Col>
                         </Row>
                       </Col>

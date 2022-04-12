@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES5",
     "esModuleInterop": true,
-    "alwaysStrict": true,
+    "strict": true,
     "moduleResolution": "node",
     "inlineSourceMap": true,
     "outDir": "dist",
@@ -10,6 +10,10 @@
     "strictNullChecks": true,
     "declaration": false,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react",
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "useUnknownInCatchVariables": false
   }
 }

@@ -1,5 +1,5 @@
 import express from 'express';
-import { authJwt, verifyRegistration } from '../middleware';
+import { verifyRegistration } from '../middleware';
 import authController from '../controllers/authController';
 import { Request, Response, NextFunction } from 'express';
 

@@ -1,10 +1,9 @@
 import React from 'react';
 import { Row, Col } from 'antd';
 
+import ContentWrapper from '../../layout/ContentWrapper';
 import SearchBox from './SearchBox';
 import SearchResults from './SearchResults';
-
-import ContentWrapper from '../../layout/ContentWrapper';
 
 const Search: React.FC = () => {
   return (

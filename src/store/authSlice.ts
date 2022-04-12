@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
+
 import { AuthApi } from '../api';
-import { IRegistration, ILogin } from '../types';
+import { IRegistration, ILogin, TokenResult } from '../types';
 
 enum Status {
   idle = 'IDLE',
@@ -9,28 +10,31 @@ enum Status {
   failed = 'FAILED'
 }
 interface AuthState {
-  accessToken: string | null;
-  refreshToken: string | null;
-  userId: string | null;
+  accessToken: string;
+  refreshToken: string;
+  userId: string;
   status: keyof typeof Status;
-  error: string | null;
+  error: string;
 }
 
 const initialState: AuthState = {
-  accessToken: null,
-  refreshToken: null,
-  userId: null,
+  accessToken: '',
+  refreshToken: '',
+  userId: '',
   status: 'idle',
-  error: null
+  error: ''
 };
 
-export const register = createAsyncThunk('auth/register', async ({ username, password }: IRegistration) => {
-  const api = new AuthApi();
-  const res = await api.registerUser({ username, password });
-  return res;
-});
+export const register = createAsyncThunk(
+  'auth/register',
+  async ({ username, password }: IRegistration): Promise<TokenResult> => {
+    const api = new AuthApi();
+    const res = await api.registerUser({ username, password });
+    return res;
+  }
+);
 
-export const login = createAsyncThunk('auth/login', async ({ username, password }: ILogin) => {
+export const login = createAsyncThunk('auth/login', async ({ username, password }: ILogin): Promise<TokenResult> => {
   const api = new AuthApi();
   const res = await api.loginUser({ username, password });
   return res;
@@ -56,6 +60,7 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(register.fulfilled, (state, action) => {
+        debugger;
         const tokenData = action.payload.data[0];
         state.status = 'succeeded';
         state.userId = tokenData.userId;

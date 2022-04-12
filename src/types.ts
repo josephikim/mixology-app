@@ -8,12 +8,13 @@ declare module 'express-serve-static-core' {
 // API types
 export type TokenResult = IApiResultBaseOf<IAuthToken>;
 
+export type RefreshTokenResult = IApiResultBaseOf<IRefreshToken>;
 export interface IApiResultBase {
   statusCode: number;
   message: string;
 }
 
-export interface IApiResultBaseOf<T extends IAuthToken> extends IApiResultBase {
+export interface IApiResultBaseOf<T> extends IApiResultBase {
   data: T[];
 }
 export interface IAuthToken {
@@ -21,8 +22,11 @@ export interface IAuthToken {
   roles: string[];
   accessToken: string;
   refreshToken: string;
-  expiresIn: number;
   tokenType: string;
+}
+export interface IRefreshToken {
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface IRegistration {
@@ -35,7 +39,7 @@ export interface ILogin {
   password: string;
 }
 
-export interface SearchResult {
+export interface ISearchResult {
   idDrink: string;
   strDrink?: string;
   strTags?: [string];

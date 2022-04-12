@@ -1,2 +1,2 @@
-export * from './apiHelper';
-export * from './storageHelper';
+export * from './ApiHelper';
+export * from './StorageHelper';

@@ -1,14 +1,14 @@
 import validator from 'validator';
 
 class ValidateFields {
-  validateTitle(title): string | false {
+  validateTitle(title: string): string | false {
     if (validator.isEmpty(title)) {
       return 'Title is required';
     }
     return false;
   }
 
-  validateUsername(username): string | false {
+  validateUsername(username: string): string | false {
     if (!validator.isAlphanumeric(username)) {
       return 'Username should only contain letters and numbers';
     }
@@ -18,7 +18,7 @@ class ValidateFields {
     return false;
   }
 
-  validatePassword(password): string | false {
+  validatePassword(password: string): string | false {
     if (!validator.isAlphanumeric(password)) {
       return 'Password should only contain letters and numbers';
     }
@@ -28,7 +28,7 @@ class ValidateFields {
     return false;
   }
 
-  validatePasswordConfirm(confirm, password): string | false {
+  validatePasswordConfirm(confirm: string, password: string): string | false {
     if (confirm !== password) {
       return "Passwords don't match";
     }

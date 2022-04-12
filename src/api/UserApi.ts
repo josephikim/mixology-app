@@ -1,11 +1,12 @@
 import axios from 'axios';
 
+import settings from './Settings';
 import store from '../store/index';
+import * as ApiHelper from '../utils/ApiHelper';
+import { StorageHelper } from '../utils/StorageHelper';
 import { accessTokenUpdated, logout } from '../store/authSlice';
-import { SearchResult } from '../types';
-import { StorageHelper } from '../utils/storageHelper';
-import * as ApiHelper from '../utils/apiHelper';
-import settings from './settings';
+import { ISearchResult, RefreshTokenResult } from '../types';
+import { IDrinkDoc } from '../db/Drink';
 
 const userApiClient = axios.create({
   baseURL: settings.baseUrl,
@@ -41,16 +42,20 @@ userApiClient.interceptors.response.use(
         originalConfig._retry = true;
 
         try {
-          const rs = await userApiClient.post('/auth/refreshtoken', {
+          const res = await userApiClient.post('/auth/refreshtoken', {
             refreshToken: StorageHelper.getLocalRefreshToken()
           });
 
-          const { accessToken } = rs.data;
+          const tokenResult = {
+            statusCode: res.status,
+            message: res.statusText,
+            data: [res.data]
+          } as RefreshTokenResult;
 
-          userApiClient.defaults.headers.common['x-access-token'] = accessToken;
+          userApiClient.defaults.headers.common['x-access-token'] = tokenResult.data[0].accessToken;
 
           // authorize user
-          store.dispatch(accessTokenUpdated(accessToken));
+          store.dispatch(accessTokenUpdated(tokenResult.data[0].accessToken));
 
           return userApiClient(originalConfig);
         } catch (_error) {
@@ -74,30 +79,32 @@ userApiClient.interceptors.response.use(
 );
 
 export class UserApi {
-  async addDrink(drinkId: string): Promise<any> {
+  async addDrink(drinkId: string): Promise<IDrinkDoc> {
     const userId = store.getState().auth.userId;
     const storedResults = store.getState().user.searchResults;
-    const storedResultsMatch = storedResults ? storedResults.filter((result) => result.idDrink == drinkId)[0] : {};
+    const storedResultsMatch = storedResults.filter((result) => result.idDrink == drinkId)[0];
+
     const drink = {
       ...storedResultsMatch,
       user: userId,
       idDrink: drinkId,
-      rating: null
+      rating: undefined
     };
+
     const url = `${userApiClient.defaults.baseURL}/addDrink`;
     const response = await userApiClient.post(url, drink);
 
-    return response.data;
+    return response.data as IDrinkDoc;
   }
 
-  async getSearchResults(query: string): Promise<SearchResult[]> {
+  async getSearchResults(query: string): Promise<ISearchResult[]> {
     const url = `${userApiClient.defaults.baseURL}/search/${query}`;
     const response = await userApiClient.get(url);
 
-    let results: SearchResult[] = [];
+    let results: ISearchResult[] = [];
 
-    if (response.data.length > 0) {
-      results = response.data.map((drink) => {
+    if (response.status === 200 && response.data.length > 0) {
+      results = response.data.map((drink: ISearchResult) => {
         const result = {
           idDrink: drink.idDrink,
           ...(!!drink.strDrink && { strDrink: drink.strDrink }),

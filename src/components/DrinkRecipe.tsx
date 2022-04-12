@@ -1,17 +1,20 @@
 import React from 'react';
-import { Row, Table, List, Divider } from 'antd';
+import { Row, List } from 'antd';
 
-import { IDrink } from '../db/drink';
+import { IDrinkDoc } from '../db/Drink';
 
 import '../styles/DrinkRecipe.css';
 interface DrinkRecipeProps {
-  data: IDrink;
+  data: IDrinkDoc;
 }
 
-const { Column, ColumnGroup } = Table;
+interface RecipeData {
+  key: string;
+  entry: string;
+}
 
-const buildRecipe = (drink) => {
-  const data: any[] = [];
+const buildRecipe = (drink: IDrinkDoc) => {
+  const data: RecipeData[] = [];
   for (const prop in drink) {
     if (Object.prototype.hasOwnProperty.call(drink, prop)) {
       if (prop.startsWith('strIngredient')) {
@@ -20,12 +23,12 @@ const buildRecipe = (drink) => {
         if (!matches) continue;
 
         const key = matches[0];
-        const strMeasureProp = `strMeasure${key}`;
-        const str = `${drink[strMeasureProp]} ${drink[prop]}`;
+        const measureProp = `strMeasure${key}`;
+        const result = `${drink[measureProp]} ${drink[prop]}`;
 
         data.push({
           key: key,
-          entry: str
+          entry: result
         });
       }
     }

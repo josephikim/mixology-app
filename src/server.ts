@@ -7,6 +7,7 @@ import apiRouter from './routers';
 const BUILD_DIR = __dirname;
 const HTML_FILE = path.join(BUILD_DIR, 'index.html');
 
+//@ts-ignore
 const connection = db.connection;
 
 const app = express();

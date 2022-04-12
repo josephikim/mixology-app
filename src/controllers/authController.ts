@@ -4,7 +4,7 @@ import { Request, Response, NextFunction } from 'express';
 
 import db from '../db';
 import { jwtSecretKey, jwtExpiration } from '../config/authConfig';
-import { IRole } from '../db/Role';
+import { IRoleDoc } from '../db/Role';
 
 const User = db.user;
 const Role = db.role;
@@ -27,7 +27,7 @@ const register = (req: Request, res: Response, next: NextFunction): NextFunction
         {
           name: { $in: req.body.roles }
         },
-        (err, roles: HydratedDocument<IRole>[]) => {
+        (err, roles: HydratedDocument<IRoleDoc>[]) => {
           if (err) {
             return next(err);
           }
@@ -43,7 +43,7 @@ const register = (req: Request, res: Response, next: NextFunction): NextFunction
         }
       );
     } else {
-      Role.findOne({ name: 'user' }, (err, role) => {
+      Role.findOne({ name: 'user' }, (err: any, role: IRoleDoc) => {
         if (err) {
           return next(err);
         }
@@ -82,8 +82,9 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
       }
 
       // If password is valid, create JWT token
-      const token = jwt.sign({ id: user.id }, jwtSecretKey, {
-        expiresIn: jwtExpiration
+      const token = jwt.sign({ id: user._id }, jwtSecretKey, {
+        // Important to set numeric input, otherwise will be interpreted as string
+        expiresIn: parseInt(jwtExpiration)
       });
 
       const refreshToken = await RefreshToken.createToken(user._id);
@@ -98,7 +99,6 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
         roles: authorities,
         accessToken: token,
         refreshToken: refreshToken,
-        expiresIn: jwtExpiration,
         tokenType: 'jwt'
       });
     });
@@ -107,7 +107,7 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
 const refreshToken = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   const { refreshToken: requestToken } = req.body;
 
-  if (requestToken == null) {
+  if (!requestToken) {
     // Refresh token is required
     return res.redirect('/login');
   }
@@ -121,8 +121,6 @@ const refreshToken = async (req: Request, res: Response, next: NextFunction): Pr
       return;
     }
 
-    const verifyExpTest = RefreshToken.verifyExpiration(refreshToken);
-
     // Refresh token expired
     if (RefreshToken.verifyExpiration(refreshToken)) {
       RefreshToken.findByIdAndRemove(refreshToken._id, {
@@ -130,17 +128,19 @@ const refreshToken = async (req: Request, res: Response, next: NextFunction): Pr
       }).exec();
 
       res.status(403).json({
-        message: 'Refresh token was expired. Please make a new signin request'
+        message: 'Refresh token was expired. Please make a new sign-in request'
       });
       return;
     }
 
-    const newAccessToken = jwt.sign({ id: refreshToken.user._id }, jwtSecretKey, {
-      expiresIn: jwtExpiration
+    const newAccessToken = jwt.sign({ id: refreshToken.user }, jwtSecretKey, {
+      // Important to set numeric input, otherwise will be interpreted as string
+      expiresIn: parseInt(jwtExpiration)
     });
 
-    return res.status(200).send({
-      accessToken: newAccessToken
+    res.status(200).send({
+      accessToken: newAccessToken,
+      refreshToken: refreshToken.token
     });
   } catch (err) {
     return next(err);

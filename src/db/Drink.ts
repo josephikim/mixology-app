@@ -1,14 +1,15 @@
 import { Schema, Document, model } from 'mongoose';
 
-import { IUser } from './User';
+import { IUserDoc } from './User';
 
-export interface IDrink extends Document {
-  user: IUser;
+export interface IDrinkDoc extends Document {
+  [key: string]: any;
+  user: IUserDoc;
   idDrink: string;
   rating?: number;
   notes?: string;
   strDrink?: string;
-  strTags?: [string];
+  strTags?: string[];
   strIBA?: string;
   strAlcoholic?: string;
   strGlass?: string;
@@ -134,6 +135,6 @@ const drinkSchema = new Schema(
   { emitIndexErrors: true }
 );
 
-const Drink = model<IDrink>('Drink', drinkSchema);
+const Drink = model<IDrinkDoc>('Drink', drinkSchema);
 
 export default Drink;

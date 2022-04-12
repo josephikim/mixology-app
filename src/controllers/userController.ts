@@ -42,11 +42,18 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
 
 const addDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
-    const data = req.body;
+    const newDrink = {
+      ...req.body
+    };
 
-    const drink = new Drink(data);
+    if (req.body.strTags?.length > 0) {
+      const strTagsSplit = req.body.strTags.split(',');
+      newDrink['strTags'] = strTagsSplit;
+    }
 
-    const saved = await drink.save((err, doc) => {
+    const drink = new Drink(newDrink);
+
+    await drink.save((err, doc) => {
       if (err) {
         return next(err);
       }

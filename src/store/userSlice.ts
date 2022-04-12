@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { IDrink } from '../db/drink';
 import { UserApi } from '../api';
-import { SearchResult } from '../types';
+import { IDrinkDoc } from '../db/Drink';
+import { ISearchResult } from '../types';
 
 enum Status {
   idle = 'IDLE',
@@ -13,31 +13,34 @@ enum Status {
 
 interface UserState {
   status: keyof typeof Status;
-  error: string | null;
-  drinks: IDrink[];
-  searchResults: SearchResult[];
+  error: string | undefined;
+  drinks: IDrinkDoc[];
+  searchResults: ISearchResult[];
 }
 
 const initialState: UserState = {
   status: 'idle',
-  error: null,
+  error: undefined,
   drinks: [],
   searchResults: []
 };
 
-export const getSearchResults = createAsyncThunk('user/getSearchResults', async (query: string) => {
-  const api = new UserApi();
-  const results = await api.getSearchResults(query);
-
-  return results;
-});
-
-export const addDrink = createAsyncThunk('user/addDrink', async (drinkId: string) => {
+export const addDrink = createAsyncThunk('user/addDrink', async (drinkId: string): Promise<IDrinkDoc> => {
   const api = new UserApi();
   const result = await api.addDrink(drinkId);
 
   return result;
 });
+
+export const getSearchResults = createAsyncThunk(
+  'user/getSearchResults',
+  async (query: string): Promise<ISearchResult[]> => {
+    const api = new UserApi();
+    const results = await api.getSearchResults(query);
+
+    return results;
+  }
+);
 
 export const userSlice = createSlice({
   name: 'user',

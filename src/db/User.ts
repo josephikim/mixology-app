@@ -1,14 +1,15 @@
 import { Schema, Document, model } from 'mongoose';
+import { NextFunction } from 'express';
 import bcrypt from 'bcryptjs';
 
-import { IRole } from './Role';
+import { IRoleDoc } from './Role';
 
 const SALT_WORK_FACTOR = 10;
 
-export interface IUser extends Document {
+export interface IUserDoc extends Document {
   username: string;
   password: string;
-  roles: IRole[];
+  roles: IRoleDoc[];
   validatePassword(candidatePassword: string): boolean;
 }
 
@@ -56,7 +57,7 @@ userSchema.pre('save', async function (next) {
 });
 
 // schema middleware to apply after saving
-const handleE11000 = (error, res, next): void => {
+const handleE11000 = (error: any, next: NextFunction): void => {
   if (error.name === 'MongoError' && error.code === 11000) {
     next(new Error('There was a duplicate key error.'));
   } else {
@@ -67,10 +68,10 @@ const handleE11000 = (error, res, next): void => {
 userSchema.post('save', handleE11000);
 userSchema.post('findOneAndUpdate', handleE11000);
 
-userSchema.methods.validatePassword = function (candidatePassword: string): boolean {
+userSchema.methods.validatePassword = function (candidatePassword: string): Promise<boolean> {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-const User = model<IUser>('User', userSchema);
+const User = model<IUserDoc>('User', userSchema);
 
 export default User;

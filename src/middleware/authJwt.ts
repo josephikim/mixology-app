@@ -8,7 +8,11 @@ const Role = db.role;
 
 const { TokenExpiredError } = jwt;
 
-const catchError = (err, res): Response => {
+interface JwtPayload {
+  id: string;
+}
+
+const catchError = (err: any, res: Response): Response => {
   if (err instanceof TokenExpiredError) {
     return res.status(401).send({ message: 'Unauthorized! Access Token was expired!' });
   }
@@ -17,19 +21,19 @@ const catchError = (err, res): Response => {
 };
 
 const verifyToken = (req: Request, res: Response, next: NextFunction): Response | void => {
-  const token = req.headers['x-access-token'];
+  const token = req.headers['x-access-token'] as string;
 
   if (!token) {
     return res.status(403).send({ message: 'No token provided!' });
   }
 
-  jwt.verify(token, jwtSecretKey, (err, decoded) => {
-    if (err) {
-      return catchError(err, res);
-    }
+  try {
+    const decoded = jwt.verify(token, jwtSecretKey) as JwtPayload;
     req.id = decoded.id;
     next();
-  });
+  } catch (err) {
+    return catchError(err, res);
+  }
 };
 
 const isAdmin = (req: Request, res: Response, next: NextFunction): NextFunction | void => {

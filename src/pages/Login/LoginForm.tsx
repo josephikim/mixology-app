@@ -13,7 +13,7 @@ const LoginForm: React.FC = () => {
   const { value: username, bind: bindUsername, reset: resetUsername } = useInput('');
   const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');
 
-  const handleSubmit = (evt): void => {
+  const handleSubmit = (evt: React.MouseEvent): void => {
     evt.preventDefault();
     const usernameError = validateFields.validateUsername(username);
     const passwordError = validateFields.validatePassword(password);
@@ -61,7 +61,7 @@ const LoginForm: React.FC = () => {
           <Form.Control type="password" name="password" placeholder="Enter password" {...bindPassword} />
         </Form.Group>
 
-        <Button type="submit" name="login-form-btn" variant="primary" onClick={handleSubmit}>
+        <Button type="submit" name="login-form-btn" variant="primary" onClick={(evt) => handleSubmit(evt)}>
           Login
         </Button>
       </Form>

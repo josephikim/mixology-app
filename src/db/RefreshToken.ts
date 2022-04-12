@@ -1,20 +1,19 @@
-import { Schema, Model, model, Types } from 'mongoose';
+import { Schema, Model, Document, model, Types } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
 import { jwtRefreshExpiration } from '../config/authConfig';
-
-export interface IRefreshToken {
+export interface IRefreshTokenDoc extends Document {
   token: string;
   user: Types.ObjectId;
   expiryDate: Date;
 }
 
-export interface IRefreshTokenModel extends Model<IRefreshToken> {
+export interface IRefreshTokenModel extends Model<IRefreshTokenDoc> {
   createToken(user: Types.ObjectId): string;
-  verifyExpiration(token: IRefreshToken): boolean;
+  verifyExpiration(token: IRefreshTokenDoc): boolean;
 }
 
-const refreshTokenSchema = new Schema<IRefreshToken>({
+const refreshTokenSchema = new Schema({
   token: String,
   user: {
     type: Schema.Types.ObjectId,
@@ -26,7 +25,7 @@ const refreshTokenSchema = new Schema<IRefreshToken>({
 refreshTokenSchema.statics.createToken = async function (user: Types.ObjectId): Promise<string> {
   const expiredAt = new Date();
 
-  expiredAt.setSeconds(expiredAt.getSeconds() + parseInt(jwtRefreshExpiration ? jwtRefreshExpiration : '86400'));
+  expiredAt.setSeconds(expiredAt.getSeconds() + parseInt(jwtRefreshExpiration));
 
   const _token = uuidv4();
 
@@ -34,7 +33,7 @@ refreshTokenSchema.statics.createToken = async function (user: Types.ObjectId): 
     token: _token,
     user: user._id,
     expiryDate: expiredAt.getTime()
-  });
+  }) as IRefreshTokenDoc;
 
   const refreshToken = await _object.save();
 
@@ -45,6 +44,6 @@ refreshTokenSchema.statics.verifyExpiration = (token): boolean => {
   return token.expiryDate.getTime() < new Date().getTime();
 };
 
-const RefreshToken = model<IRefreshToken, IRefreshTokenModel>('RefreshToken', refreshTokenSchema);
+const RefreshToken = model<IRefreshTokenDoc, IRefreshTokenModel>('RefreshToken', refreshTokenSchema);
 
 export default RefreshToken;

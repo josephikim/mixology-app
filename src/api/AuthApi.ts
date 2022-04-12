@@ -1,10 +1,8 @@
 import axios from 'axios';
-import { response } from 'express';
 
 import { IRegistration, ILogin, TokenResult } from '../types';
-import * as ApiHelper from '../utils/apiHelper';
-import { StorageHelper } from '../utils';
-import settings from './settings';
+import * as ApiHelper from '../utils/ApiHelper';
+import settings from './Settings';
 
 const authApiClient = axios.create({
   baseURL: settings.authUrl,

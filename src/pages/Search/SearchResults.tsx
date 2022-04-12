@@ -14,8 +14,8 @@ const SearchResults: React.FC = () => {
 
   const searchResults = useAppSelector((state) => state.user.searchResults);
 
-  const handleAdd = (event): void => {
-    const drinkId = event.currentTarget.id;
+  const handleAdd = (evt: React.MouseEvent): void => {
+    const drinkId = evt.currentTarget.id;
     if (!drinkId) return;
 
     dispatch(addDrink(drinkId));
@@ -32,7 +32,7 @@ const SearchResults: React.FC = () => {
                   id={result.idDrink}
                   style={{ width: 300 }}
                   cover={<img alt="example" src={result.strDrinkThumb} />}
-                  actions={[<PlusOutlined key="add" id={result.idDrink} onClick={(event) => handleAdd(event)} />]}
+                  actions={[<PlusOutlined key="add" id={result.idDrink} onClick={(evt) => handleAdd(evt)} />]}
                 >
                   <Meta key={result.idDrink} title={result.strDrink} description={result.strInstructions} />
                 </Card>

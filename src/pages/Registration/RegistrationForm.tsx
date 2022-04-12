@@ -15,7 +15,7 @@ const RegistrationForm: React.FC = () => {
   const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');
   const { value: passwordConfirm, bind: bindPasswordConfirm, reset: resetPasswordConfirm } = useInput('');
 
-  const handleSubmit = (evt): void => {
+  const handleSubmit = (evt: React.MouseEvent): void => {
     evt.preventDefault();
     const usernameError = validateFields.validateUsername(username);
     const passwordError = validateFields.validatePassword(password);
@@ -75,7 +75,7 @@ const RegistrationForm: React.FC = () => {
           />
         </Form.Group>
 
-        <Button type="submit" name="register-form-btn" variant="primary" onClick={handleSubmit}>
+        <Button type="submit" name="register-form-btn" variant="primary" onClick={(evt) => handleSubmit(evt)}>
           Register
         </Button>
       </Form>

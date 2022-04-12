@@ -25,9 +25,9 @@ const initialState: UserState = {
   searchResults: []
 };
 
-export const addDrink = createAsyncThunk('user/addDrink', async (drinkId: string): Promise<IDrinkDoc> => {
+export const addDrink = createAsyncThunk('user/addDrink', async (idDrink: string): Promise<IDrinkDoc> => {
   const api = new UserApi();
-  const result = await api.addDrink(drinkId);
+  const result = await api.addDrink(idDrink);
 
   return result;
 });

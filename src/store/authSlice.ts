@@ -60,7 +60,6 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(register.fulfilled, (state, action) => {
-        debugger;
         const tokenData = action.payload.data[0];
         state.status = 'succeeded';
         state.userId = tokenData.userId;

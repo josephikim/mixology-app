@@ -79,17 +79,19 @@ userApiClient.interceptors.response.use(
 );
 
 export class UserApi {
-  async addDrink(drinkId: string): Promise<IDrinkDoc> {
+  async addDrink(idDrink: string): Promise<IDrinkDoc> {
     const userId = store.getState().auth.userId;
-    const storedResults = store.getState().user.searchResults;
-    const matched = storedResults.filter((result) => result.idDrink == drinkId)[0];
+    const storedResultsClone = JSON.parse(JSON.stringify(store.getState().user.searchResults));
+    const matched = storedResultsClone.filter((result: any) => result.idDrink == idDrink)[0];
 
     const drink = {
       ...matched,
+      idDrinkApi: matched.idDrink,
       user: userId,
-      idDrink: drinkId,
       rating: undefined
     };
+
+    delete drink['idDrink'];
 
     const url = `${userApiClient.defaults.baseURL}/addDrink`;
     const response = await userApiClient.post(url, drink);

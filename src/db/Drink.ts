@@ -5,7 +5,7 @@ import { IUserDoc } from './User';
 export interface IDrinkDoc extends Document {
   [key: string]: any;
   user: IUserDoc;
-  idDrink: string;
+  idDrinkApi: string;
   rating?: number;
   notes?: string;
   strDrink?: string;
@@ -43,7 +43,7 @@ const drinkSchema = new Schema(
       ref: 'User',
       required: true
     },
-    idDrink: {
+    idDrinkApi: {
       type: String,
       required: true
     },

@@ -41,28 +41,38 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
 };
 
 const addDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  try {
-    const newDrink = {
-      ...req.body
-    };
-
-    if (req.body.strTags?.length > 0) {
-      const strTagsSplit = req.body.strTags.split(',');
-      newDrink['strTags'] = strTagsSplit;
+  Drink.findOne({ idDrinkApi: req.body.idDrinkApi }).exec((err, drink) => {
+    if (err) {
+      return next(err);
     }
 
-    const drink = new Drink(newDrink);
+    if (drink == null) {
+      try {
+        const data = {
+          ...req.body
+        };
 
-    await drink.save((err, doc) => {
-      if (err) {
+        if (req.body.strTags?.length > 0) {
+          const strTagsSplit = req.body.strTags.split(',');
+          data['strTags'] = strTagsSplit;
+        }
+
+        const newDrink = new Drink(data);
+
+        newDrink.save((err, doc) => {
+          if (err) {
+            return next(err);
+          }
+
+          res.status(200).send(doc);
+        });
+      } catch (err) {
         return next(err);
       }
-
-      res.status(200).send(doc);
-    });
-  } catch (err) {
-    return next(err);
-  }
+    } else {
+      res.status(409).send({ message: 'Entry already exists in database.' });
+    }
+  });
 };
 
 const userController = {
@@ -73,4 +83,5 @@ const userController = {
   getSearchResults,
   addDrink
 };
+
 export default userController;

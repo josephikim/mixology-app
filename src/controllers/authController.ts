@@ -83,7 +83,7 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
 
       // If password is valid, create JWT token
       const token = jwt.sign({ id: user._id }, jwtSecretKey, {
-        // Important to set numeric input, otherwise will be interpreted as string
+        // Important to set numeric input, otherwise input will be interpreted as string
         expiresIn: parseInt(jwtExpiration)
       });
 
@@ -94,6 +94,7 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
       for (let i = 0; i < user.roles.length; i++) {
         authorities.push('ROLE_' + user.roles[i].name.toUpperCase());
       }
+
       res.status(200).send({
         userId: user._id,
         roles: authorities,
@@ -134,7 +135,7 @@ const refreshToken = async (req: Request, res: Response, next: NextFunction): Pr
     }
 
     const newAccessToken = jwt.sign({ id: refreshToken.user }, jwtSecretKey, {
-      // Important to set numeric input, otherwise will be interpreted as string
+      // Important to set numeric input, otherwise input will be interpreted as string
       expiresIn: parseInt(jwtExpiration)
     });
 

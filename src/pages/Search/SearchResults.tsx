@@ -15,10 +15,10 @@ const SearchResults: React.FC = () => {
   const searchResults = useAppSelector((state) => state.user.searchResults);
 
   const handleAdd = (evt: React.MouseEvent): void => {
-    const drinkId = evt.currentTarget.id;
-    if (!drinkId) return;
+    const idDrink = evt.currentTarget.id;
+    if (!idDrink) return;
 
-    dispatch(addDrink(drinkId));
+    dispatch(addDrink(idDrink));
   };
 
   return (

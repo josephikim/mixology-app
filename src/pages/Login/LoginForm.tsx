@@ -24,7 +24,7 @@ const LoginForm: React.FC = () => {
 
     if (validationErrors.length === 0) {
       // no input errors, submit the form
-      if (userStatus === 'idle') {
+      if (userStatus === 'idle' || userStatus === 'failed') {
         alert(`Loggin in with username, password, pwconfirm: ${username} ${password}`);
         dispatch(login({ username, password }));
       }

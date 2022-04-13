@@ -14,9 +14,11 @@ interface RecipeData {
 }
 
 const buildRecipe = (drink: IDrinkDoc) => {
+  const drinkClone = JSON.parse(JSON.stringify(drink));
   const data: RecipeData[] = [];
-  for (const prop in drink) {
-    if (Object.prototype.hasOwnProperty.call(drink, prop)) {
+
+  for (const prop in drinkClone) {
+    if (Object.prototype.hasOwnProperty.call(drinkClone, prop)) {
       if (prop.startsWith('strIngredient')) {
         // parse numeric key from property name e.g '2' from 'strIngredient2'
         const matches = prop.match(/\d+$/);
@@ -24,7 +26,7 @@ const buildRecipe = (drink: IDrinkDoc) => {
 
         const key = matches[0];
         const measureProp = `strMeasure${key}`;
-        const result = `${drink[measureProp]} ${drink[prop]}`;
+        const result = `${drinkClone[measureProp]} ${drinkClone[prop]}`;
 
         data.push({
           key: key,

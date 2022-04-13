@@ -3,7 +3,6 @@ import { Schema, Document, model } from 'mongoose';
 import { IUserDoc } from './User';
 
 export interface IDrinkDoc extends Document {
-  [key: string]: any;
   user: IUserDoc;
   idDrinkApi: string;
   rating?: number;

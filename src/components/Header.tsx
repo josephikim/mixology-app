@@ -2,7 +2,7 @@ import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { logout } from '../store/authSlice';
+import { logoutAction } from '../store/index';
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -10,7 +10,7 @@ const Header: React.FC = () => {
   const authenticated = useAppSelector((state) => state.auth.accessToken);
 
   const handleLogout = (): void => {
-    dispatch(logout());
+    dispatch(logoutAction());
   };
 
   return (

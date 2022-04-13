@@ -13,14 +13,13 @@ enum Status {
 
 interface UserState {
   status: keyof typeof Status;
-  error: string | undefined;
+  error?: string;
   drinks: IDrinkDoc[];
   searchResults: ISearchResult[];
 }
 
-const initialState: UserState = {
+export const initialUserState: UserState = {
   status: 'idle',
-  error: undefined,
   drinks: [],
   searchResults: []
 };
@@ -44,7 +43,7 @@ export const getSearchResults = createAsyncThunk(
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: initialUserState,
   reducers: {},
   // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {

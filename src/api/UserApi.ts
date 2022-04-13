@@ -4,7 +4,8 @@ import settings from './Settings';
 import store from '../store/index';
 import * as ApiHelper from '../utils/ApiHelper';
 import { StorageHelper } from '../utils/StorageHelper';
-import { accessTokenUpdated, logout } from '../store/authSlice';
+import { accessTokenUpdated } from '../store/authSlice';
+import { logoutAction } from '../store/index';
 import { ISearchResult, RefreshTokenResult } from '../types';
 import { IDrinkDoc } from '../db/Drink';
 
@@ -68,7 +69,7 @@ userApiClient.interceptors.response.use(
       }
 
       if (err.response.status === 403 || err.response.status === 401) {
-        store.dispatch(logout());
+        store.dispatch(logoutAction());
 
         return Promise.reject(err);
       }

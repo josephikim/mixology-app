@@ -39,8 +39,4 @@ export class AuthApi {
 
     return tokenResult as TokenResult;
   }
-
-  async logoutUser(): Promise<void> {
-    localStorage.removeItem('state');
-  }
 }

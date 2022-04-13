@@ -14,15 +14,14 @@ interface AuthState {
   refreshToken: string;
   userId: string;
   status: keyof typeof Status;
-  error: string;
+  error?: string;
 }
 
-const initialState: AuthState = {
+export const initialAuthState: AuthState = {
   accessToken: '',
   refreshToken: '',
   userId: '',
-  status: 'idle',
-  error: ''
+  status: 'idle'
 };
 
 export const register = createAsyncThunk(
@@ -40,14 +39,9 @@ export const login = createAsyncThunk('auth/login', async ({ username, password 
   return res;
 });
 
-export const logout = createAsyncThunk('auth/logout', async () => {
-  const api = new AuthApi();
-  await api.logoutUser();
-});
-
 export const authSlice = createSlice({
   name: 'auth',
-  initialState,
+  initialState: initialAuthState,
   reducers: {
     accessTokenUpdated: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload;
@@ -80,14 +74,6 @@ export const authSlice = createSlice({
         state.refreshToken = tokenData.refreshToken;
       })
       .addCase(login.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message!;
-      })
-      .addCase(logout.fulfilled, (state) => {
-        state.status = 'idle';
-        state = initialState;
-      })
-      .addCase(logout.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
       });

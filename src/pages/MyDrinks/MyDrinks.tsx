@@ -22,7 +22,7 @@ const MyDrinks: React.FC = () => {
           drink && index === undefined ? (
             <p>Data missing!</p>
           ) : (
-            <Collapse className="MyDrinks" defaultActiveKey={drinks[0]._id}>
+            <Collapse className="MyDrinks" defaultActiveKey={drinks[0]._id} key={drink._id}>
               <Panel header={drink.strDrink} key={drink._id}>
                 <Tabs defaultActiveKey="1">
                   <TabPane tab="Info" key="1">

@@ -11,8 +11,8 @@ const DrinkTags: React.FC<DrinkTagsProps> = (props) => {
   return (
     <div className="DrinkTags">
       {props.tags.length > 0 ? (
-        props.tags.map((tag) => {
-          return <Tag>{tag}</Tag>;
+        props.tags.map((tag, index) => {
+          return <Tag key={index}>{tag}</Tag>;
         })
       ) : (
         <span>none</span>

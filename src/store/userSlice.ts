@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 import { UserApi } from '../api';
 import { IDrinkDoc } from '../db/Drink';
@@ -44,7 +44,11 @@ export const getSearchResults = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState: initialUserState,
-  reducers: {},
+  reducers: {
+    drinksUpdated: (state, action: PayloadAction<IDrinkDoc[]>) => {
+      state.drinks = action.payload;
+    }
+  },
   // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {
     builder
@@ -75,5 +79,7 @@ export const userSlice = createSlice({
       });
   }
 });
+
+export const { drinksUpdated } = userSlice.actions;
 
 export default userSlice.reducer;

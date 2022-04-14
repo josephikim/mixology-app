@@ -2,6 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AuthApi } from '../api';
 import { IRegistration, ILogin, TokenResult } from '../types';
+import { drinksUpdated } from './userSlice';
 
 enum Status {
   idle = 'IDLE',
@@ -33,11 +34,16 @@ export const register = createAsyncThunk(
   }
 );
 
-export const login = createAsyncThunk('auth/login', async ({ username, password }: ILogin): Promise<TokenResult> => {
-  const api = new AuthApi();
-  const res = await api.loginUser({ username, password });
-  return res;
-});
+export const login = createAsyncThunk(
+  'auth/login',
+  async ({ username, password }: ILogin, { dispatch }): Promise<TokenResult> => {
+    const api = new AuthApi();
+    const res = await api.loginUser({ username, password });
+    const { token, drinks } = res;
+    dispatch(drinksUpdated(drinks));
+    return token;
+  }
+);
 
 export const authSlice = createSlice({
   name: 'auth',

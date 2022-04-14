@@ -1,3 +1,4 @@
+import { IDrinkDoc } from './db/Drink';
 // Express.js
 declare module 'express-serve-static-core' {
   interface Request {
@@ -37,6 +38,11 @@ export interface IRegistration {
 export interface ILogin {
   username: string;
   password: string;
+}
+
+export interface ILoginResult {
+  token: TokenResult;
+  drinks: IDrinkDoc[];
 }
 
 export interface ISearchResult {

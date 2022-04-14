@@ -5,9 +5,11 @@ import { Request, Response, NextFunction } from 'express';
 import db from '../db';
 import { jwtSecretKey, jwtExpiration } from '../config/authConfig';
 import { IRoleDoc } from '../db/Role';
+import { IDrinkDoc } from '../db/Drink';
 
 const User = db.user;
 const Role = db.role;
+const Drink = db.drink;
 const RefreshToken = db.refreshToken;
 
 const register = (req: Request, res: Response, next: NextFunction): NextFunction | void => {
@@ -95,13 +97,31 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
         authorities.push('ROLE_' + user.roles[i].name.toUpperCase());
       }
 
-      res.status(200).send({
+      const loginData = {
         userId: user._id,
         roles: authorities,
         accessToken: token,
         refreshToken: refreshToken,
         tokenType: 'jwt'
-      });
+      };
+
+      Drink.find(
+        {
+          user: user._id
+        },
+        (err, drinks: HydratedDocument<IDrinkDoc>[]) => {
+          if (err) {
+            return next(err);
+          }
+
+          const drinkData = drinks ? drinks : [];
+
+          res.status(200).send({
+            loginData,
+            drinkData
+          });
+        }
+      );
     });
 };
 

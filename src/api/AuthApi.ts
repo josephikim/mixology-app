@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-import { IRegistration, ILogin, TokenResult } from '../types';
-import * as ApiHelper from '../utils/ApiHelper';
 import settings from './Settings';
+import * as ApiHelper from '../utils/ApiHelper';
+import { IRegistration, ILogin, ILoginResult, TokenResult } from '../types';
 
 const authApiClient = axios.create({
   baseURL: settings.authUrl,
@@ -25,18 +25,23 @@ export class AuthApi {
     return tokenResult as TokenResult;
   }
 
-  async loginUser(credentials: ILogin): Promise<TokenResult> {
+  async loginUser(credentials: ILogin): Promise<ILoginResult> {
     const body = { username: credentials.username, password: credentials.password };
     const url = `${authApiClient.defaults.baseURL}/login`;
 
     const response = await authApiClient.post(url, body);
 
-    const tokenResult = {
+    const token = {
       statusCode: response.status,
       message: response.statusText,
-      data: [response.data]
+      data: [response.data.loginData]
     };
 
-    return tokenResult as TokenResult;
+    const result = {
+      token,
+      drinks: response.data.drinkData
+    };
+
+    return result as ILoginResult;
   }
 }

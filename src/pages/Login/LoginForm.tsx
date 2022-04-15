@@ -5,6 +5,9 @@ import { login } from '../../store/authSlice';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useInput } from '../../hooks/useInput';
 import { validateFields } from '../../validation';
+import ContentWrapper from '../../layout/ContentWrapper';
+
+import './LoginForm.css';
 
 const LoginForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -45,8 +48,8 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <div className="login-form">
-      <Form>
+    <ContentWrapper>
+      <Form className="login-form">
         <div className="text-primary">
           <h4>Returning User Login</h4>
         </div>
@@ -65,7 +68,7 @@ const LoginForm: React.FC = () => {
           Login
         </Button>
       </Form>
-    </div>
+    </ContentWrapper>
   );
 };
 

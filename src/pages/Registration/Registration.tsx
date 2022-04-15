@@ -1,22 +1,23 @@
 import React, { FC } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
-import RegistrationForm from './RegistrationForm';
+import { Container, Col, Row } from 'react-bootstrap';
 
-// import img from '../../assets/cellar-img.jpg';
+import ContentWrapper from '../../layout/ContentWrapper';
+import RegistrationForm from './RegistrationForm';
 
 const Registration: FC = () => (
   <div className="registration-view">
     <Container>
       <Row>
         <Col md={6}>
-          <div id="about">
-            <p>
-              <strong>Mixology App</strong> is a convenient way to curate your favorite cocktails, research drink
-              recipes, and submit reviews and tasting notes. Cheers!
-            </p>
-            <p>Please register to get started:</p>
-            {/* <img id="mixology-img" width="500" src={img}></img> */}
-          </div>
+          <ContentWrapper>
+            <div id="about">
+              <p>
+                <strong>Mixology App</strong> is a convenient way to curate your favorite cocktails, research drink
+                recipes, compose tasting notes, submit reviews and more.
+              </p>
+              <p>Please register to get started!</p>
+            </div>
+          </ContentWrapper>
         </Col>
 
         <Col md={6}>

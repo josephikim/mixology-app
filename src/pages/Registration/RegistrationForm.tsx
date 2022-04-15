@@ -7,6 +7,8 @@ import { useInput } from '../../hooks/useInput';
 import { validateFields } from '../../validation';
 import ContentWrapper from '../../layout/ContentWrapper';
 
+import './RegistrationForm.css';
+
 const RegistrationForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const userStatus = useAppSelector((state) => state.auth.status);
@@ -52,7 +54,7 @@ const RegistrationForm: React.FC = () => {
     <ContentWrapper>
       <Form className="registration-form">
         <div className="text-primary">
-          <h4>New User Registration</h4>
+          <h4>User Registration</h4>
         </div>
 
         <Form.Group controlId="username">

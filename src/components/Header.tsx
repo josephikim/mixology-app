@@ -20,15 +20,18 @@ const Header: React.FC = () => {
           <Navbar.Brand href="/">Mixology App</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
-            <Nav>
-              <Nav.Link href="/mydrinks">Home</Nav.Link>
-              <Nav.Link href="/search">Search</Nav.Link>
-              {authenticated ? (
+            {authenticated ? (
+              <Nav>
+                <Nav.Link href="/mydrinks">Home</Nav.Link>
+                <Nav.Link href="/search">Search</Nav.Link>
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
-              ) : (
+              </Nav>
+            ) : (
+              <Nav>
+                <Nav.Link href="/register">Register</Nav.Link>
                 <Nav.Link href="/login">Login</Nav.Link>
-              )}
-            </Nav>
+              </Nav>
+            )}
           </Navbar.Collapse>
         </Container>
       </Navbar>

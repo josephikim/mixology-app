@@ -1,16 +1,17 @@
 import React from 'react';
-import { Row, Col, Collapse, Tabs, Input, Image } from 'antd';
+import { Row, Col, Collapse, Tabs, Image } from 'antd';
 
 import { useAppSelector } from '../../hooks';
+
 import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkRecipe from '../../components/DrinkRecipe';
 import DrinkTags from '../../components/DrinkTags';
+import DrinkNotes from '../../components/DrinkNotes';
 
 import './MyDrinks.css';
 
 const { Panel } = Collapse;
 const { TabPane } = Tabs;
-const { TextArea } = Input;
 
 const MyDrinks: React.FC = () => {
   const drinks = useAppSelector((state) => state.user.drinks);
@@ -88,7 +89,7 @@ const MyDrinks: React.FC = () => {
                   <TabPane tab="Notes" key="3">
                     <Row>
                       <Col span={12}>
-                        <TextArea rows={6} placeholder="enter text" />
+                        <DrinkNotes drinkId={drink._id} />
                       </Col>
                     </Row>
                   </TabPane>

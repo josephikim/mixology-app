@@ -5,6 +5,7 @@ import store from '../store/index';
 import * as ApiHelper from '../utils/ApiHelper';
 import { StorageHelper } from '../utils/StorageHelper';
 import { accessTokenUpdated } from '../store/authSlice';
+import { NotesPayload } from '../store/userSlice';
 import { logoutAction } from '../store/index';
 import { ISearchResult, RefreshTokenResult } from '../types';
 import { IDrinkDoc } from '../db/Drink';
@@ -96,6 +97,13 @@ export class UserApi {
 
     const url = `${userApiClient.defaults.baseURL}/addDrink`;
     const response = await userApiClient.post(url, drink);
+
+    return response.data as IDrinkDoc;
+  }
+
+  async saveNotes(payload: NotesPayload): Promise<IDrinkDoc> {
+    const url = `${userApiClient.defaults.baseURL}/saveNotes`;
+    const response = await userApiClient.post(url, payload);
 
     return response.data as IDrinkDoc;
   }

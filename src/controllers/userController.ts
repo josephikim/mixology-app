@@ -75,13 +75,36 @@ const addDrink = async (req: Request, res: Response, next: NextFunction): Promis
   });
 };
 
+const saveNotes = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  Drink.findOneAndUpdate(
+    { _id: req.body.idDrink },
+    {
+      $set: { notes: req.body.notes }
+    },
+    {
+      new: true
+    }
+  ).exec((err, drink) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!drink) {
+      return next(new Error('Drink not found'));
+    }
+
+    res.status(200).send(drink);
+  });
+};
+
 const userController = {
   allAccess,
   userAccess,
   adminAccess,
   moderatorAccess,
   getSearchResults,
-  addDrink
+  addDrink,
+  saveNotes
 };
 
 export default userController;

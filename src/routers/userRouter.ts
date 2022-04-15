@@ -24,4 +24,6 @@ userRouter.get('/search/:query', [authJwt.verifyToken], userController.getSearch
 
 userRouter.post('/addDrink', [authJwt.verifyToken], userController.addDrink);
 
+userRouter.post('/saveNotes', [authJwt.verifyToken], userController.saveNotes);
+
 export default userRouter;

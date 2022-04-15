@@ -18,6 +18,11 @@ interface UserState {
   searchResults: ISearchResult[];
 }
 
+export interface NotesPayload {
+  idDrink: string;
+  notes: string;
+}
+
 export const initialUserState: UserState = {
   status: 'idle',
   drinks: [],
@@ -40,6 +45,12 @@ export const getSearchResults = createAsyncThunk(
     return results;
   }
 );
+
+export const saveNotes = createAsyncThunk('user/saveNotes', async (payload: NotesPayload): Promise<IDrinkDoc> => {
+  const api = new UserApi();
+  const result = await api.saveNotes(payload);
+  return result;
+});
 
 export const userSlice = createSlice({
   name: 'user',
@@ -74,6 +85,19 @@ export const userSlice = createSlice({
         state.drinks = newState;
       })
       .addCase(addDrink.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message!;
+      })
+      .addCase(saveNotes.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(saveNotes.fulfilled, (state, action) => {
+        state.drinks = state.drinks.map((drink) =>
+          drink._id === action.payload._id ? { ...drink, notes: action.payload.notes } : drink
+        );
+        state.status = 'succeeded';
+      })
+      .addCase(saveNotes.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
       });

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Card } from 'react-bootstrap';
+import { Badge, Col, Card } from 'react-bootstrap';
 
 import { addDrink } from '../../store/userSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -31,6 +31,9 @@ const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
         <Card.Body id="description">
           <Card.Title>{props.data.strDrink}</Card.Title>
           <Card.Text>{props.data.strInstructions}</Card.Text>
+        </Card.Body>
+        <Card.Body id="alcohol">
+          {props.data.strAlcoholic ? <Badge bg="secondary">{props.data.strAlcoholic}</Badge> : null}
         </Card.Body>
         <Card.Body id="actions">
           {matchesSavedDrink ? (

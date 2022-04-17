@@ -30,7 +30,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
           <Card.Text>{props.data.strInstructions}</Card.Text>
         </Card.Body>
         <Card.Body id="actions">
-          <Card.Link href="#" onClick={(e: React.MouseEvent<HTMLElement>) => handleAdd(e)}>
+          <Card.Link id={props.data.idDrink} onClick={(e: React.MouseEvent<HTMLElement>) => handleAdd(e)}>
             Add to collection
           </Card.Link>
           <Card.Text>Added</Card.Text>

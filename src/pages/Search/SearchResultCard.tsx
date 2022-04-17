@@ -2,7 +2,7 @@ import React from 'react';
 import { Col, Card } from 'react-bootstrap';
 
 import { addDrink } from '../../store/userSlice';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { ISearchResult } from '../../types';
 
 import './SearchResultCard.css';
@@ -13,6 +13,7 @@ interface SearchResultCardProps {
 
 const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
   const dispatch = useAppDispatch();
+  const drinks = useAppSelector((state) => state.user.drinks);
 
   const handleAdd = (event: React.MouseEvent<HTMLElement>): void => {
     const idDrink = event.currentTarget.id;
@@ -20,6 +21,8 @@ const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
 
     dispatch(addDrink(idDrink));
   };
+
+  const matchesSavedDrink = drinks.some((savedDrink) => savedDrink.idDrinkApi === props.data.idDrink);
 
   return (
     <Col className="SearchResultCard">
@@ -30,10 +33,13 @@ const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
           <Card.Text>{props.data.strInstructions}</Card.Text>
         </Card.Body>
         <Card.Body id="actions">
-          <Card.Link id={props.data.idDrink} onClick={(e: React.MouseEvent<HTMLElement>) => handleAdd(e)}>
-            Add to collection
-          </Card.Link>
-          <Card.Text>Added</Card.Text>
+          {matchesSavedDrink ? (
+            <Card.Text>Added</Card.Text>
+          ) : (
+            <Card.Link id={props.data.idDrink} onClick={(e: React.MouseEvent<HTMLElement>) => handleAdd(e)}>
+              Add to collection
+            </Card.Link>
+          )}
         </Card.Body>
       </Card>
     </Col>

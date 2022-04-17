@@ -2,10 +2,21 @@
   width: 300px;
   margin: 0 auto;
   margin-bottom: 3rem;
-  border: 1px solid #404040;
+  border: 1px solid #d3d3d3;
 }
 
 .SearchResultCard .card-body#description {
-  height: 200px;
+  height: 165px;
+  margin-bottom: 1rem;
   overflow: hidden
+}
+
+.SearchResultCard .card-body#actions {
+  border-top: 1px solid #d3d3d3
+}
+
+.SearchResultCard .card-body#actions .card-text,
+.SearchResultCard .card-body#actions .card-link {
+  display:block;
+  text-align: center;
 }

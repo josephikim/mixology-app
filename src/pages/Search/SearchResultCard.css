@@ -1,0 +1,11 @@
+.SearchResultCard .card {
+  width: 300px;
+  margin: 0 auto;
+  margin-bottom: 3rem;
+  border: 1px solid #404040;
+}
+
+.SearchResultCard .card-body#description {
+  height: 200px;
+  overflow: hidden
+}

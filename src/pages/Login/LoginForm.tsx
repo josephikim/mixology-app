@@ -16,8 +16,8 @@ const LoginForm: React.FC = () => {
   const { value: username, bind: bindUsername, reset: resetUsername } = useInput('');
   const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');
 
-  const handleSubmit = (evt: React.MouseEvent): void => {
-    evt.preventDefault();
+  const handleSubmit = (event: React.MouseEvent): void => {
+    event.preventDefault();
     const usernameError = validateFields.validateUsername(username);
     const passwordError = validateFields.validatePassword(password);
     const validationErrors: { type: string; msg: string }[] = [];
@@ -28,7 +28,6 @@ const LoginForm: React.FC = () => {
     if (validationErrors.length === 0) {
       // no input errors, submit the form
       if (userStatus === 'idle' || userStatus === 'failed') {
-        alert(`Loggin in with username, password, pwconfirm: ${username} ${password}`);
         dispatch(login({ username, password }));
       }
 
@@ -48,27 +47,25 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <ContentWrapper>
-      <Form className="login-form">
-        <div className="text-primary">
-          <h4>Returning User Login</h4>
-        </div>
+    <Form className="LoginForm">
+      <div className="text-primary">
+        <h4>Returning User Login</h4>
+      </div>
 
-        <Form.Group controlId="username">
-          <Form.Label className="text-primary">Username</Form.Label>
-          <Form.Control name="username" placeholder="Enter username" {...bindUsername} />
-        </Form.Group>
+      <Form.Group controlId="username">
+        <Form.Label className="text-primary">Username</Form.Label>
+        <Form.Control name="username" placeholder="Enter username" {...bindUsername} />
+      </Form.Group>
 
-        <Form.Group controlId="password">
-          <Form.Label className="text-primary">Password</Form.Label>
-          <Form.Control type="password" name="password" placeholder="Enter password" {...bindPassword} />
-        </Form.Group>
+      <Form.Group controlId="password">
+        <Form.Label className="text-primary">Password</Form.Label>
+        <Form.Control type="password" name="password" placeholder="Enter password" {...bindPassword} />
+      </Form.Group>
 
-        <Button type="submit" name="login-form-btn" variant="primary" onClick={(evt) => handleSubmit(evt)}>
-          Login
-        </Button>
-      </Form>
-    </ContentWrapper>
+      <Button type="submit" name="login-form-btn" variant="primary" onClick={(e) => handleSubmit(e)}>
+        Login
+      </Button>
+    </Form>
   );
 };
 

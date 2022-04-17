@@ -1,0 +1,7 @@
+.SearchBox input {
+  max-width: 300px;
+}
+
+.SearchBox button {
+  width: 100px;
+}

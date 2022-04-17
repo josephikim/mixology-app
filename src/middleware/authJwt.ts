@@ -1,7 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
+import { HydratedDocument } from 'mongoose';
 import jwt from 'jsonwebtoken';
+
 import db from '../db';
 import { jwtSecretKey } from '../config/authConfig';
+import { IRoleDoc } from '../db/Role';
 
 const User = db.user;
 const Role = db.role;
@@ -47,7 +50,7 @@ const isAdmin = (req: Request, res: Response, next: NextFunction): NextFunction 
         {
           _id: { $in: user.roles }
         },
-        (err, roles) => {
+        (err: any, roles: HydratedDocument<IRoleDoc>[]) => {
           if (err) {
             return next(err);
           }
@@ -77,7 +80,7 @@ const isModerator = (req: Request, res: Response, next: NextFunction): NextFunct
         {
           _id: { $in: user.roles }
         },
-        (err, roles) => {
+        (err: any, roles: HydratedDocument<IRoleDoc>[]) => {
           if (err) {
             return next(err);
           }

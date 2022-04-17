@@ -13,27 +13,24 @@ export interface IUserDoc extends Document {
   validatePassword(candidatePassword: string): boolean;
 }
 
-const userSchema = new Schema(
-  {
-    username: {
-      type: String,
-      required: [true, 'Enter a username.'],
-      unique: [true, 'That username is taken.']
-    },
-    password: {
-      type: String,
-      required: [true, 'Enter a password.'],
-      minLength: [4, 'Password should be at least four characters']
-    },
-    roles: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Role'
-      }
-    ]
+const userSchema = new Schema({
+  username: {
+    type: String,
+    required: [true, 'Enter a username.'],
+    unique: [true, 'That username is taken.']
   },
-  { emitIndexErrors: true }
-);
+  password: {
+    type: String,
+    required: [true, 'Enter a password.'],
+    minLength: [4, 'Password should be at least four characters']
+  },
+  roles: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Role'
+    }
+  ]
+});
 
 // preserving isNew state for 'post' middleware
 userSchema.pre('save', function (next) {

@@ -5,7 +5,7 @@ import ContentWrapper from '../../layout/ContentWrapper';
 import RegistrationForm from './RegistrationForm';
 
 const Registration: FC = () => (
-  <div className="registration-view">
+  <div className="Registration">
     <Container>
       <Row>
         <Col md={6}>
@@ -21,7 +21,9 @@ const Registration: FC = () => (
         </Col>
 
         <Col md={6}>
-          <RegistrationForm />
+          <ContentWrapper>
+            <RegistrationForm />
+          </ContentWrapper>
         </Col>
       </Row>
     </Container>

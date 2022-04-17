@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Input } from 'antd';
+import { Button, Form } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { saveNotes, NotesPayload } from '../store/userSlice';
@@ -10,16 +10,14 @@ interface DrinkNotesProps {
   drinkId: string;
 }
 
-const { TextArea } = Input;
-
 const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
   const dispatch = useAppDispatch();
   const drink = useAppSelector((state) => state.user.drinks.filter((drink) => drink._id === props.drinkId))[0];
 
   const [notesInput, setNotesInput] = useState(drink.notes);
 
-  const handleSubmitNotes = (evt: React.MouseEvent<HTMLElement>): void => {
-    evt.preventDefault();
+  const handleSubmitNotes = (event: React.MouseEvent<HTMLElement>): void => {
+    event.preventDefault();
 
     const payload = {
       idDrink: drink._id,
@@ -35,12 +33,20 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
   };
 
   return (
-    <Input.Group className="DrinkNotes">
-      <TextArea rows={6} placeholder="enter text" value={notesInput} onChange={(e) => setNotesInput(e.target.value)} />
-      <Button type="primary" id={drink._id} onClick={(e) => handleSubmitNotes(e)}>
+    <Form className="DrinkNotes">
+      <Form.Group controlId="formNotes">
+        <Form.Control
+          as="textarea"
+          rows={5}
+          placeholder="enter text"
+          value={notesInput}
+          onChange={(e) => setNotesInput(e.target.value)}
+        />
+      </Form.Group>
+      <Button variant="primary" id={drink._id} onClick={(e) => handleSubmitNotes(e)}>
         Submit
       </Button>
-    </Input.Group>
+    </Form>
   );
 };
 

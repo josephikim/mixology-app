@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, List } from 'antd';
+import { Row, ListGroup } from 'react-bootstrap';
 
 import { IDrinkDoc } from '../db/Drink';
 
@@ -8,14 +8,14 @@ interface DrinkRecipeProps {
   data: IDrinkDoc;
 }
 
-interface RecipeData {
+interface RecipeEntry {
   key: string;
   entry: string;
 }
 
 const buildRecipe = (drink: IDrinkDoc) => {
   const drinkClone = JSON.parse(JSON.stringify(drink));
-  const data: RecipeData[] = [];
+  const data: RecipeEntry[] = [];
 
   for (const prop in drinkClone) {
     if (Object.prototype.hasOwnProperty.call(drinkClone, prop)) {
@@ -26,7 +26,7 @@ const buildRecipe = (drink: IDrinkDoc) => {
 
         const key = matches[0];
         const measureProp = `strMeasure${key}`;
-        const result = `${drinkClone[measureProp]} ${drinkClone[prop]}`;
+        const result = `\u2022 ${drinkClone[measureProp] ? drinkClone[measureProp] : ''} ${drinkClone[prop]}`;
 
         data.push({
           key: key,
@@ -45,7 +45,11 @@ const DrinkRecipe: React.FC<DrinkRecipeProps> = (props) => {
     <div className="DrinkRecipe">
       <h6>Ingredients</h6>
       <Row>
-        <List dataSource={recipeData} rowKey="key" renderItem={(item) => <List.Item>{item.entry}</List.Item>} />
+        <ListGroup>
+          {recipeData.map((item) => {
+            return <ListGroup.Item key={item.key}>{item.entry}</ListGroup.Item>;
+          })}
+        </ListGroup>
       </Row>
 
       <h6>Instructions</h6>

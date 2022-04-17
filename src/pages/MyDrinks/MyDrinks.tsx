@@ -1,107 +1,74 @@
 import React from 'react';
-import { Row, Col, Collapse, Tabs, Image } from 'antd';
+import { Accordion, Container, Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
 
 import { useAppSelector } from '../../hooks';
-
 import ContentWrapper from '../../layout/ContentWrapper';
+import DrinkInfo from '../../components/DrinkInfo';
 import DrinkRecipe from '../../components/DrinkRecipe';
-import DrinkTags from '../../components/DrinkTags';
 import DrinkNotes from '../../components/DrinkNotes';
-
-import './MyDrinks.css';
-
-const { Panel } = Collapse;
-const { TabPane } = Tabs;
 
 const MyDrinks: React.FC = () => {
   const drinks = useAppSelector((state) => state.user.drinks);
 
   return (
-    <ContentWrapper>
-      {drinks.length > 0 ? (
-        drinks.map((drink, index) =>
-          drink && index === undefined ? (
-            <p>Data missing!</p>
+    <Container>
+      <ContentWrapper>
+        <Accordion defaultActiveKey={drinks[0]._id} alwaysOpen>
+          {drinks.length > 0 ? (
+            drinks.map((drink, index) =>
+              drink && index === undefined ? null : (
+                <Accordion.Item eventKey={drink._id} key={drink._id}>
+                  <Accordion.Header>{drink.strDrink}</Accordion.Header>
+                  <Accordion.Body>
+                    <Tabs defaultActiveKey="info">
+                      <Tab eventKey="info" title="Info">
+                        <Row>
+                          <Col md={6}>
+                            <ContentWrapper>
+                              <DrinkInfo data={drink} />
+                            </ContentWrapper>
+                          </Col>
+                          <Col md={6}>
+                            <ContentWrapper>
+                              <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
+                            </ContentWrapper>
+                          </Col>
+                        </Row>
+                      </Tab>
+                      <Tab eventKey="recipe" title="Recipe">
+                        <Row>
+                          <Col md={6}>
+                            <ContentWrapper>
+                              <DrinkRecipe data={drink} />
+                            </ContentWrapper>
+                          </Col>
+                          <Col md={6}>
+                            <ContentWrapper>
+                              <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
+                            </ContentWrapper>
+                          </Col>
+                        </Row>
+                      </Tab>
+                      <Tab eventKey="notes" title="Notes">
+                        <Row>
+                          <Col md={8}>
+                            <ContentWrapper>
+                              <DrinkNotes drinkId={drink._id} />
+                            </ContentWrapper>
+                          </Col>
+                        </Row>
+                      </Tab>
+                    </Tabs>
+                  </Accordion.Body>
+                </Accordion.Item>
+              )
+            )
           ) : (
-            <Collapse className="MyDrinks" defaultActiveKey={drinks[0]._id} key={drink._id}>
-              <Panel header={drink.strDrink} key={drink._id}>
-                <Tabs defaultActiveKey="1">
-                  <TabPane tab="Info" key="1">
-                    <Row className="infoWrapper">
-                      <Col span={12}>
-                        <Row>
-                          <Col span={8}>
-                            <strong>Name:</strong>
-                          </Col>
-                          <Col span={16}>{drink.strDrink}</Col>
-                        </Row>
-
-                        <Row>
-                          <Col span={8}>
-                            <strong>Category:</strong>
-                          </Col>
-                          <Col span={16}>{drink.strAlcoholic}</Col>
-                        </Row>
-
-                        <Row>
-                          <Col span={8}>
-                            <strong>Glass:</strong>
-                          </Col>
-                          <Col span={16}>{drink.strGlass}</Col>
-                        </Row>
-
-                        <Row>
-                          <Col span={8}>
-                            <strong>Tags:</strong>
-                          </Col>
-                          <Col span={16}>
-                            <DrinkTags tags={drink.strTags as string[]} />
-                          </Col>
-                        </Row>
-                      </Col>
-                      <Col span={12}>
-                        <Image
-                          width={250}
-                          height={250}
-                          src={drink.strDrinkThumb}
-                          fallback="../../assets/missingimage.png"
-                        />
-                      </Col>
-                    </Row>
-                  </TabPane>
-
-                  <TabPane tab="Recipe" key="2">
-                    <Row>
-                      <Col span={12}>
-                        <DrinkRecipe data={drink} />
-                      </Col>
-                      <Col span={12}>
-                        <Image
-                          width={250}
-                          height={250}
-                          src={drink.strDrinkThumb}
-                          fallback="../../assets/missingimage.png"
-                        />
-                      </Col>
-                    </Row>
-                  </TabPane>
-
-                  <TabPane tab="Notes" key="3">
-                    <Row>
-                      <Col span={12}>
-                        <DrinkNotes drinkId={drink._id} />
-                      </Col>
-                    </Row>
-                  </TabPane>
-                </Tabs>
-              </Panel>
-            </Collapse>
-          )
-        )
-      ) : (
-        <div>Data Loading...</div>
-      )}
-    </ContentWrapper>
+            <div>Data Loading...</div>
+          )}
+        </Accordion>
+      </ContentWrapper>
+    </Container>
   );
 };
 

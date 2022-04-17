@@ -1,15 +1,15 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col } from 'react-bootstrap';
 
-const style = { marginRight: '15%', marginLeft: '15%', marginTop: '30px', marginBottom: '30px' };
+const style = { marginRight: '10%', marginLeft: '10%', marginTop: '2rem', marginBottom: '2rem' };
 
 type ContentWrapperProps = {
   children?: React.ReactNode;
 };
 
 const ContentWrapper: React.FC = ({ children }: ContentWrapperProps) => (
-  <Row gutter={16}>
-    <Col span={24}>
+  <Row className="ContentWrapper">
+    <Col>
       <div style={style}>{children}</div>
     </Col>
   </Row>

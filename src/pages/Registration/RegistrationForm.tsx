@@ -5,7 +5,6 @@ import { useAppSelector, useAppDispatch } from '../../hooks';
 import { register } from '../../store/authSlice';
 import { useInput } from '../../hooks/useInput';
 import { validateFields } from '../../validation';
-import ContentWrapper from '../../layout/ContentWrapper';
 
 import './RegistrationForm.css';
 
@@ -17,8 +16,8 @@ const RegistrationForm: React.FC = () => {
   const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');
   const { value: passwordConfirm, bind: bindPasswordConfirm, reset: resetPasswordConfirm } = useInput('');
 
-  const handleSubmit = (evt: React.MouseEvent): void => {
-    evt.preventDefault();
+  const handleSubmit = (event: React.MouseEvent): void => {
+    event.preventDefault();
     const usernameError = validateFields.validateUsername(username);
     const passwordError = validateFields.validatePassword(password);
     const passwordConfirmError = validateFields.validatePasswordConfirm(passwordConfirm, password);
@@ -51,41 +50,33 @@ const RegistrationForm: React.FC = () => {
   };
 
   return (
-    <ContentWrapper>
-      <Form className="registration-form">
-        <div className="text-primary">
-          <h4>User Registration</h4>
-        </div>
+    <Form className="RegistrationForm">
+      <div className="text-primary">
+        <h4>User Registration</h4>
+      </div>
 
-        <Form.Group controlId="username">
-          <Form.Label className="text-primary">Username</Form.Label>
-          <Form.Control name="username" placeholder="Enter username" {...bindUsername} />
-        </Form.Group>
+      <Form.Group controlId="username">
+        <Form.Label className="text-primary">Username</Form.Label>
+        <Form.Control name="username" placeholder="Enter username" {...bindUsername} />
+      </Form.Group>
 
-        <Form.Group controlId="password">
-          <Form.Label className="text-primary">Password</Form.Label>
-          <Form.Control type="password" name="password" placeholder="Enter password" {...bindPassword} />
-        </Form.Group>
+      <Form.Group controlId="password">
+        <Form.Label className="text-primary">Password</Form.Label>
+        <Form.Control type="password" name="password" placeholder="Enter password" {...bindPassword} />
+      </Form.Group>
 
-        <Form.Group controlId="passwordConfirm">
-          <Form.Label className="text-primary">Confirm Password</Form.Label>
-          <Form.Control
-            type="password"
-            name="passwordConfirm"
-            placeholder="Confirm password"
-            {...bindPasswordConfirm}
-          />
-        </Form.Group>
+      <Form.Group controlId="passwordConfirm">
+        <Form.Label className="text-primary">Confirm Password</Form.Label>
+        <Form.Control type="password" name="passwordConfirm" placeholder="Confirm password" {...bindPasswordConfirm} />
+      </Form.Group>
 
-        <Button type="submit" name="register-form-btn" variant="primary" onClick={(evt) => handleSubmit(evt)}>
-          Register
-        </Button>
-      </Form>
-
+      <Button type="submit" name="registration-form-btn" variant="primary" onClick={(e) => handleSubmit(e)}>
+        Register
+      </Button>
       <span>
         Already registered? Please <a href="/login">login</a>.
       </span>
-    </ContentWrapper>
+    </Form>
   );
 };
 

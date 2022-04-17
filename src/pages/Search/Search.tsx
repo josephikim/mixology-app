@@ -1,24 +1,40 @@
 import React from 'react';
-import { Row, Col } from 'antd';
+import { Container, Row, Col } from 'react-bootstrap';
 
+import { useAppSelector } from '../../hooks';
 import ContentWrapper from '../../layout/ContentWrapper';
 import SearchBox from './SearchBox';
-import SearchResults from './SearchResults';
+import SearchResultCard from './SearchResultCard';
 
 const Search: React.FC = () => {
+  const searchResults = useAppSelector((state) => state.user.searchResults);
+  const style = { marginBottom: '.7rem' };
+
   return (
-    <ContentWrapper>
-      <Row>
-        <Col span={24}>
-          <SearchBox />
-        </Col>
-      </Row>
-      <Row>
-        <Col span={24}>
-          <SearchResults />
-        </Col>
-      </Row>
-    </ContentWrapper>
+    <div className="Search">
+      <Container>
+        <Row>
+          <Col>
+            <ContentWrapper>
+              <Row>
+                <span style={style}>Search for a drink or cocktail (e.g. "margarita")</span>
+              </Row>
+              <SearchBox />
+            </ContentWrapper>
+          </Col>
+        </Row>
+
+        <ContentWrapper>
+          <Row className="row-cols-3">
+            {searchResults
+              ? searchResults.map((result) => {
+                  return <SearchResultCard key={result.idDrink} data={result} />;
+                })
+              : null}
+          </Row>
+        </ContentWrapper>
+      </Container>
+    </div>
   );
 };
 

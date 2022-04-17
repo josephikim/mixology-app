@@ -29,7 +29,7 @@ const register = (req: Request, res: Response, next: NextFunction): NextFunction
         {
           name: { $in: req.body.roles }
         },
-        (err, roles: HydratedDocument<IRoleDoc>[]) => {
+        (err: any, roles: HydratedDocument<IRoleDoc>[]) => {
           if (err) {
             return next(err);
           }
@@ -109,7 +109,7 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
         {
           user: user._id
         },
-        (err, drinks: HydratedDocument<IDrinkDoc>[]) => {
+        (err: any, drinks: HydratedDocument<IDrinkDoc>[]) => {
           if (err) {
             return next(err);
           }

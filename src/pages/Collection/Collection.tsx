@@ -7,7 +7,7 @@ import DrinkInfo from '../../components/DrinkInfo';
 import DrinkRecipe from '../../components/DrinkRecipe';
 import DrinkNotes from '../../components/DrinkNotes';
 
-const MyDrinks: React.FC = () => {
+const Collection: React.FC = () => {
   const drinks = useAppSelector((state) => state.user.drinks);
 
   return (
@@ -74,4 +74,4 @@ const MyDrinks: React.FC = () => {
   );
 };
 
-export default MyDrinks;
+export default Collection;

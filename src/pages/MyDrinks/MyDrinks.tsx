@@ -13,9 +13,9 @@ const MyDrinks: React.FC = () => {
   return (
     <Container>
       <ContentWrapper>
-        <Accordion defaultActiveKey={drinks[0]._id} alwaysOpen>
-          {drinks.length > 0 ? (
-            drinks.map((drink, index) =>
+        {drinks.length > 0 ? (
+          <Accordion defaultActiveKey={drinks[0]._id} alwaysOpen>
+            {drinks.map((drink, index) =>
               drink && index === undefined ? null : (
                 <Accordion.Item eventKey={drink._id} key={drink._id}>
                   <Accordion.Header>{drink.strDrink}</Accordion.Header>
@@ -62,11 +62,13 @@ const MyDrinks: React.FC = () => {
                   </Accordion.Body>
                 </Accordion.Item>
               )
-            )
-          ) : (
-            <div>Data Loading...</div>
-          )}
-        </Accordion>
+            )}
+          </Accordion>
+        ) : (
+          <span>
+            Add drinks to your collection from the <a href="/search">Search</a> page.
+          </span>
+        )}
       </ContentWrapper>
     </Container>
   );

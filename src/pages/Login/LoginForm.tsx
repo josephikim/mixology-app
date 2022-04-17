@@ -5,7 +5,6 @@ import { login } from '../../store/authSlice';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { useInput } from '../../hooks/useInput';
 import { validateFields } from '../../validation';
-import ContentWrapper from '../../layout/ContentWrapper';
 
 import './LoginForm.css';
 

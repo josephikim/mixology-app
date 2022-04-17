@@ -10,16 +10,16 @@ import './SearchBox.css';
 const SearchBox: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const { value: searchInput, bind: bindSearch, reset: resetSearch } = useInput('');
+  const { value: searchInput, bind: bindSearch } = useInput('');
 
-  const handleClick = (): void => {
+  const handleSearch = (): void => {
     dispatch(getSearchResults(searchInput));
   };
 
   return (
     <InputGroup className="SearchBox">
-      <FormControl {...bindSearch} />
-      <Button variant="primary" onClick={handleClick}>
+      <FormControl {...bindSearch} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} />
+      <Button variant="primary" onClick={handleSearch}>
         Search
       </Button>
     </InputGroup>

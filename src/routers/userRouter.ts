@@ -26,4 +26,6 @@ userRouter.post('/addDrink', [authJwt.verifyToken], userController.addDrink);
 
 userRouter.post('/saveNotes', [authJwt.verifyToken], userController.saveNotes);
 
+userRouter.post('/deleteDrink/:drinkId', [authJwt.verifyToken], userController.deleteDrink);
+
 export default userRouter;

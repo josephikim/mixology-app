@@ -6,6 +6,7 @@ import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkInfo from '../../components/DrinkInfo';
 import DrinkRecipe from '../../components/DrinkRecipe';
 import DrinkNotes from '../../components/DrinkNotes';
+import DeleteDrinkButton from '../../components/DeleteDrinkButton';
 
 const Collection: React.FC = () => {
   const drinks = useAppSelector((state) => state.user.drinks);
@@ -54,6 +55,15 @@ const Collection: React.FC = () => {
                           <Col md={8}>
                             <ContentWrapper>
                               <DrinkNotes drinkId={drink._id} />
+                            </ContentWrapper>
+                          </Col>
+                        </Row>
+                      </Tab>
+                      <Tab eventKey="options" title="Options">
+                        <Row>
+                          <Col md={6}>
+                            <ContentWrapper>
+                              <DeleteDrinkButton drinkId={drink._id} drinkName={drink.strDrink as string} />
                             </ContentWrapper>
                           </Col>
                         </Row>

@@ -108,6 +108,13 @@ export class UserApi {
     return response.data as IDrinkDoc;
   }
 
+  async deleteDrink(drinkId: string): Promise<IDrinkDoc> {
+    const url = `${userApiClient.defaults.baseURL}/deleteDrink/${drinkId}`;
+    const response = await userApiClient.post(url);
+
+    return response.data as IDrinkDoc;
+  }
+
   async getSearchResults(query: string): Promise<ISearchResult[]> {
     const url = `${userApiClient.defaults.baseURL}/search/${query}`;
     const response = await userApiClient.get(url);

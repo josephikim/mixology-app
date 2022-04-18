@@ -52,6 +52,13 @@ export const saveNotes = createAsyncThunk('user/saveNotes', async (payload: Note
   return result;
 });
 
+export const deleteDrink = createAsyncThunk('user/deleteDrink', async (idDrink: string): Promise<IDrinkDoc> => {
+  const api = new UserApi();
+  const result = await api.deleteDrink(idDrink);
+
+  return result;
+});
+
 export const userSlice = createSlice({
   name: 'user',
   initialState: initialUserState,
@@ -98,6 +105,17 @@ export const userSlice = createSlice({
         state.status = 'succeeded';
       })
       .addCase(saveNotes.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message!;
+      })
+      .addCase(deleteDrink.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(deleteDrink.fulfilled, (state, action) => {
+        state.drinks = state.drinks.filter((drink) => drink._id !== action.payload._id);
+        state.status = 'succeeded';
+      })
+      .addCase(deleteDrink.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
       });

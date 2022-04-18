@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
 
 import db from '../db';
+import { IDrinkDoc } from '../db/Drink';
 
 const Drink = db.drink;
 
@@ -97,6 +98,18 @@ const saveNotes = async (req: Request, res: Response, next: NextFunction): Promi
   });
 };
 
+const deleteDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  const id = req.params.drinkId;
+
+  Drink.findOneAndDelete({ _id: id }, function (err: any, doc: IDrinkDoc) {
+    if (err) {
+      return next(err);
+    } else {
+      res.status(200).send(doc);
+    }
+  });
+};
+
 const userController = {
   allAccess,
   userAccess,
@@ -104,7 +117,8 @@ const userController = {
   moderatorAccess,
   getSearchResults,
   addDrink,
-  saveNotes
+  saveNotes,
+  deleteDrink
 };
 
 export default userController;

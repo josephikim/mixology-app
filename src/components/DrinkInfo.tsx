@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Badge } from 'react-bootstrap';
 
 import { IDrinkDoc } from '../db/Drink';
 import DrinkTags from './DrinkTags';
@@ -24,7 +24,7 @@ const DrinkInfo: React.FC<DrinkInfoProps> = (props) => {
         <Col md={4}>
           <strong>Category:</strong>
         </Col>
-        <Col md={8}>{props.data.strAlcoholic}</Col>
+        <Col md={8}>{props.data.strAlcoholic ? <Badge bg="secondary">{props.data.strAlcoholic}</Badge> : null}</Col>
       </Row>
 
       <Row>

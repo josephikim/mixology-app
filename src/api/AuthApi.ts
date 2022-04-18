@@ -35,7 +35,7 @@ export class AuthApi {
       statusCode: response.status,
       message: response.statusText,
       data: [response.data.loginData]
-    };
+    } as TokenResult;
 
     const result = {
       token,

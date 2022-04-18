@@ -73,9 +73,9 @@ const RegistrationForm: React.FC = () => {
       <Button type="submit" name="registration-form-btn" variant="primary" onClick={(e) => handleSubmit(e)}>
         Register
       </Button>
-      <span>
+      <div>
         Already registered? Please <a href="/login">login</a>.
-      </span>
+      </div>
     </Form>
   );
 };

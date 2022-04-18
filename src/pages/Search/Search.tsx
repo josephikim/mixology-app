@@ -26,7 +26,7 @@ const Search: React.FC = () => {
 
         <ContentWrapper>
           <Row className="row-cols-3">
-            {searchResults
+            {searchResults.length > 0
               ? searchResults.map((result) => {
                   return <SearchResultCard key={result.idDrink} data={result} />;
                 })

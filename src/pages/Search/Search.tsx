@@ -17,7 +17,7 @@ const Search: React.FC = () => {
           <Col>
             <ContentWrapper>
               <Row>
-                <span style={style}>Search for a drink or cocktail (e.g. "margarita")</span>
+                <strong style={style}>Search for a drink or cocktail (e.g. "margarita")</strong>
               </Row>
               <SearchBox />
             </ContentWrapper>

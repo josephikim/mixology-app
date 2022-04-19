@@ -1,16 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
+
 import AuthRoute from './components/AuthRoute';
 import Header from './components/Header';
 import Collection from './pages/Collection/Collection';
 import Search from './pages/Search/Search';
 import Login from './pages/Login/Login';
 import Registration from './pages/Registration/Registration';
-import 'font-awesome/css/font-awesome.min.css';
+
+import './styles/App.css';
 
 const App: React.FC = () => {
   return (
-    <div className="h-100">
+    <div className="App">
       <Header />
       <Router>
         <Switch>

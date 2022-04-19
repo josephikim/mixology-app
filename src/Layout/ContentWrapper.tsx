@@ -3,9 +3,9 @@ import { Row, Col } from 'react-bootstrap';
 
 const style = { marginRight: '10%', marginLeft: '10%', marginTop: '2rem', marginBottom: '2rem' };
 
-type ContentWrapperProps = {
+interface ContentWrapperProps {
   children?: React.ReactNode;
-};
+}
 
 const ContentWrapper: React.FC = ({ children }: ContentWrapperProps) => (
   <Row className="ContentWrapper">

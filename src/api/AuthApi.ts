@@ -10,19 +10,24 @@ const authApiClient = axios.create({
 });
 
 export class AuthApi {
-  async registerUser(registration: IRegistration): Promise<TokenResult> {
+  async registerUser(registration: IRegistration): Promise<ILoginResult> {
     const body = { username: registration.username, password: registration.password };
     const url = `${authApiClient.defaults.baseURL}/register`;
 
     const response = await authApiClient.post(url, body);
 
-    const tokenResult = {
+    const token = {
       statusCode: response.status,
       message: response.statusText,
-      data: [response.data]
-    };
+      data: [response.data.loginData]
+    } as TokenResult;
 
-    return tokenResult as TokenResult;
+    const result = {
+      token,
+      drinks: response.data.drinkData
+    } as ILoginResult;
+
+    return result;
   }
 
   async loginUser(credentials: ILogin): Promise<ILoginResult> {
@@ -40,8 +45,8 @@ export class AuthApi {
     const result = {
       token,
       drinks: response.data.drinkData
-    };
+    } as ILoginResult;
 
-    return result as ILoginResult;
+    return result;
   }
 }

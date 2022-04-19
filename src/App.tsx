@@ -16,10 +16,10 @@ const App: React.FC = () => {
       <Header />
       <Router>
         <Switch>
-          <AuthRoute component={Login} path="/login" type="guest" />
-          <AuthRoute component={Collection} path="/collection" type="private" />
-          <AuthRoute component={Search} path="/search" type="private" />
-          <AuthRoute component={Registration} path="/" type="guest" />
+          <AuthRoute component={Login} path="/login" authType="guest" />
+          <AuthRoute component={Collection} path="/collection" authType="private" />
+          <AuthRoute component={Search} path="/search" authType="private" />
+          <AuthRoute component={Registration} path="/" authType="guest" />
         </Switch>
       </Router>
     </div>

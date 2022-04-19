@@ -30,7 +30,8 @@ export const register = createAsyncThunk(
   async ({ username, password }: IRegistration): Promise<TokenResult> => {
     const api = new AuthApi();
     const res = await api.registerUser({ username, password });
-    return res;
+    const { token } = res;
+    return token;
   }
 );
 
@@ -64,6 +65,7 @@ export const authSlice = createSlice({
         state.status = 'succeeded';
         state.userId = tokenData.userId;
         state.accessToken = tokenData.accessToken;
+        state.refreshToken = tokenData.refreshToken;
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';

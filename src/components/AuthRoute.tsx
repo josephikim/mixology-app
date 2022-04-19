@@ -3,18 +3,18 @@ import { Redirect, Route, RouteProps } from 'react-router-dom';
 
 import { useAppSelector } from '../hooks';
 
-export type AuthRouteProps = {
+interface AuthRouteProps {
   component: React.ElementType;
   path: RouteProps['path'];
-  type: string;
-};
+  authType: string;
+}
 
 const AuthRoute: React.FC<AuthRouteProps> = ({ component: Component, ...routeProps }) => {
   const authToken = useAppSelector((state) => state.auth.accessToken);
-  const { type } = routeProps;
+  const { authType } = routeProps;
 
-  if (type === 'guest' && authToken) return <Redirect to="/collection" />;
-  else if (type === 'private' && !authToken) return <Redirect to="/login" />;
+  if (authType === 'guest' && authToken) return <Redirect to="/collection" />;
+  else if (authType === 'private' && !authToken) return <Redirect to="/login" />;
 
   return (
     <Route

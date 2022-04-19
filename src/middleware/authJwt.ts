@@ -11,9 +11,9 @@ const Role = db.role;
 
 const { TokenExpiredError } = jwt;
 
-interface JwtPayload {
+type JwtPayload = {
   id: string;
-}
+};
 
 const catchError = (err: any, res: Response): Response => {
   if (err instanceof TokenExpiredError) {

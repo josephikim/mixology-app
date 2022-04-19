@@ -8,7 +8,7 @@ export interface IRefreshTokenDoc extends Document {
   expiryDate: Date;
 }
 
-export interface IRefreshTokenModel extends Model<IRefreshTokenDoc> {
+interface IRefreshTokenModel extends Model<IRefreshTokenDoc> {
   createToken(user: Types.ObjectId): string;
   verifyExpiration(token: IRefreshTokenDoc): boolean;
 }

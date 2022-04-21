@@ -2,7 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 
 import { UserApi } from '../api';
 import { IDrinkDoc } from '../db/Drink';
-import { ISearchResult } from '../types';
+import { IGetVideosResult, ISearchResult } from '../types';
 
 enum Status {
   idle = 'IDLE',
@@ -55,6 +55,13 @@ export const saveNotes = createAsyncThunk('user/saveNotes', async (payload: Note
 export const deleteDrink = createAsyncThunk('user/deleteDrink', async (idDrink: string): Promise<IDrinkDoc> => {
   const api = new UserApi();
   const result = await api.deleteDrink(idDrink);
+
+  return result;
+});
+
+export const getVideos = createAsyncThunk('user/getVideos', async (drinkId: string): Promise<IGetVideosResult> => {
+  const api = new UserApi();
+  const result = await api.getVideos(drinkId);
 
   return result;
 });
@@ -116,6 +123,19 @@ export const userSlice = createSlice({
         state.status = 'succeeded';
       })
       .addCase(deleteDrink.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message!;
+      })
+      .addCase(getVideos.pending, (state, action) => {
+        state.status = 'loading';
+      })
+      .addCase(getVideos.fulfilled, (state, action) => {
+        state.drinks = state.drinks.map((drink) =>
+          drink._id === action.payload.drinkId ? { ...drink, youtubeIds: action.payload.youtubeIds } : drink
+        );
+        state.status = 'succeeded';
+      })
+      .addCase(getVideos.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message!;
       });

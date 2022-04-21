@@ -7,7 +7,7 @@ import { StorageHelper } from '../utils/StorageHelper';
 import { accessTokenUpdated } from '../store/authSlice';
 import { NotesPayload } from '../store/userSlice';
 import { logoutAction } from '../store/index';
-import { ISearchResult, RefreshTokenResult } from '../types';
+import { RefreshTokenResult, ISearchResult, IGetVideosResult } from '../types';
 import { IDrinkDoc } from '../db/Drink';
 
 const userApiClient = axios.create({
@@ -113,6 +113,13 @@ export class UserApi {
     const response = await userApiClient.post(url);
 
     return response.data as IDrinkDoc;
+  }
+
+  async getVideos(drinkId: string): Promise<IGetVideosResult> {
+    const url = `${userApiClient.defaults.baseURL}/getVideos/${drinkId}`;
+    const response = await userApiClient.get(url);
+
+    return response.data as IGetVideosResult;
   }
 
   async getSearchResults(query: string): Promise<ISearchResult[]> {

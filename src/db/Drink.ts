@@ -33,6 +33,7 @@ export interface IDrinkDoc extends Document {
   strMeasure8?: string;
   strMeasure9?: string;
   strImageSource?: string;
+  youtubeIds?: string[];
 }
 
 const drinkSchema = new Schema({
@@ -128,6 +129,9 @@ const drinkSchema = new Schema({
   },
   strImageSource: {
     type: String
+  },
+  youtubeIds: {
+    type: [String]
   }
 });
 

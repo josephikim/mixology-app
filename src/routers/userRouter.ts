@@ -28,4 +28,6 @@ userRouter.post('/saveNotes', [authJwt.verifyToken], userController.saveNotes);
 
 userRouter.post('/deleteDrink/:drinkId', [authJwt.verifyToken], userController.deleteDrink);
 
+userRouter.get('/getVideos/:drinkId', [authJwt.verifyToken], userController.getVideos);
+
 export default userRouter;

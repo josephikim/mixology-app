@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import db from '../db';
 import { IDrinkDoc } from '../db/Drink';
+import { IGetVideosResult } from '../types';
 
 const Drink = db.drink;
 
@@ -110,6 +111,56 @@ const deleteDrink = async (req: Request, res: Response, next: NextFunction): Pro
   });
 };
 
+const getVideos = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  try {
+    const drink = (await Drink.findById(req.params.drinkId)) as IDrinkDoc;
+
+    if (drink) {
+      const url = `${process.env.YOUTUBE_API_URL}/search?key=${
+        process.env.YOUTUBE_API_KEY
+      }&type=video&part=snippet&q=${encodeURIComponent(drink.strDrink as string).replace(
+        /%20/g,
+        '+'
+      )}+recipe&maxResults=6`;
+
+      // Call Youtube API with search query
+      const response = await axios.get(url);
+
+      if (!response.data.items || response.data.items.length < 1) {
+        res.status(204).send({ message: 'No results available.' });
+      }
+
+      // Create array of video IDs from response
+      const youtubeIds: string[] = [];
+
+      response.data.items.map((item: any) => {
+        const videoId = item.id.videoId;
+        youtubeIds.push(videoId);
+      });
+
+      // Save youtubeIds on drink doc, then send IGetVideosResult response
+      drink.youtubeIds = youtubeIds;
+
+      drink.save((err, doc) => {
+        if (err) {
+          return next(err);
+        }
+
+        const result = {
+          drinkId: doc._id,
+          youtubeIds: doc.youtubeIds
+        } as IGetVideosResult;
+
+        res.status(200).send(result);
+      });
+    } else {
+      res.status(500).send({ message: 'Entry not found.' });
+    }
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const userController = {
   allAccess,
   userAccess,
@@ -118,7 +169,8 @@ const userController = {
   getSearchResults,
   addDrink,
   saveNotes,
-  deleteDrink
+  deleteDrink,
+  getVideos
 };
 
 export default userController;

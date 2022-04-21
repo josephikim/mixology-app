@@ -48,7 +48,7 @@ export interface ILoginResult {
 export interface ISearchResult {
   idDrink: string;
   strDrink?: string;
-  strTags?: [string];
+  strTags?: string[];
   strIBA?: string;
   strAlcoholic?: string;
   strGlass?: string;
@@ -73,4 +73,9 @@ export interface ISearchResult {
   strMeasure8?: string;
   strMeasure9?: string;
   strImageSource?: string;
+}
+
+export interface IGetVideosResult {
+  drinkId: string;
+  youtubeIds: string[];
 }

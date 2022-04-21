@@ -16,7 +16,7 @@ const Youtube: React.FC<YoutubeEmbedProps> = (props) => {
           return <YoutubeEmbed key={index} embedId={id} />;
         })
       ) : (
-        <span>No videos found</span>
+        <span>Loading videos...</span>
       )}
     </div>
   );

@@ -14,13 +14,9 @@ const Collection: React.FC = () => {
   const dispatch = useAppDispatch();
   const drinks = useAppSelector((state) => state.user.drinks);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
-    const parent = event.currentTarget.parentElement as HTMLButtonElement;
-    const isValidParent = parent.classList.contains('accordion-header');
+  const handleTabSelect = (key: string, drinkId: string) => {
+    if (key !== 'videos') return;
 
-    if (!isValidParent) return;
-
-    const drinkId = parent.getAttribute('data-id') as string;
     const youtubeIds = drinks.filter((drink) => drink._id === drinkId)[0].youtubeIds;
 
     // If video IDs found in saved drink, do nothing
@@ -38,14 +34,12 @@ const Collection: React.FC = () => {
               {drinks.map((drink, index) =>
                 drink && index === undefined ? null : (
                   <Accordion.Item eventKey={drink._id} key={drink._id}>
-                    <Accordion.Header
-                      data-id={drink._id}
-                      onClick={(e: React.MouseEvent<HTMLElement>) => handleClick(e)}
-                    >
-                      {drink.strDrink}
-                    </Accordion.Header>
+                    <Accordion.Header>{drink.strDrink}</Accordion.Header>
                     <Accordion.Body>
-                      <Tabs defaultActiveKey="info">
+                      <Tabs
+                        defaultActiveKey="info"
+                        onSelect={(key) => handleTabSelect(key as string, drink._id as string)}
+                      >
                         <Tab eventKey="info" title="Info">
                           <Row>
                             <Col md={6}>

@@ -43,7 +43,7 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
 };
 
 const addDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  Drink.findOne({ idDrinkApi: req.body.idDrinkApi }).exec((err, drink) => {
+  Drink.findOne({ user: req.body.user, idDrinkApi: req.body.idDrinkApi }).exec((err, drink) => {
     if (err) {
       return next(err);
     }

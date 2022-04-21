@@ -12,9 +12,9 @@ const RegistrationForm: React.FC = () => {
   const dispatch = useAppDispatch();
   const authStatus = useAppSelector((state) => state.auth.status);
 
-  const { value: username, bind: bindUsername, reset: resetUsername } = useInput('');
-  const { value: password, bind: bindPassword, reset: resetPassword } = useInput('');
-  const { value: passwordConfirm, bind: bindPasswordConfirm, reset: resetPasswordConfirm } = useInput('');
+  const { value: username, bind: bindUsername } = useInput('');
+  const { value: password, bind: bindPassword } = useInput('');
+  const { value: passwordConfirm, bind: bindPasswordConfirm } = useInput('');
 
   const handleSubmit = (event: React.MouseEvent): void => {
     event.preventDefault();
@@ -32,11 +32,6 @@ const RegistrationForm: React.FC = () => {
       if (authStatus === 'idle') {
         dispatch(register({ username, password }));
       }
-
-      // reset fields
-      resetUsername();
-      resetPassword();
-      resetPasswordConfirm();
     } else {
       // alert user of input errors
       let errorMsg = '';

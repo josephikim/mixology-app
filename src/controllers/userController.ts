@@ -121,7 +121,7 @@ const getVideos = async (req: Request, res: Response, next: NextFunction): Promi
       }&type=video&part=snippet&q=${encodeURIComponent(drink.strDrink as string).replace(
         /%20/g,
         '+'
-      )}+recipe&maxResults=6`;
+      )}+recipe&maxResults=5`;
 
       // Call Youtube API with search query
       const response = await axios.get(url);

@@ -1,21 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
+import { initYouTubeVideos } from '../utils/YoutubeHelper';
+
+import '../styles/YoutubeEmbed.css';
 interface YoutubeEmbedProps {
   embedId: string;
 }
 
-const YoutubeEmbed: React.FC<YoutubeEmbedProps> = ({ embedId }) => (
-  <div className="YoutubeEmbed">
-    <iframe
-      width="853"
-      height="480"
-      src={`https://www.youtube.com/embed/${embedId}`}
-      frameBorder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-      title="Embedded youtube"
-    />
-  </div>
-);
+const YoutubeEmbed: React.FC<YoutubeEmbedProps> = ({ embedId }) => {
+  useEffect(() => {
+    initYouTubeVideos();
+  }, []);
+
+  return (
+    <div className="YoutubeEmbed">
+      <div className="youtube-player" data-id={embedId} />
+    </div>
+  );
+};
 
 export default YoutubeEmbed;

@@ -12,6 +12,7 @@ const SearchBox: React.FC = () => {
 
   const { value: searchInput, bind: bindSearch } = useInput('');
 
+  // handles button click or 'Enter' key press
   const handleSearch = (): void => {
     dispatch(getSearchResults(searchInput));
   };

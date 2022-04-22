@@ -144,15 +144,7 @@ const getVideos = async (req: Request, res: Response, next: NextFunction): Promi
         videos.push(obj);
       });
 
-      // Create array of video IDs from response
-      // const youtubeIds: string[] = [];
-
-      // response.data.items.map((item: any) => {
-      //   const videoId = item.id.videoId;
-      //   youtubeIds.push(videoId);
-      // });
-
-      // Save youtubeIds on drink doc, then send IGetVideosResult response
+      // Save videos on drink doc, then send response
       drink.youtubeVideos = videos;
 
       drink.save((err, doc) => {

@@ -49,6 +49,7 @@ export const getSearchResults = createAsyncThunk(
 export const saveNotes = createAsyncThunk('user/saveNotes', async (payload: NotesPayload): Promise<IDrinkDoc> => {
   const api = new UserApi();
   const result = await api.saveNotes(payload);
+
   return result;
 });
 

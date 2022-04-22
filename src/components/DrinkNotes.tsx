@@ -16,16 +16,19 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
 
   const [notesInput, setNotesInput] = useState(drink.notes);
 
-  const handleSubmitNotes = (event: React.MouseEvent<HTMLElement>): void => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
 
-    const payload = {
-      idDrink: drink._id,
-      notes: notesInput
-    } as NotesPayload;
-
     if ((!drink.notes && notesInput !== '') || notesInput !== drink.notes) {
-      dispatch(saveNotes(payload));
+      const payload = {
+        idDrink: drink._id,
+        notes: notesInput
+      } as NotesPayload;
+
+      debugger;
+      dispatch(saveNotes(payload)).then(() => {
+        alert('Notes successfully updated!');
+      });
       return;
     }
 
@@ -43,7 +46,7 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
           onChange={(e) => setNotesInput(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" id={drink._id} onClick={(e) => handleSubmitNotes(e)}>
+      <Button variant="primary" id={drink._id} onClick={(e) => handleClick(e)}>
         Submit
       </Button>
     </Form>

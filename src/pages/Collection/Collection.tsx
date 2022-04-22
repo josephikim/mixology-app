@@ -14,7 +14,7 @@ const Collection: React.FC = () => {
   const dispatch = useAppDispatch();
   const drinks = useAppSelector((state) => state.user.drinks);
 
-  const handleTabSelect = (key: string, drinkId: string) => {
+  const handleSelectTab = (key: string, drinkId: string) => {
     if (key !== 'videos') return;
 
     const videos = drinks.filter((drink) => drink._id === drinkId)[0].youtubeVideos;
@@ -38,7 +38,7 @@ const Collection: React.FC = () => {
                     <Accordion.Body>
                       <Tabs
                         defaultActiveKey="info"
-                        onSelect={(key) => handleTabSelect(key as string, drink._id as string)}
+                        onSelect={(key) => handleSelectTab(key as string, drink._id as string)}
                       >
                         <Tab eventKey="info" title="Info">
                           <Row>

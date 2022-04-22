@@ -12,7 +12,7 @@ interface DeleteDrinkButtonProps {
 const DeleteDrinkButton: React.FC<DeleteDrinkButtonProps> = (props) => {
   const dispatch = useAppDispatch();
 
-  const handleDelete = (event: React.MouseEvent<HTMLElement>): void => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     event.preventDefault();
 
     window.confirm(`Are you sure you wish to delete "${props.drinkName}" from your collection?`) &&
@@ -21,7 +21,7 @@ const DeleteDrinkButton: React.FC<DeleteDrinkButtonProps> = (props) => {
 
   return (
     <div className="DeleteDrinkButton">
-      <Button variant="danger" id={props.drinkId} onClick={(e) => handleDelete(e)}>
+      <Button variant="danger" id={props.drinkId} onClick={(e) => handleClick(e)}>
         Delete Drink
       </Button>
     </div>

@@ -15,7 +15,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
   const dispatch = useAppDispatch();
   const drinks = useAppSelector((state) => state.user.drinks);
 
-  const handleAdd = (event: React.MouseEvent<HTMLElement>): void => {
+  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     const idDrink = event.currentTarget.id;
     if (!idDrink) return;
 
@@ -39,7 +39,7 @@ const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
           {matchesSavedDrink ? (
             <Card.Text>Added</Card.Text>
           ) : (
-            <Card.Link id={props.data.idDrink} onClick={(e: React.MouseEvent<HTMLElement>) => handleAdd(e)}>
+            <Card.Link id={props.data.idDrink} onClick={(e: React.MouseEvent<HTMLElement>) => handleClick(e)}>
               Add to collection
             </Card.Link>
           )}

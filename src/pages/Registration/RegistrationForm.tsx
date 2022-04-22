@@ -65,7 +65,7 @@ const RegistrationForm: React.FC = () => {
         <Form.Control type="password" name="passwordConfirm" placeholder="Confirm password" {...bindPasswordConfirm} />
       </Form.Group>
 
-      <Button type="submit" name="registration-form-btn" variant="primary" onClick={(e) => handleSubmit(e)}>
+      <Button type="submit" name="registration-form-btn" variant="primary" onClick={(e): void => handleSubmit(e)}>
         Register
       </Button>
       <div>

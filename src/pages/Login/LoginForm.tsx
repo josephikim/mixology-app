@@ -57,7 +57,7 @@ const LoginForm: React.FC = () => {
         <Form.Control type="password" name="password" placeholder="Enter password" {...bindPassword} />
       </Form.Group>
 
-      <Button type="submit" name="login-form-btn" variant="primary" onClick={(e) => handleSubmit(e)}>
+      <Button type="submit" name="login-form-btn" variant="primary" onClick={(e): void => handleSubmit(e)}>
         Login
       </Button>
     </Form>

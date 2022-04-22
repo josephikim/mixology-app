@@ -13,7 +13,7 @@ interface RecipeEntry {
   entry: string;
 }
 
-const buildRecipe = (drink: IDrinkDoc) => {
+const buildRecipe = (drink: IDrinkDoc): RecipeEntry[] => {
   const drinkClone = JSON.parse(JSON.stringify(drink));
   const data: RecipeEntry[] = [];
 
@@ -46,8 +46,8 @@ const DrinkRecipe: React.FC<DrinkRecipeProps> = (props) => {
       <h6>Ingredients</h6>
       <Row>
         <ListGroup>
-          {recipeData.map((item) => {
-            return <ListGroup.Item key={item.key}>{item.entry}</ListGroup.Item>;
+          {recipeData.map((entry) => {
+            return <ListGroup.Item key={entry.key}>{entry.entry}</ListGroup.Item>;
           })}
         </ListGroup>
       </Row>

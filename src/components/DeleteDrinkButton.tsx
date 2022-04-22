@@ -21,7 +21,7 @@ const DeleteDrinkButton: React.FC<DeleteDrinkButtonProps> = (props) => {
 
   return (
     <div className="DeleteDrinkButton">
-      <Button variant="danger" id={props.drinkId} onClick={(e) => handleClick(e)}>
+      <Button variant="danger" id={props.drinkId} onClick={(e): void => handleClick(e)}>
         Delete Drink
       </Button>
     </div>

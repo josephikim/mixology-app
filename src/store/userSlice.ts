@@ -78,7 +78,7 @@ export const userSlice = createSlice({
   // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {
     builder
-      .addCase(getSearchResults.pending, (state, action) => {
+      .addCase(getSearchResults.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(getSearchResults.fulfilled, (state, action) => {
@@ -88,9 +88,9 @@ export const userSlice = createSlice({
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message!;
+        state.error = action.error.message;
       })
-      .addCase(addDrink.pending, (state, action) => {
+      .addCase(addDrink.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(addDrink.fulfilled, (state, action) => {
@@ -101,9 +101,9 @@ export const userSlice = createSlice({
       })
       .addCase(addDrink.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message!;
+        state.error = action.error.message;
       })
-      .addCase(saveNotes.pending, (state, action) => {
+      .addCase(saveNotes.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(saveNotes.fulfilled, (state, action) => {
@@ -114,9 +114,9 @@ export const userSlice = createSlice({
       })
       .addCase(saveNotes.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message!;
+        state.error = action.error.message;
       })
-      .addCase(deleteDrink.pending, (state, action) => {
+      .addCase(deleteDrink.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(deleteDrink.fulfilled, (state, action) => {
@@ -125,9 +125,9 @@ export const userSlice = createSlice({
       })
       .addCase(deleteDrink.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message!;
+        state.error = action.error.message;
       })
-      .addCase(getVideos.pending, (state, action) => {
+      .addCase(getVideos.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(getVideos.fulfilled, (state, action) => {
@@ -138,7 +138,7 @@ export const userSlice = createSlice({
       })
       .addCase(getVideos.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message!;
+        state.error = action.error.message;
       });
   }
 });

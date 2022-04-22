@@ -83,7 +83,9 @@ userApiClient.interceptors.response.use(
 export class UserApi {
   async addDrink(idDrink: string): Promise<IDrinkDoc> {
     const userId = store.getState().auth.userId;
-    const storedResult = store.getState().user.searchResults.filter((result: any) => result.idDrink == idDrink)[0];
+    const storedResult = store
+      .getState()
+      .user.searchResults.filter((result: ISearchResult) => result.idDrink == idDrink)[0];
     const storedResultClone = JSON.parse(JSON.stringify(storedResult));
 
     const drink = {

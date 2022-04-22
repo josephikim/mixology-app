@@ -20,7 +20,7 @@ function initYouTubeVideos(): void {
     const playButton = document.createElement('div');
     playButton.setAttribute('class', 'play');
     div.appendChild(playButton);
-    div.onclick = function () {
+    div.onclick = function (): void {
       labnolIframe(this as HTMLElement);
     };
     playerElements[n].appendChild(div);

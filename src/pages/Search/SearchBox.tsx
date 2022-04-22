@@ -13,13 +13,17 @@ const SearchBox: React.FC = () => {
   const { value: searchInput, bind: bindSearch } = useInput('');
 
   // handles button click or 'Enter' key press
-  const handleSearch = (): void => {
-    dispatch(getSearchResults(searchInput));
+  const handleSearch = (): boolean => {
+    const query = searchInput.trim();
+    if (!query) return false;
+
+    dispatch(getSearchResults(query));
+    return true;
   };
 
   return (
     <InputGroup className="SearchBox">
-      <FormControl {...bindSearch} onKeyPress={(e) => e.key === 'Enter' && handleSearch()} />
+      <FormControl {...bindSearch} onKeyPress={(e): boolean => e.key === 'Enter' && handleSearch()} />
       <Button variant="primary" onClick={handleSearch}>
         Search
       </Button>

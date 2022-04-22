@@ -25,10 +25,10 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
         notes: notesInput
       } as NotesPayload;
 
-      debugger;
       dispatch(saveNotes(payload)).then(() => {
         alert('Notes successfully updated!');
       });
+
       return;
     }
 
@@ -43,10 +43,10 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
           rows={5}
           placeholder="enter text"
           value={notesInput}
-          onChange={(e) => setNotesInput(e.target.value)}
+          onChange={(e): void => setNotesInput(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" id={drink._id} onClick={(e) => handleClick(e)}>
+      <Button variant="primary" id={drink._id} onClick={(e): void => handleClick(e)}>
         Submit
       </Button>
     </Form>

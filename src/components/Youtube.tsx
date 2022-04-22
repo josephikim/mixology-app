@@ -14,7 +14,7 @@ const Youtube: React.FC<YoutubeProps> = (props) => {
   return (
     <div className="Youtube">
       {props.videos && props.videos.length > 0 ? (
-        props.videos.map((video, index) => {
+        props.videos.map((video) => {
           return (
             <Row style={style} key={video.id}>
               <Col md={4}>

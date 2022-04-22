@@ -1,5 +1,6 @@
 import { Schema, Document, model } from 'mongoose';
 
+import { YoutubeVideo } from '../types';
 import { IUserDoc } from './User';
 
 export interface IDrinkDoc extends Document {
@@ -33,7 +34,7 @@ export interface IDrinkDoc extends Document {
   strMeasure8?: string;
   strMeasure9?: string;
   strImageSource?: string;
-  youtubeIds?: string[];
+  youtubeVideos?: YoutubeVideo[];
 }
 
 const drinkSchema = new Schema({
@@ -130,8 +131,8 @@ const drinkSchema = new Schema({
   strImageSource: {
     type: String
   },
-  youtubeIds: {
-    type: [String]
+  youtubeVideos: {
+    type: [Object]
   }
 });
 

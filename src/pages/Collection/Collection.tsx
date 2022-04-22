@@ -17,10 +17,10 @@ const Collection: React.FC = () => {
   const handleTabSelect = (key: string, drinkId: string) => {
     if (key !== 'videos') return;
 
-    const youtubeIds = drinks.filter((drink) => drink._id === drinkId)[0].youtubeIds;
+    const videos = drinks.filter((drink) => drink._id === drinkId)[0].youtubeVideos;
 
-    // If video IDs found in saved drink, do nothing
-    if (youtubeIds && youtubeIds.length > 0) return;
+    // If videos found in saved drink, do nothing
+    if (videos && videos.length > 0) return;
 
     dispatch(getVideos(drinkId));
   };
@@ -81,7 +81,7 @@ const Collection: React.FC = () => {
                           <Row>
                             <Col md={6}>
                               <ContentWrapper>
-                                <Youtube ids={drink.youtubeIds} />
+                                <Youtube videos={drink.youtubeVideos} />
                               </ContentWrapper>
                             </Col>
                           </Row>

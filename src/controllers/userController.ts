@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import db from '../db';
 import { IDrinkDoc } from '../db/Drink';
-import { IGetVideosResult } from '../types';
+import { YoutubeVideo, IGetVideosResult } from '../types';
 
 const Drink = db.drink;
 
@@ -130,16 +130,30 @@ const getVideos = async (req: Request, res: Response, next: NextFunction): Promi
         res.status(204).send({ message: 'No results available.' });
       }
 
-      // Create array of video IDs from response
-      const youtubeIds: string[] = [];
+      // Create array of objects from youtube response
+      const videos: YoutubeVideo[] = [];
 
       response.data.items.map((item: any) => {
-        const videoId = item.id.videoId;
-        youtubeIds.push(videoId);
+        const obj = {
+          id: item.id.videoId,
+          title: item.snippet.title,
+          channelTitle: item.snippet.channelTitle,
+          description: item.snippet.description,
+          publishedAt: item.snippet.publishedAt
+        } as YoutubeVideo;
+        videos.push(obj);
       });
 
+      // Create array of video IDs from response
+      // const youtubeIds: string[] = [];
+
+      // response.data.items.map((item: any) => {
+      //   const videoId = item.id.videoId;
+      //   youtubeIds.push(videoId);
+      // });
+
       // Save youtubeIds on drink doc, then send IGetVideosResult response
-      drink.youtubeIds = youtubeIds;
+      drink.youtubeVideos = videos;
 
       drink.save((err, doc) => {
         if (err) {
@@ -148,7 +162,7 @@ const getVideos = async (req: Request, res: Response, next: NextFunction): Promi
 
         const result = {
           drinkId: doc._id,
-          youtubeIds: doc.youtubeIds
+          videos: doc.youtubeVideos
         } as IGetVideosResult;
 
         res.status(200).send(result);

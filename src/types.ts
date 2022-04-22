@@ -10,6 +10,14 @@ declare module 'express-serve-static-core' {
 export type TokenResult = IApiResultBaseOf<IAuthToken>;
 
 export type RefreshTokenResult = IApiResultBaseOf<IRefreshToken>;
+
+export type YoutubeVideo = {
+  id?: string;
+  title?: string;
+  channelTitle?: string;
+  description?: string;
+  publishedAt?: string;
+};
 export interface IApiResultBase {
   statusCode: number;
   message: string;
@@ -74,8 +82,7 @@ export interface ISearchResult {
   strMeasure9?: string;
   strImageSource?: string;
 }
-
 export interface IGetVideosResult {
   drinkId: string;
-  youtubeIds: string[];
+  videos: YoutubeVideo[];
 }

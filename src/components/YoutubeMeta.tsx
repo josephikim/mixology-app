@@ -14,27 +14,32 @@ interface YoutubeMetaProps {
 const YoutubeMeta: React.FC<YoutubeMetaProps> = ({ id, title, channelTitle, description, publishedAt }) => {
   return (
     <div className="YoutubeMeta">
-      <Table borderless>
+      <Table borderless size="sm">
         <tbody>
           <tr>
-            <td>Title:</td>
+            <td className="table-header">Title:</td>
             <td>{title}</td>
           </tr>
           <tr>
-            <td>Channel:</td>
+            <td className="table-header">Channel:</td>
             <td>{channelTitle}</td>
           </tr>
           <tr>
-            <td>Description:</td>
+            <td className="table-header">Description:</td>
             <td>{description}</td>
           </tr>
           <tr>
-            <td>Published:</td>
+            <td className="table-header">Published:</td>
             <td>{publishedAt}</td>
           </tr>
           <tr>
-            <td>Link:</td>
-            <td>{`http://wwww.youtube.com/?=${id}`}</td>
+            <td className="table-header">Link:</td>
+            <td>
+              <a
+                href={`https://www.youtube.com/watch?v=${id}`}
+                target="_blank"
+              >{`https://www.youtube.com/watch?v=${id}`}</a>
+            </td>
           </tr>
         </tbody>
       </Table>

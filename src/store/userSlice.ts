@@ -130,7 +130,6 @@ export const userSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getVideos.fulfilled, (state, action) => {
-        debugger;
         state.drinks = state.drinks.map((drink) =>
           drink._id === action.payload.drinkId ? { ...drink, youtubeVideos: action.payload.videos } : drink
         );

@@ -79,7 +79,7 @@ const Collection: React.FC = () => {
                         </Tab>
                         <Tab eventKey="videos" title="Videos">
                           <Row>
-                            <Col md={6}>
+                            <Col>
                               <ContentWrapper>
                                 <Youtube videos={drink.youtubeVideos} />
                               </ContentWrapper>

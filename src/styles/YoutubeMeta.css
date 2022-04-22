@@ -1,3 +1,7 @@
 .YoutubeMeta table {
-  font-size: .7rem;
+  font-size: .8rem;
+}
+
+.YoutubeMeta table .table-header {
+   font-weight: bold
 }

@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { saveNotes, NotesPayload } from '../store/userSlice';
+import { createAlert } from '../store/alertSlice';
 
 import '../styles/DrinkNotes.css';
 
@@ -16,23 +17,29 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
 
   const [notesInput, setNotesInput] = useState(drink.notes);
 
-  const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
+  const handleClick = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
     event.preventDefault();
 
-    if ((!drink.notes && notesInput !== '') || notesInput !== drink.notes) {
+    const isValidInput = (notesInput && !drink.notes) || (drink.notes && notesInput !== drink.notes);
+
+    if (isValidInput) {
       const payload = {
         idDrink: drink._id,
         notes: notesInput
       } as NotesPayload;
 
-      dispatch(saveNotes(payload)).then(() => {
-        alert('Notes successfully updated!');
-      });
+      const saved = await dispatch(saveNotes(payload));
 
-      return;
+      if (saved.type === 'user/saveNotes/fulfilled') {
+        const payload = {
+          type: saved.type,
+          message: 'Notes successfully saved'
+        };
+        dispatch(createAlert(payload));
+      }
+    } else {
+      alert('No changes detected!');
     }
-
-    alert('No changes deteted!');
   };
 
   return (
@@ -46,7 +53,7 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
           onChange={(e): void => setNotesInput(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" id={drink._id} onClick={(e): void => handleClick(e)}>
+      <Button variant="primary" id={drink._id} onClick={(e): Promise<void> => handleClick(e)}>
         Submit
       </Button>
     </Form>

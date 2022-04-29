@@ -3,6 +3,7 @@ import throttle from 'lodash/throttle';
 
 import authReducer from './authSlice';
 import userReducer from './userSlice';
+import alertSlice from './alertSlice';
 import { loadState, saveState } from './localStorage';
 
 const persistedState = loadState();
@@ -11,13 +12,14 @@ const preloadedState = persistedState ? persistedState : {};
 
 const appReducer = combineReducers({
   auth: authReducer,
-  user: userReducer
+  user: userReducer,
+  alert: alertSlice
 });
 
 export const logoutAction = createAction('logout');
 
 const rootReducer: Reducer = (state: RootState, action: AnyAction) => {
-  // check for logout action type
+  // logout action
   if (logoutAction.match(action)) {
     return appReducer(undefined, action);
   }

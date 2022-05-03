@@ -1,0 +1,14 @@
+.CustomAlert {
+  margin: 1rem 3rem
+}
+
+.CustomAlert .alert.show {
+  display: flex;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  align-items: center;
+}
+
+.CustomAlert .alert.show .btn {
+  margin-left: auto;
+}

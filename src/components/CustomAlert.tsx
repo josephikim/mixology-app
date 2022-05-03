@@ -4,6 +4,7 @@ import { Alert, Button } from 'react-bootstrap';
 import { useAppDispatch } from '../hooks';
 import { deleteAlert, IAlert } from '../store/alertSlice';
 
+import '../styles/CustomAlert.css';
 interface CustomAlertProps {
   data: IAlert;
 }
@@ -23,12 +24,10 @@ const CustomAlert: React.FC<CustomAlertProps> = ({ data }) => {
   return (
     <div className="CustomAlert">
       <Alert key={data.type} show={show} variant="success">
-        <p>{data.message}</p>
-        <div className="d-flex justify-content-end">
-          <Button onClick={() => handleClose()} variant="light">
-            Close
-          </Button>
-        </div>
+        <span>{data.message}</span>
+        <Button onClick={() => handleClose()} variant="light">
+          Close
+        </Button>
       </Alert>
     </div>
   );

@@ -29,7 +29,7 @@ export interface NotesPayload {
   notes: string;
 }
 
-export const initialUserState: UserState = {
+const initialState: UserState = {
   status: 'idle',
   drinks: [],
   searchResults: []
@@ -85,7 +85,7 @@ export const getVideos = createAsyncThunk('user/getVideos', async (drinkId: stri
 
 export const userSlice = createSlice({
   name: 'user',
-  initialState: initialUserState,
+  initialState,
   reducers: {
     drinksUpdated: (state, action: PayloadAction<IDrinkDoc[]>) => {
       state.drinks = action.payload;

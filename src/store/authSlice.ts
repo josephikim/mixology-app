@@ -18,7 +18,7 @@ interface AuthState {
   error?: string;
 }
 
-export const initialAuthState: AuthState = {
+const initialState: AuthState = {
   accessToken: '',
   refreshToken: '',
   userId: '',
@@ -48,7 +48,7 @@ export const login = createAsyncThunk(
 
 export const authSlice = createSlice({
   name: 'auth',
-  initialState: initialAuthState,
+  initialState,
   reducers: {
     accessTokenUpdated: (state, action: PayloadAction<string>) => {
       state.accessToken = action.payload;

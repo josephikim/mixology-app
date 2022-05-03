@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { v4 as uuid } from 'uuid';
 
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { saveNotes, NotesPayload } from '../store/userSlice';
@@ -32,9 +33,11 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
 
       if (resultAction.type === 'user/saveNotes/fulfilled') {
         const payload = {
+          id: uuid(),
           type: resultAction.type,
           message: 'Notes successfully saved'
         };
+
         dispatch(createAlert(payload));
       }
     } else {

@@ -18,7 +18,7 @@ const App: React.FC = () => {
     <div className="App">
       <Header />
       {alerts.map((alert) => (
-        <CustomAlert key={alert.type} data={alert} />
+        <CustomAlert key={alert.id} data={alert} />
       ))}
       <Router>
         <Switch>

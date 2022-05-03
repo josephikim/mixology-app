@@ -15,15 +15,15 @@ const CustomAlert: React.FC<CustomAlertProps> = ({ data }) => {
   const [show, setShow] = useState(true);
 
   const handleClose = (): void => {
-    const payload = data as IAlert;
+    const alertId = data.id;
 
     setShow(false);
-    dispatch(deleteAlert(payload));
+    dispatch(deleteAlert({ id: alertId }));
   };
 
   return (
     <div className="CustomAlert">
-      <Alert key={data.type} show={show} variant="success">
+      <Alert show={show} variant="success">
         <span>{data.message}</span>
         <Button onClick={() => handleClose()} variant="light">
           Close

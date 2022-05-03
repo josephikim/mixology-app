@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Accordion, Container, Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
+import { logoutAction } from '../../store';
 import { getVideos } from '../../store/userSlice';
 import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkInfo from '../../components/DrinkInfo';
@@ -12,6 +13,15 @@ import Youtube from '../../components/Youtube';
 
 const Collection: React.FC = () => {
   const dispatch = useAppDispatch();
+
+  const errorType = useAppSelector((state) => state.user.errorType);
+
+  useEffect(() => {
+    if (errorType === 'refreshToken') {
+      dispatch(logoutAction());
+    }
+  }, [errorType]);
+
   const drinks = useAppSelector((state) => state.user.drinks);
 
   const handleSelectTab = (key: string, drinkId: string): void => {

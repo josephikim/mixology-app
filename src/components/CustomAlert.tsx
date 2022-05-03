@@ -22,7 +22,7 @@ const CustomAlert: React.FC<CustomAlertProps> = ({ data }) => {
 
   return (
     <div className="CustomAlert">
-      <Alert key={data.type} show={show} variant="danger">
+      <Alert key={data.type} show={show} variant="success">
         <p>{data.message}</p>
         <div className="d-flex justify-content-end">
           <Button onClick={() => handleClose()} variant="light">

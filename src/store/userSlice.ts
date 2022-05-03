@@ -14,8 +14,14 @@ enum Status {
 interface UserState {
   status: keyof typeof Status;
   error?: string;
+  errorType?: string;
   drinks: IDrinkDoc[];
   searchResults: ISearchResult[];
+}
+
+interface IApiAccessError {
+  type: string;
+  message: string;
 }
 
 export interface NotesPayload {
@@ -46,11 +52,21 @@ export const getSearchResults = createAsyncThunk(
   }
 );
 
-export const saveNotes = createAsyncThunk('user/saveNotes', async (payload: NotesPayload): Promise<IDrinkDoc> => {
+export const saveNotes = createAsyncThunk<
+  IDrinkDoc,
+  NotesPayload,
+  {
+    rejectValue: IApiAccessError;
+  }
+>('user/saveNotes', async (payload: NotesPayload, { rejectWithValue }) => {
   const api = new UserApi();
-  const result = await api.saveNotes(payload);
 
-  return result;
+  try {
+    const response = await api.saveNotes(payload);
+    return response as IDrinkDoc;
+  } catch (err) {
+    return rejectWithValue(err as IApiAccessError);
+  }
 });
 
 export const deleteDrink = createAsyncThunk('user/deleteDrink', async (idDrink: string): Promise<IDrinkDoc> => {
@@ -115,6 +131,9 @@ export const userSlice = createSlice({
       .addCase(saveNotes.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+        if (action.payload) {
+          state.errorType = action.payload.type;
+        }
       })
       .addCase(deleteDrink.pending, (state) => {
         state.status = 'loading';

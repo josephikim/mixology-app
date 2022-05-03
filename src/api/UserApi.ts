@@ -6,8 +6,7 @@ import * as ApiHelper from '../utils/ApiHelper';
 import { StorageHelper } from '../utils/StorageHelper';
 import { accessTokenUpdated } from '../store/authSlice';
 import { NotesPayload } from '../store/userSlice';
-import { logoutAction } from '../store/index';
-import { RefreshTokenResult, ISearchResult, IGetVideosResult } from '../types';
+import { ISearchResult, IGetVideosResult } from '../types';
 import { IDrinkDoc } from '../db/Drink';
 
 const userApiClient = axios.create({
@@ -48,16 +47,12 @@ userApiClient.interceptors.response.use(
             refreshToken: StorageHelper.getLocalRefreshToken()
           });
 
-          const tokenResult = {
-            statusCode: res.status,
-            message: res.statusText,
-            data: [res.data]
-          } as RefreshTokenResult;
+          const newAccessToken = res.data.accessToken;
 
-          userApiClient.defaults.headers.common['x-access-token'] = tokenResult.data[0].accessToken;
+          userApiClient.defaults.headers.common['x-access-token'] = newAccessToken;
 
           // authorize user
-          store.dispatch(accessTokenUpdated(tokenResult.data[0].accessToken));
+          store.dispatch(accessTokenUpdated(newAccessToken));
 
           return userApiClient(originalConfig);
         } catch (_error) {
@@ -67,15 +62,11 @@ userApiClient.interceptors.response.use(
 
           return Promise.reject(_error);
         }
-      }
-
-      if (err.response.status === 403 || err.response.status === 401) {
-        store.dispatch(logoutAction());
-
+      } else {
+        // refresh token failed
         return Promise.reject(err);
       }
     }
-
     return Promise.reject(err);
   }
 );

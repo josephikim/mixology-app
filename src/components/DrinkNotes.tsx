@@ -28,11 +28,11 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
         notes: notesInput
       } as NotesPayload;
 
-      const saved = await dispatch(saveNotes(payload));
+      const resultAction = await dispatch(saveNotes(payload));
 
-      if (saved.type === 'user/saveNotes/fulfilled') {
+      if (resultAction.type === 'user/saveNotes/fulfilled') {
         const payload = {
-          type: saved.type,
+          type: resultAction.type,
           message: 'Notes successfully saved'
         };
         dispatch(createAlert(payload));

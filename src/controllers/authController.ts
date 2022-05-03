@@ -138,7 +138,10 @@ const refreshToken = async (req: Request, res: Response, next: NextFunction): Pr
 
     if (!refreshToken) {
       // Refresh token not found in database
-      res.status(403).json({ message: 'Refresh token is not in database!' });
+      res.status(403).json({
+        type: 'refreshToken',
+        message: 'Refresh token is not in database!'
+      });
       return;
     }
 
@@ -149,6 +152,7 @@ const refreshToken = async (req: Request, res: Response, next: NextFunction): Pr
       }).exec();
 
       res.status(403).json({
+        type: 'refreshToken',
         message: 'Refresh token was expired. Please make a new sign-in request'
       });
       return;

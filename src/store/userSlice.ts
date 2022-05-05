@@ -87,7 +87,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    drinksUpdated: (state, action: PayloadAction<IDrinkDoc[]>) => {
+    drinksUpdated: (state: UserState, action: PayloadAction<IDrinkDoc[]>) => {
       state.drinks = action.payload;
     }
   },
@@ -109,7 +109,7 @@ export const userSlice = createSlice({
       .addCase(addDrink.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(addDrink.fulfilled, (state, action) => {
+      .addCase(addDrink.fulfilled, (state: UserState, action) => {
         const result = action.payload;
         const newState = [...state.drinks, result];
         state.status = 'succeeded';

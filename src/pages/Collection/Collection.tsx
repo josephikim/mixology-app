@@ -17,7 +17,7 @@ const Collection: React.FC = () => {
   const errorType = useAppSelector((state) => state.user.errorType);
 
   useEffect(() => {
-    if (errorType === 'refreshToken') {
+    if (errorType === 'refreshToken' || errorType === 'accessToken' || errorType === 'role') {
       dispatch(logoutAction());
     }
   }, [errorType]);

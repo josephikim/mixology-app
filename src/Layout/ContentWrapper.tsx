@@ -7,7 +7,7 @@ interface ContentWrapperProps {
   children?: React.ReactNode;
 }
 
-const ContentWrapper: React.FC = ({ children }: ContentWrapperProps) => (
+const ContentWrapper: React.FC<ContentWrapperProps> = ({ children }) => (
   <Row className="ContentWrapper">
     <Col>
       <div style={style}>{children}</div>

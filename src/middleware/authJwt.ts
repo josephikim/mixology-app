@@ -17,7 +17,10 @@ type JwtPayload = {
 
 const catchError = (err: any, res: Response): Response => {
   if (err instanceof TokenExpiredError) {
-    return res.status(401).send({ message: 'Unauthorized! Access Token was expired!' });
+    return res.status(401).send({
+      type: 'accessToken',
+      message: 'Unauthorized! Access Token was expired!'
+    });
   }
 
   return res.sendStatus(401).send({ message: 'Unauthorized!' });
@@ -27,7 +30,10 @@ const verifyToken = (req: Request, res: Response, next: NextFunction): Response 
   const token = req.headers['x-access-token'] as string;
 
   if (!token) {
-    return res.status(403).send({ message: 'No token provided!' });
+    return res.status(403).send({
+      type: 'accessToken',
+      message: 'No token provided!'
+    });
   }
 
   try {
@@ -61,7 +67,10 @@ const isAdmin = (req: Request, res: Response, next: NextFunction): NextFunction 
             }
           }
 
-          res.status(403).send({ message: 'Require Admin Role!' });
+          res.status(403).send({
+            type: 'role',
+            message: 'Require Admin Role!'
+          });
           return;
         }
       );
@@ -92,7 +101,10 @@ const isModerator = (req: Request, res: Response, next: NextFunction): NextFunct
             }
           }
 
-          res.status(403).send({ message: 'Require Moderator Role!' });
+          res.status(403).send({
+            type: 'role',
+            message: 'Require Moderator Role!'
+          });
           return;
         }
       );

@@ -1,5 +1,5 @@
 import path from 'path';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import db from './db';
 import cors from 'cors';
 import apiRouter from './routers';
@@ -26,6 +26,16 @@ app.use(express.static(BUILD_DIR));
 
 app.get('*', (req: express.Request, res: express.Response) => {
   res.sendFile(HTML_FILE);
+});
+
+// Global error handler
+app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
+  const error = {
+    name: err.name,
+    message: err.message
+  };
+
+  res.status(500).send(error);
 });
 
 // start the Express server

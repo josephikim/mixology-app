@@ -62,10 +62,8 @@ userApiClient.interceptors.response.use(
 
           return Promise.reject(_error);
         }
-      } else {
-        // refresh token failed
-        return Promise.reject(err);
       }
+      return Promise.reject(err);
     }
     return Promise.reject(err);
   }

@@ -117,11 +117,11 @@ export class UserApi {
     const url = `${userApiClient.defaults.baseURL}/search/${query}`;
     const response = await userApiClient.get(url);
 
-    let results: ISearchResult[] = [];
+    let results = [];
 
     if (response.status === 200 && response.data.length > 0) {
       results = response.data.map((drink: ISearchResult) => {
-        const result = {
+        return {
           idDrink: drink.idDrink,
           ...(!!drink.strDrink && { strDrink: drink.strDrink }),
           ...(!!drink.strTags && { strTags: drink.strTags }),
@@ -150,9 +150,9 @@ export class UserApi {
           ...(!!drink.strMeasure9 && { strMeasure9: drink.strMeasure9 }),
           ...(!!drink.strImageSource && { strImageSource: drink.strImageSource })
         };
-        return result;
       });
     }
-    return results;
+
+    return results as ISearchResult[];
   }
 }

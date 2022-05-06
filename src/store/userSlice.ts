@@ -42,15 +42,23 @@ export const addDrink = createAsyncThunk('user/addDrink', async (idDrink: string
   return result;
 });
 
-export const getSearchResults = createAsyncThunk(
-  'user/getSearchResults',
-  async (query: string): Promise<ISearchResult[]> => {
-    const api = new UserApi();
-    const results = await api.getSearchResults(query);
-
-    return results;
+export const getSearchResults = createAsyncThunk<
+  ISearchResult[],
+  string,
+  {
+    rejectValue: IApiAccessError;
   }
-);
+>('user/getSearchResults', async (query, { rejectWithValue }) => {
+  const api = new UserApi();
+
+  try {
+    const response = await api.getSearchResults(query);
+
+    return response;
+  } catch (err) {
+    return rejectWithValue(err);
+  }
+});
 
 export const saveNotes = createAsyncThunk<
   IDrinkDoc,
@@ -63,7 +71,7 @@ export const saveNotes = createAsyncThunk<
 
   try {
     const response = await api.saveNotes(payload);
-    return response as IDrinkDoc;
+    return response;
   } catch (err) {
     return rejectWithValue(err);
   }
@@ -80,7 +88,7 @@ export const deleteDrink = createAsyncThunk<
 
   try {
     const response = await api.deleteDrink(idDrink);
-    return response as IDrinkDoc;
+    return response;
   } catch (err) {
     return rejectWithValue(err);
   }
@@ -115,6 +123,9 @@ export const userSlice = createSlice({
       .addCase(getSearchResults.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+        if (action.payload) {
+          state.errorType = action.payload.type;
+        }
       })
       .addCase(addDrink.pending, (state) => {
         state.status = 'loading';

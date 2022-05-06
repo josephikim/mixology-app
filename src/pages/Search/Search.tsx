@@ -13,6 +13,7 @@ const Search: React.FC = () => {
 
   useEffect(() => {
     if (errorType === 'refreshToken' || errorType === 'accessToken' || errorType === 'role') {
+      alert('Access error occurred. Please login again.');
       dispatch(logoutAction());
     }
   }, [errorType]);

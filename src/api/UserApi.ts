@@ -8,6 +8,7 @@ import { accessTokenUpdated } from '../store/authSlice';
 import { NotesPayload } from '../store/userSlice';
 import { ISearchResult, IGetVideosResult } from '../types';
 import { IDrinkDoc } from '../db/Drink';
+import { IKeywordDoc } from '../db/Keyword';
 
 const userApiClient = axios.create({
   baseURL: settings.baseUrl,
@@ -70,6 +71,20 @@ userApiClient.interceptors.response.use(
 );
 
 export class UserApi {
+  async getKeywords(): Promise<IKeywordDoc[]> {
+    const url = `${userApiClient.defaults.baseURL}/keywords/`;
+    const response = await userApiClient.get(url);
+
+    return response.data as IKeywordDoc[];
+  }
+
+  async getRandomDrink(): Promise<IDrinkDoc> {
+    const url = `${userApiClient.defaults.baseURL}/randomDrink/`;
+    const response = await userApiClient.get(url);
+
+    return response.data as IDrinkDoc;
+  }
+
   async addDrink(idDrink: string): Promise<IDrinkDoc> {
     const userId = store.getState().auth.userId;
     const storedResult = store

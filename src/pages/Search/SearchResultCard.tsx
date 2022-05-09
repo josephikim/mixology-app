@@ -11,7 +11,7 @@ interface SearchResultCardProps {
   data: ISearchResult;
 }
 
-const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
+const SearchResultCard: React.FC<SearchResultCardProps> = ({ data }) => {
   const dispatch = useAppDispatch();
   const drinks = useAppSelector((state) => state.user.drinks);
 
@@ -22,24 +22,24 @@ const SearchResultCard: React.FC<SearchResultCardProps> = (props) => {
     dispatch(addDrink(idDrink));
   };
 
-  const matchesSavedDrink = drinks.some((savedDrink) => savedDrink.idDrinkApi === props.data.idDrink);
+  const matchesSavedDrink = drinks.some((savedDrink) => savedDrink.idDrinkApi === data.idDrink);
 
   return (
     <Col className="SearchResultCard">
       <Card>
-        <Card.Img variant="top" src={props.data.strDrinkThumb} />
+        <Card.Img variant="top" src={data.strDrinkThumb} />
         <Card.Body id="description">
-          <Card.Title>{props.data.strDrink}</Card.Title>
-          <Card.Text>{props.data.strInstructions}</Card.Text>
+          <Card.Title>{data.strDrink}</Card.Title>
+          <Card.Text>{data.strInstructions}</Card.Text>
         </Card.Body>
         <Card.Body id="alcohol">
-          {props.data.strAlcoholic ? <Badge bg="secondary">{props.data.strAlcoholic}</Badge> : null}
+          {data.strAlcoholic ? <Badge bg="secondary">{data.strAlcoholic}</Badge> : null}
         </Card.Body>
         <Card.Body id="actions">
           {matchesSavedDrink ? (
             <Card.Text>Added</Card.Text>
           ) : (
-            <Card.Link id={props.data.idDrink} onClick={(e: React.MouseEvent<HTMLElement>): void => handleClick(e)}>
+            <Card.Link id={data.idDrink} onClick={(e: React.MouseEvent<HTMLElement>): void => handleClick(e)}>
               Add to collection
             </Card.Link>
           )}

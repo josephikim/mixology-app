@@ -10,28 +10,28 @@ interface DrinkInfoProps {
   data: IDrinkDoc;
 }
 
-const DrinkInfo: React.FC<DrinkInfoProps> = (props) => {
+const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
   return (
     <div className="DrinkInfo">
       <Row>
         <Col md={4}>
           <strong>Name:</strong>
         </Col>
-        <Col md={8}>{props.data.strDrink}</Col>
+        <Col md={8}>{data.strDrink}</Col>
       </Row>
 
       <Row>
         <Col md={4}>
           <strong>Category:</strong>
         </Col>
-        <Col md={8}>{props.data.strAlcoholic ? <Badge bg="secondary">{props.data.strAlcoholic}</Badge> : null}</Col>
+        <Col md={8}>{data.strAlcoholic ? <Badge bg="secondary">{data.strAlcoholic}</Badge> : null}</Col>
       </Row>
 
       <Row>
         <Col md={4}>
           <strong>Glass:</strong>
         </Col>
-        <Col md={8}>{props.data.strGlass}</Col>
+        <Col md={8}>{data.strGlass}</Col>
       </Row>
 
       <Row>
@@ -39,7 +39,7 @@ const DrinkInfo: React.FC<DrinkInfoProps> = (props) => {
           <strong>Tags:</strong>
         </Col>
         <Col md={8}>
-          <DrinkTags tags={props.data.strTags as string[]} />
+          <DrinkTags tags={data.strTags as string[]} />
         </Col>
       </Row>
     </div>

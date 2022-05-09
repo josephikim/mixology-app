@@ -6,7 +6,8 @@ import { logoutAction } from '../../store';
 import { getVideos } from '../../store/userSlice';
 import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkInfo from '../../components/DrinkInfo';
-import DrinkRecipe from '../../components/DrinkRecipe';
+import DrinkIngredients from '../../components/DrinkIngredients';
+import DrinkInstructions from '../../components/DrinkInstructions';
 import DrinkNotes from '../../components/DrinkNotes';
 import DeleteDrinkButton from '../../components/DeleteDrinkButton';
 import Youtube from '../../components/Youtube';
@@ -69,7 +70,8 @@ const Collection: React.FC = () => {
                           <Row>
                             <Col md={6}>
                               <ContentWrapper>
-                                <DrinkRecipe data={drink} />
+                                <DrinkIngredients data={drink} />
+                                <DrinkInstructions instructions={drink.strInstructions as string} />
                               </ContentWrapper>
                             </Col>
                             <Col md={6}>

@@ -13,8 +13,7 @@ const AuthRoute: React.FC<AuthRouteProps> = ({ component: Component, ...routePro
   const authToken = useAppSelector((state) => state.auth.accessToken);
   const { authType } = routeProps;
 
-  if (authType === 'guest' && authToken) return <Redirect to="/collection" />;
-  else if (authType === 'private' && !authToken) return <Redirect to="/login" />;
+  if (authType === 'private' && !authToken) return <Redirect to="/login" />;
 
   return (
     <Route

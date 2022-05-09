@@ -19,7 +19,12 @@ userRouter.get('/mod', [authJwt.verifyToken, authJwt.isModerator], userControlle
 
 userRouter.get('/admin', [authJwt.verifyToken, authJwt.isAdmin], userController.adminAccess);
 
-// user routes
+// public routes
+userRouter.get('/keywords', userController.getKeywords);
+
+userRouter.get('/randomDrink', userController.getRandomDrink);
+
+// private routes
 userRouter.get('/search/:query', [authJwt.verifyToken], userController.getSearchResults);
 
 userRouter.post('/addDrink', [authJwt.verifyToken], userController.addDrink);

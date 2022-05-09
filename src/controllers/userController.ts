@@ -3,9 +3,11 @@ import axios from 'axios';
 
 import db from '../db';
 import { IDrinkDoc } from '../db/Drink';
+import { IKeywordDoc } from '../db/Keyword';
 import { YoutubeVideo, IGetVideosResult } from '../types';
 
 const Drink = db.drink;
+const Keyword = db.keyword;
 
 const allAccess = (req: Request, res: Response): void => {
   res.status(200).send('Public Content.');
@@ -23,10 +25,148 @@ const moderatorAccess = (req: Request, res: Response): void => {
   res.status(200).send('Moderator Content.');
 };
 
+const getKeywords = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  try {
+    Keyword.find().exec(async (err, docs) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (docs == null || docs.length == 0) {
+        try {
+          const response = (await Promise.all([
+            getKeywordsByType('category'),
+            getKeywordsByType('ingredient'),
+            getKeywordsByType('glass'),
+            getKeywordsByType('alcohol')
+          ])) as IKeywordDoc[][];
+
+          const responseFlattened: IKeywordDoc[] = [];
+
+          response.map((arr) => {
+            arr.forEach((element) => {
+              responseFlattened.push(element);
+            });
+          });
+
+          await Keyword.insertMany(responseFlattened);
+
+          Keyword.find(
+            { type: { $in: ['category', 'ingredient', 'glass', 'alcohol'] } },
+            ['type', 'value', '-_id'],
+            function (err: any, docs: IDrinkDoc[]) {
+              if (err) {
+                return next(err);
+              } else {
+                res.status(200).send(docs);
+              }
+            }
+          );
+        } catch (err) {
+          return next(err);
+        }
+      } else {
+        res.status(200).send(docs);
+      }
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getKeywordsByType = async (type: string): Promise<IKeywordDoc[] | void> => {
+  if (!type) return;
+
+  let url = `${process.env.THECOCKTAILDB_API_URL}list.php?`;
+
+  switch (type) {
+    case 'category': {
+      url += 'c=list';
+      break;
+    }
+    case 'ingredient': {
+      url += 'i=list';
+      break;
+    }
+
+    case 'glass': {
+      url += 'g=list';
+      break;
+    }
+    case 'alcohol': {
+      url += 'a=list';
+      break;
+    }
+  }
+
+  try {
+    const response = await axios.get(url);
+
+    // No content found
+    if (response.status === 204 || (!response.data.drinks && response.status === 200)) {
+      return [];
+    }
+
+    const results = response.data.drinks;
+
+    let dataField = '';
+
+    switch (type) {
+      case 'category': {
+        dataField = dataField + 'strCategory';
+        break;
+      }
+      case 'ingredient': {
+        dataField = dataField + 'strIngredient1';
+        break;
+      }
+
+      case 'glass': {
+        dataField = dataField + 'strGlass';
+        break;
+      }
+      case 'alcohol': {
+        dataField = dataField + 'strAlcoholic';
+        break;
+      }
+    }
+
+    const keywords = results.map((result: any) => {
+      return {
+        type: type,
+        value: result[dataField]
+      } as IKeywordDoc;
+    });
+    return keywords;
+  } catch (err) {
+    return Promise.reject(err);
+  }
+};
+
+const getRandomDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  try {
+    // Search random drink
+    const url = `${process.env.THECOCKTAILDB_API_URL}random.php`;
+
+    const response = await axios.get(url);
+
+    // No content found
+    if (response.status === 204 || (!response.data.drinks && response.status === 200)) {
+      res.status(204).send({ message: 'No results available.' });
+    }
+
+    const result = response.data.drinks[0];
+
+    res.status(200).send(result);
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const getSearchResults = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
     // Search by drink name
-    const url = `${process.env.SEARCH_API_URL}?s=${req.params.query}`;
+    const url = `${process.env.THECOCKTAILDB_API_URL}search.php?s=${req.params.query}`;
     const response = await axios.get(url);
 
     // No content found
@@ -172,6 +312,8 @@ const userController = {
   userAccess,
   adminAccess,
   moderatorAccess,
+  getKeywords,
+  getRandomDrink,
   getSearchResults,
   addDrink,
   saveNotes,

@@ -22,12 +22,13 @@ const Header: React.FC = () => {
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
             {authenticated ? (
               <Nav>
+                <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/collection">Collection</Nav.Link>
-                <Nav.Link href="/search">Search</Nav.Link>
                 <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
               </Nav>
             ) : (
               <Nav>
+                <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/register">Register</Nav.Link>
                 <Nav.Link href="/login">Login</Nav.Link>
               </Nav>

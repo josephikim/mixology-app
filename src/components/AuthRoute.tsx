@@ -11,9 +11,10 @@ interface AuthRouteProps {
 
 const AuthRoute: React.FC<AuthRouteProps> = ({ component: Component, ...routeProps }) => {
   const authToken = useAppSelector((state) => state.auth.accessToken);
-  const { authType } = routeProps;
+  const { path, authType } = routeProps;
 
   if (authType === 'private' && !authToken) return <Redirect to="/login" />;
+  if (authToken && (path === '/login' || path === '/register')) return <Redirect to="/" />;
 
   return (
     <Route

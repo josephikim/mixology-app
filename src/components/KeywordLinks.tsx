@@ -16,7 +16,9 @@ const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
 
   if (!keywords.length) return null;
 
-  const keywordsByType = keywords.filter((keyword) => keyword.type === type) as IKeywordDoc[];
+  const keywordsByType = keywords
+    .filter((keyword) => keyword.type === type)
+    .sort((a, b) => a.value.localeCompare(b.value)) as IKeywordDoc[];
 
   return (
     <div className="KeywordLinks">

@@ -10,7 +10,7 @@ import CustomAlert from './components/CustomAlert';
 import Collection from './pages/Collection/Collection';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
-import Search from './pages/Search/Search';
+import SearchResults from './pages/SearchResults/SearchResults';
 import Registration from './pages/Registration/Registration';
 
 import './styles/App.css';
@@ -54,7 +54,7 @@ const App: React.FC = () => {
       <Router>
         <Switch>
           <AuthRoute component={Collection} path="/collection" authType="private" />
-          <AuthRoute component={Search} path="/search" authType="private" />
+          <AuthRoute component={SearchResults} path="/search" authType="private" />
           <AuthRoute component={Login} path="/login" authType="guest" />
           <AuthRoute component={Registration} path="/register" authType="guest" />
           <AuthRoute component={Home} path="/" authType="guest" />

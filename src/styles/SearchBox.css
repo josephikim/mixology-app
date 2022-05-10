@@ -1,3 +1,7 @@
+.SearchBox {
+  margin: .3rem 2rem;
+}
+
 .SearchBox input {
   max-width: 300px;
 }

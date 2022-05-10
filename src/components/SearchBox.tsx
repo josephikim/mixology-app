@@ -1,11 +1,11 @@
 import React from 'react';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 
-import { useAppDispatch } from '../../hooks';
-import { useInput } from '../../hooks/useInput';
-import { getSearchResults } from '../../store/userSlice';
+import { useAppDispatch } from '../hooks';
+import { useInput } from '../hooks/useInput';
+import { getSearchResults } from '../store/userSlice';
 
-import './SearchBox.css';
+import '../styles/SearchBox.css';
 
 const SearchBox: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +23,11 @@ const SearchBox: React.FC = () => {
 
   return (
     <InputGroup className="SearchBox">
-      <FormControl {...bindSearch} onKeyPress={(e): boolean => e.key === 'Enter' && handleSearch()} />
+      <FormControl
+        {...bindSearch}
+        placeholder='search for a drink e.g. "margarita"'
+        onKeyPress={(e): boolean => e.key === 'Enter' && handleSearch()}
+      />
       <Button variant="primary" onClick={handleSearch}>
         Search
       </Button>

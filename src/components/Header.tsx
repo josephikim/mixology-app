@@ -3,6 +3,7 @@ import { Navbar, Nav, Container } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { logoutAction } from '../store/index';
+import SearchBox from './SearchBox';
 
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -18,6 +19,7 @@ const Header: React.FC = () => {
       <Navbar collapseOnSelect bg="dark" variant="dark">
         <Container>
           <Navbar.Brand href="/">Mixology App</Navbar.Brand>
+          <SearchBox />
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
             {authenticated ? (

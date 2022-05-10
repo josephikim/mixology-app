@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export interface IAlert {
+interface IAlert {
   id: string;
   type: string;
   message: string;
@@ -10,7 +10,7 @@ interface AlertState {
   alerts: IAlert[];
 }
 
-const initialState: AlertState = {
+export const initialState: AlertState = {
   alerts: []
 };
 

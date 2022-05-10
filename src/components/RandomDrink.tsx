@@ -9,7 +9,7 @@ import DrinkInstructions from './DrinkInstructions';
 import '../styles/RandomDrink.css';
 
 const RandomDrink: React.FC = () => {
-  const drink = useAppSelector((state) => state.user.randomDrink);
+  const drink = useAppSelector((state) => state.base.randomDrink);
 
   if (!drink || drink === undefined) return null;
 

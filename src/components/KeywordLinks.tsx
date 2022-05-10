@@ -12,7 +12,7 @@ interface KeywordLinksProps {
 }
 
 const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
-  const keywords = useAppSelector((state) => state.user.keywords);
+  const keywords = useAppSelector((state) => state.base.keywords);
 
   if (!keywords.length) return null;
 

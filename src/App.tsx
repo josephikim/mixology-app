@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Switch } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from './hooks';
 import { logoutAction } from './store';
-import { getKeywords, getRandomDrink } from './store/userSlice';
+import { getKeywords, getRandomDrink } from './store/baseSlice';
 import AuthRoute from './components/AuthRoute';
 import Header from './components/Header';
 import CustomAlert from './components/CustomAlert';
@@ -18,7 +18,7 @@ import './styles/App.css';
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const keywords = useAppSelector((state) => state.user.keywords);
+  const keywords = useAppSelector((state) => state.base.keywords);
 
   useEffect(() => {
     if (!keywords || keywords.length < 1) {
@@ -26,10 +26,10 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const randomDrink = useAppSelector((state) => state.user.randomDrink);
+  const randomDrink = useAppSelector((state) => state.base.randomDrink);
 
   useEffect(() => {
-    if (!randomDrink || randomDrink === undefined) {
+    if (!randomDrink || Object.keys(randomDrink).length === 0) {
       dispatch(getRandomDrink());
     }
   }, []);

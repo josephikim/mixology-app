@@ -165,8 +165,34 @@ const getRandomDrink = async (req: Request, res: Response, next: NextFunction): 
 
 const getSearchResults = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
-    // Search by drink name
-    const url = `${process.env.THECOCKTAILDB_API_URL}search.php?s=${req.params.query}`;
+    const { type, query } = req.params;
+
+    let url = process.env.THECOCKTAILDB_API_URL as string;
+
+    switch (type) {
+      case 'category': {
+        url += `filter.php?c=${query}`;
+        break;
+      }
+      case 'ingredient': {
+        url += `filter.php?i=${query}`;
+        break;
+      }
+      case 'glass': {
+        url += `filter.php?g=${query}`;
+        break;
+      }
+      case 'alcohol': {
+        url += `filter.php?a=${query}`;
+        break;
+      }
+      case 'drink':
+      default: {
+        url += `search.php?s=${query}`;
+        break;
+      }
+    }
+
     const response = await axios.get(url);
 
     // No content found

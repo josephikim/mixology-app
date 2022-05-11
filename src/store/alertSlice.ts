@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-interface IAlert {
+export interface IAlert {
   id: string;
   type: string;
   message: string;

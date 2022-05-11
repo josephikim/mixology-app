@@ -24,9 +24,9 @@ userRouter.get('/keywords', userController.getKeywords);
 
 userRouter.get('/randomDrink', userController.getRandomDrink);
 
-// private routes
-userRouter.get('/search/:query', [authJwt.verifyToken], userController.getSearchResults);
+userRouter.get('/search/:type/:query', userController.getSearchResults);
 
+// private routes
 userRouter.post('/addDrink', [authJwt.verifyToken], userController.addDrink);
 
 userRouter.post('/saveNotes', [authJwt.verifyToken], userController.saveNotes);

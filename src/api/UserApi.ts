@@ -5,7 +5,7 @@ import store from '../store/index';
 import * as ApiHelper from '../utils/ApiHelper';
 import { StorageHelper } from '../utils/StorageHelper';
 import { accessTokenUpdated } from '../store/authSlice';
-import { NotesPayload } from '../store/userSlice';
+import { NotesPayload, SearchPayload } from '../store/userSlice';
 import { ISearchResult, IGetVideosResult } from '../types';
 import { IDrinkDoc } from '../db/Drink';
 import { IKeywordDoc } from '../db/Keyword';
@@ -128,8 +128,8 @@ export class UserApi {
     return response.data as IGetVideosResult;
   }
 
-  async getSearchResults(query: string): Promise<ISearchResult[]> {
-    const url = `${userApiClient.defaults.baseURL}/search/${query}`;
+  async getSearchResults(payload: SearchPayload): Promise<ISearchResult[]> {
+    const url = `${userApiClient.defaults.baseURL}/search/${payload.type}/${payload.query}`;
     const response = await userApiClient.get(url);
 
     let results = [];

@@ -29,6 +29,11 @@ export interface NotesPayload {
   notes: string;
 }
 
+export interface SearchPayload {
+  type: string;
+  query: string;
+}
+
 export const initialState: UserState = {
   status: 'idle',
   drinks: [],
@@ -44,15 +49,15 @@ export const addDrink = createAsyncThunk('user/addDrink', async (idDrink: string
 
 export const getSearchResults = createAsyncThunk<
   ISearchResult[],
-  string,
+  SearchPayload,
   {
     rejectValue: IApiAccessError;
   }
->('user/getSearchResults', async (query, { rejectWithValue }) => {
+>('user/getSearchResults', async (payload, { rejectWithValue }) => {
   const api = new UserApi();
 
   try {
-    const response = await api.getSearchResults(query);
+    const response = await api.getSearchResults(payload);
 
     return response;
   } catch (err) {

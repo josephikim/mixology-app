@@ -1,17 +1,17 @@
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Switch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from './hooks';
 import { logoutAction } from './store';
 import { getKeywords, getRandomDrink } from './store/baseSlice';
-import AuthRoute from './components/AuthRoute';
-import Header from './components/Header';
-import CustomAlert from './components/CustomAlert';
-import Collection from './pages/Collection/Collection';
 import Home from './pages/Home/Home';
 import Login from './pages/Login/Login';
 import SearchResults from './pages/SearchResults/SearchResults';
 import Registration from './pages/Registration/Registration';
+import RequireAuth from './components/RequireAuth';
+import Header from './components/Header';
+import CustomAlert from './components/CustomAlert';
+import Collection from './pages/Collection/Collection';
 
 import './styles/App.css';
 
@@ -51,15 +51,20 @@ const App: React.FC = () => {
       {alerts.map((alert) => (
         <CustomAlert key={alert.id} data={alert} />
       ))}
-      <Router>
-        <Switch>
-          <AuthRoute component={Collection} path="/collection" authType="private" />
-          <AuthRoute component={SearchResults} path="/search" authType="private" />
-          <AuthRoute component={Login} path="/login" authType="guest" />
-          <AuthRoute component={Registration} path="/register" authType="guest" />
-          <AuthRoute component={Home} path="/" authType="guest" />
-        </Switch>
-      </Router>
+      <Routes>
+        <Route
+          path="/collection"
+          element={
+            <RequireAuth redirectTo="/login">
+              <Collection />
+            </RequireAuth>
+          }
+        />
+        <Route path="/search/:type/:query" element={<SearchResults />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Registration />} />
+        <Route path="/" element={<Home />} />
+      </Routes>
     </div>
   );
 };

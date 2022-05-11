@@ -1,24 +1,27 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 
-import { useAppDispatch } from '../hooks';
 import { useInput } from '../hooks/useInput';
-import { getSearchResults } from '../store/userSlice';
 
 import '../styles/SearchBox.css';
 
 const SearchBox: React.FC = () => {
-  const dispatch = useAppDispatch();
-
+  const navigate = useNavigate();
   const { value: searchInput, bind: bindSearch } = useInput('');
 
-  // handles button click or 'Enter' key press
-  const handleSearch = (): boolean => {
+  const handleSearch = (): void => {
     const query = searchInput.trim();
-    if (!query) return false;
+    if (!query) return;
 
-    dispatch(getSearchResults(query));
-    return true;
+    const path = `/search/drink/${query}`;
+    navigate(path);
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
   };
 
   return (
@@ -26,7 +29,7 @@ const SearchBox: React.FC = () => {
       <FormControl
         {...bindSearch}
         placeholder='search for a drink e.g. "margarita"'
-        onKeyPress={(e): boolean => e.key === 'Enter' && handleSearch()}
+        onKeyPress={(e) => handleKeyPress(e)}
       />
       <Button variant="primary" onClick={handleSearch}>
         Search

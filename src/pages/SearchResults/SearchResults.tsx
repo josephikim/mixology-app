@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { Row } from 'react-bootstrap';
 
@@ -24,11 +24,20 @@ const SearchResults: React.FC = () => {
     }
   }, [errorType]);
 
+  const [isSearchComplete, setIsSearchComplete] = useState(false);
   const location = useLocation();
   const { type, query } = useParams<UrlParams>();
 
   useEffect(() => {
-    dispatch(getSearchResults({ type, query } as UrlParams));
+    async function handleSearch() {
+      const resultAction = await dispatch(getSearchResults({ type, query } as UrlParams));
+
+      if (resultAction.type === '/user/getSearchResults/fulfilled') {
+        setIsSearchComplete(true);
+      }
+    }
+
+    handleSearch();
   }, [location.pathname]);
 
   const searchResults = useAppSelector((state) => state.user.searchResults);
@@ -36,6 +45,11 @@ const SearchResults: React.FC = () => {
   return (
     <div className="SearchResults">
       <ContentWrapper>
+        {isSearchComplete && (
+          <Row>
+            <h5>{`Found ${searchResults.length} results for "${query}":`}</h5>
+          </Row>
+        )}
         <Row className="row-cols-3">
           {searchResults.length > 0
             ? searchResults.map((result) => {

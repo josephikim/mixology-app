@@ -196,7 +196,7 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
     const response = await axios.get(url);
 
     // No content found
-    if (response.status === 204 || (!response.data.drinks && response.status === 200)) {
+    if (response.status === 204) {
       res.status(204).send({ message: 'No results available.' });
     }
 

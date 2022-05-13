@@ -175,20 +175,20 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
         break;
       }
       case 'ingredient': {
-        url += `filter.php?i=${query}`;
+        url += `filter.php?i=${encodeURIComponent(query)}`;
         break;
       }
       case 'glass': {
-        url += `filter.php?g=${query}`;
+        url += `filter.php?g=${encodeURIComponent(query)}`;
         break;
       }
       case 'alcohol': {
-        url += `filter.php?a=${query}`;
+        url += `filter.php?a=${encodeURIComponent(query)}`;
         break;
       }
       case 'drink':
       default: {
-        url += `search.php?s=${query}`;
+        url += `search.php?s=${encodeURIComponent(query)}`;
         break;
       }
     }
@@ -219,11 +219,6 @@ const addDrink = async (req: Request, res: Response, next: NextFunction): Promis
         const data = {
           ...req.body
         };
-
-        if (req.body.strTags?.length > 0) {
-          const strTagsSplit = req.body.strTags.split(',');
-          data['strTags'] = strTagsSplit;
-        }
 
         const newDrink = new Drink(data);
 

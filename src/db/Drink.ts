@@ -9,7 +9,7 @@ export interface IDrinkDoc extends Document {
   rating?: number;
   notes?: string;
   strDrink?: string;
-  strTags?: string[];
+  strTags?: string;
   strIBA?: string;
   strAlcoholic?: string;
   strGlass?: string;
@@ -57,7 +57,7 @@ const drinkSchema = new Schema({
     type: String
   },
   strTags: {
-    type: [String]
+    type: String
   },
   strIBA: {
     type: String

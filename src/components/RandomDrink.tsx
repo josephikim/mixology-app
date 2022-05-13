@@ -72,7 +72,7 @@ const RandomDrink: React.FC = () => {
             <strong>Tags:</strong>
           </Col>
           <Col md={8}>
-            <DrinkTags tags={drink.strTags as string[]} />
+            <DrinkTags tags={drink.strTags as string} />
           </Col>
         </Row>
       ) : null}

@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { UserApi } from '../api';
-import { IDrinkDoc } from '../db/Drink';
 import { IKeywordDoc } from '../db/Keyword';
+import { ISearchResult } from '../types';
 
 enum Status {
   idle = 'IDLE',
@@ -15,13 +15,13 @@ interface BaseState {
   status: keyof typeof Status;
   error?: string;
   errorType?: string;
-  randomDrink: IDrinkDoc;
+  randomDrink: ISearchResult;
   keywords: IKeywordDoc[];
 }
 
 const initialState: BaseState = {
   status: 'idle',
-  randomDrink: {} as IDrinkDoc,
+  randomDrink: {} as ISearchResult,
   keywords: []
 };
 
@@ -32,7 +32,7 @@ export const getKeywords = createAsyncThunk('base/getKeywords', async (): Promis
   return result;
 });
 
-export const getRandomDrink = createAsyncThunk('base/getRandomDrink', async (): Promise<IDrinkDoc> => {
+export const getRandomDrink = createAsyncThunk('base/getRandomDrink', async (): Promise<ISearchResult> => {
   const api = new UserApi();
   const result = await api.getRandomDrink();
 

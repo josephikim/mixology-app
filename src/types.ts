@@ -56,7 +56,7 @@ export interface ILoginResult {
 export interface ISearchResult {
   idDrink: string;
   strDrink?: string;
-  strTags?: string[];
+  strTags?: string;
   strIBA?: string;
   strAlcoholic?: string;
   strGlass?: string;

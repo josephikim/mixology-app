@@ -16,28 +16,30 @@ interface UserState {
   error?: string;
   errorType?: string;
   drinks: IDrinkDoc[];
-  searchResults: ISearchResult[];
+  searchResults?: ISearchResult[];
+  searchPayload?: SearchPayload;
+  searchStatus: keyof typeof Status;
 }
 
-interface IApiAccessError {
+type ApiAccessError = {
   type: string;
   message: string;
-}
+};
 
-export interface NotesPayload {
+export type NotesPayload = {
   idDrink: string;
   notes: string;
-}
+};
 
-export interface SearchPayload {
+export type SearchPayload = {
   type: string;
   query: string;
-}
+};
 
 export const initialState: UserState = {
   status: 'idle',
   drinks: [],
-  searchResults: []
+  searchStatus: 'idle'
 };
 
 export const addDrink = createAsyncThunk('user/addDrink', async (idDrink: string): Promise<IDrinkDoc> => {
@@ -51,7 +53,7 @@ export const getSearchResults = createAsyncThunk<
   ISearchResult[],
   SearchPayload,
   {
-    rejectValue: IApiAccessError;
+    rejectValue: ApiAccessError;
   }
 >('user/getSearchResults', async (payload, { rejectWithValue }) => {
   const api = new UserApi();
@@ -69,7 +71,7 @@ export const saveNotes = createAsyncThunk<
   IDrinkDoc,
   NotesPayload,
   {
-    rejectValue: IApiAccessError;
+    rejectValue: ApiAccessError;
   }
 >('user/saveNotes', async (payload, { rejectWithValue }) => {
   const api = new UserApi();
@@ -86,7 +88,7 @@ export const deleteDrink = createAsyncThunk<
   IDrinkDoc,
   string,
   {
-    rejectValue: IApiAccessError;
+    rejectValue: ApiAccessError;
   }
 >('user/deleteDrink', async (idDrink, { rejectWithValue }) => {
   const api = new UserApi();
@@ -117,16 +119,20 @@ export const userSlice = createSlice({
   // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {
     builder
-      .addCase(getSearchResults.pending, (state) => {
+      .addCase(getSearchResults.pending, (state, action) => {
         state.status = 'loading';
+        state.searchStatus = 'loading';
+        state.searchPayload = action.meta.arg;
       })
       .addCase(getSearchResults.fulfilled, (state, action) => {
         const results = action.payload;
         state.status = 'succeeded';
+        state.searchStatus = 'succeeded';
         state.searchResults = results;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.status = 'failed';
+        state.searchStatus = 'failed';
         state.error = action.error.message;
         if (action.payload) {
           state.errorType = action.payload.type;

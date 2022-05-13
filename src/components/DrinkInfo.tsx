@@ -11,6 +11,8 @@ interface DrinkInfoProps {
 }
 
 const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
+  if (!data || data === undefined) return null;
+
   return (
     <div className="DrinkInfo">
       <Row>
@@ -39,7 +41,7 @@ const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
           <strong>Tags:</strong>
         </Col>
         <Col md={8}>
-          <DrinkTags tags={data.strTags as string[]} />
+          <DrinkTags tags={data.strTags as string} />
         </Col>
       </Row>
     </div>

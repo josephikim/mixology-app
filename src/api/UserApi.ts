@@ -78,11 +78,11 @@ export class UserApi {
     return response.data as IKeywordDoc[];
   }
 
-  async getRandomDrink(): Promise<IDrinkDoc> {
+  async getRandomDrink(): Promise<ISearchResult> {
     const url = `${userApiClient.defaults.baseURL}/randomDrink/`;
     const response = await userApiClient.get(url);
 
-    return response.data as IDrinkDoc;
+    return response.data as ISearchResult;
   }
 
   async addDrink(idDrink: string): Promise<IDrinkDoc> {
@@ -135,37 +135,7 @@ export class UserApi {
     let results = [];
 
     if (response.status === 200 && response.data.length > 0) {
-      results = response.data.map((drink: ISearchResult) => {
-        return {
-          idDrink: drink.idDrink,
-          ...(!!drink.strDrink && { strDrink: drink.strDrink }),
-          ...(!!drink.strTags && { strTags: drink.strTags }),
-          ...(!!drink.strIBA && { strIBA: drink.strIBA }),
-          ...(!!drink.strAlcoholic && { strAlcoholic: drink.strAlcoholic }),
-          ...(!!drink.strGlass && { strGlass: drink.strGlass }),
-          ...(!!drink.strInstructions && { strInstructions: drink.strInstructions }),
-          ...(!!drink.strDrinkThumb && { strDrinkThumb: drink.strDrinkThumb }),
-          ...(!!drink.strIngredient1 && { strIngredient1: drink.strIngredient1 }),
-          ...(!!drink.strIngredient2 && { strIngredient2: drink.strIngredient2 }),
-          ...(!!drink.strIngredient3 && { strIngredient3: drink.strIngredient3 }),
-          ...(!!drink.strIngredient4 && { strIngredient4: drink.strIngredient4 }),
-          ...(!!drink.strIngredient5 && { strIngredient5: drink.strIngredient5 }),
-          ...(!!drink.strIngredient6 && { strIngredient6: drink.strIngredient6 }),
-          ...(!!drink.strIngredient7 && { strIngredient7: drink.strIngredient7 }),
-          ...(!!drink.strIngredient8 && { strIngredient8: drink.strIngredient8 }),
-          ...(!!drink.strIngredient9 && { strIngredient9: drink.strIngredient9 }),
-          ...(!!drink.strMeasure1 && { strMeasure1: drink.strMeasure1 }),
-          ...(!!drink.strMeasure2 && { strMeasure2: drink.strMeasure2 }),
-          ...(!!drink.strMeasure3 && { strMeasure3: drink.strMeasure3 }),
-          ...(!!drink.strMeasure4 && { strMeasure4: drink.strMeasure4 }),
-          ...(!!drink.strMeasure5 && { strMeasure5: drink.strMeasure5 }),
-          ...(!!drink.strMeasure6 && { strMeasure6: drink.strMeasure6 }),
-          ...(!!drink.strMeasure7 && { strMeasure7: drink.strMeasure7 }),
-          ...(!!drink.strMeasure8 && { strMeasure8: drink.strMeasure8 }),
-          ...(!!drink.strMeasure9 && { strMeasure9: drink.strMeasure9 }),
-          ...(!!drink.strImageSource && { strImageSource: drink.strImageSource })
-        };
-      });
+      results = response.data;
     }
 
     return results as ISearchResult[];

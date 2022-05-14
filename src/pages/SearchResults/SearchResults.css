@@ -1,0 +1,8 @@
+.SearchResults .search-status {
+  margin-bottom: 2rem;
+}
+
+.SearchResults .search-status h5 {
+  margin: 0 auto;
+  max-width: 1080px;
+}

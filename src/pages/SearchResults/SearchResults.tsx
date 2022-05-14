@@ -1,13 +1,15 @@
 import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Row } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { logoutAction } from '../../store';
 import { SearchPayload, getSearchResults } from '../../store/userSlice';
 import ContentWrapper from '../../layout/ContentWrapper';
-import SearchResultCard from './SearchResultCard';
+import SearchResultItem from './SearchResultItem';
 import { ISearchResult } from '../../types';
+
+import './SearchResults.css';
 
 type UrlParams = {
   type: string;
@@ -53,35 +55,33 @@ const SearchResults: React.FC = () => {
   });
 
   const renderContent = () => {
+    const isSearchLoading = searchStatus === 'idle' || searchStatus === 'loading';
     const isSearchSuccess = searchStatus === 'succeeded' && !isNewSearchType && !isNewSearchQuery;
     const isSearchFail = searchStatus === 'failed' && !isNewSearchType && !isNewSearchQuery;
-
-    if (searchStatus === 'idle' || searchStatus === 'loading') {
-      return (
-        <ContentWrapper>
-          <h5>Retrieving data...</h5>
-        </ContentWrapper>
-      );
-    }
 
     // search finished
     return (
       <ContentWrapper>
-        {isSearchSuccess && (
-          <>
+        <>
+          <Row className="search-status">
+            <Col>
+              {isSearchLoading && <h5>Retrieving data...</h5>}
+              {isSearchSuccess && <h5>{`Found ${searchResults.length} results for "${query}":`}</h5>}
+              {isSearchFail && <h5>Error retrieving data!</h5>}
+            </Col>
+          </Row>
+          {isSearchSuccess && (
             <Row>
-              <h5>{`Found ${searchResults.length} results for "${query}":`}</h5>
+              <Col>
+                {searchResults.length > 0
+                  ? searchResults.map((result) => {
+                      return <SearchResultItem key={result.idDrink} data={result} />;
+                    })
+                  : null}
+              </Col>
             </Row>
-            <Row className="row-cols-3">
-              {searchResults.length > 0
-                ? searchResults.map((result) => {
-                    return <SearchResultCard key={result.idDrink} data={result} />;
-                  })
-                : null}
-            </Row>
-          </>
-        )}
-        {isSearchFail && <h5>Error retrieving data!</h5>}
+          )}
+        </>
       </ContentWrapper>
     );
   };

@@ -2,7 +2,7 @@ import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 import { login } from '../../store/authSlice';
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useAppDispatch } from '../../hooks';
 import { useInput } from '../../hooks/useInput';
 import { validateFields } from '../../validation';
 
@@ -10,7 +10,6 @@ import './LoginForm.css';
 
 const LoginForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const userStatus = useAppSelector((state) => state.auth.status);
 
   const { value: username, bind: bindUsername } = useInput('');
   const { value: password, bind: bindPassword } = useInput('');
@@ -26,9 +25,7 @@ const LoginForm: React.FC = () => {
 
     if (validationErrors.length === 0) {
       // no input errors, submit the form
-      if (userStatus === 'idle' || userStatus === 'failed') {
-        dispatch(login({ username, password }));
-      }
+      dispatch(login({ username, password }));
     } else {
       // alert user of input errors
       let errorMsg = '';

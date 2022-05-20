@@ -1,19 +1,19 @@
 import { Schema, Document, model } from 'mongoose';
 
 import { YoutubeVideo } from '../types';
-import { IUserDoc } from './User';
 
 export interface IDrinkDoc extends Document {
-  user: IUserDoc;
-  idDrinkApi: string;
-  rating?: number;
-  notes?: string;
+  idDrink: string;
   strDrink?: string;
   strTags?: string;
   strIBA?: string;
   strAlcoholic?: string;
   strGlass?: string;
   strInstructions?: string;
+  strInstructionsDE?: string;
+  strInstructionsES?: string;
+  strInstructionsFR?: string;
+  strInstructionsIT?: string;
   strDrinkThumb?: string;
   strIngredient1?: string;
   strIngredient2?: string;
@@ -24,6 +24,12 @@ export interface IDrinkDoc extends Document {
   strIngredient7?: string;
   strIngredient8?: string;
   strIngredient9?: string;
+  strIngredient10?: string;
+  strIngredient11?: string;
+  strIngredient12?: string;
+  strIngredient13?: string;
+  strIngredient14?: string;
+  strIngredient15?: string;
   strMeasure1?: string;
   strMeasure2?: string;
   strMeasure3?: string;
@@ -33,25 +39,20 @@ export interface IDrinkDoc extends Document {
   strMeasure7?: string;
   strMeasure8?: string;
   strMeasure9?: string;
+  strMeasure10?: string;
+  strMeasure11?: string;
+  strMeasure12?: string;
+  strMeasure13?: string;
+  strMeasure14?: string;
+  strMeasure15?: string;
   strImageSource?: string;
   youtubeVideos?: YoutubeVideo[];
 }
 
 const drinkSchema = new Schema({
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
-  },
-  idDrinkApi: {
+  idDrink: {
     type: String,
     required: true
-  },
-  rating: {
-    type: Number
-  },
-  notes: {
-    type: String
   },
   strDrink: {
     type: String
@@ -69,6 +70,15 @@ const drinkSchema = new Schema({
     type: String
   },
   strInstructions: {
+    type: String
+  },
+  strInstructionsDE: {
+    type: String
+  },
+  strInstructionsES: {
+    type: String
+  },
+  strInstructionsIT: {
     type: String
   },
   strDrinkThumb: {
@@ -101,6 +111,24 @@ const drinkSchema = new Schema({
   strIngredient9: {
     type: String
   },
+  strIngredient10: {
+    type: String
+  },
+  strIngredient11: {
+    type: String
+  },
+  strIngredient12: {
+    type: String
+  },
+  strIngredient13: {
+    type: String
+  },
+  strIngredient14: {
+    type: String
+  },
+  strIngredient15: {
+    type: String
+  },
   strMeasure1: {
     type: String
   },
@@ -126,6 +154,24 @@ const drinkSchema = new Schema({
     type: String
   },
   strMeasure9: {
+    type: String
+  },
+  strMeasure10: {
+    type: String
+  },
+  strMeasure11: {
+    type: String
+  },
+  strMeasure12: {
+    type: String
+  },
+  strMeasure13: {
+    type: String
+  },
+  strMeasure14: {
+    type: String
+  },
+  strMeasure15: {
     type: String
   },
   strImageSource: {

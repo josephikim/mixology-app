@@ -12,10 +12,11 @@ interface KeywordLinksProps {
 }
 
 const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
-  const keywords = useAppSelector((state) => state.base.keywords);
+  const keywords = useAppSelector((state) => state.user.keywords);
 
   if (!keywords.length) return null;
 
+  // filter keywords by type and sort alphabetically
   const keywordsByType = keywords
     .filter((keyword) => keyword.type === type)
     .sort((a, b) => a.value.localeCompare(b.value)) as IKeywordDoc[];
@@ -32,7 +33,7 @@ const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
         <Col>
           {keywordsByType.map((keyword) => {
             return (
-              <Link key={keyword.value} to={`/search/${type}/${keyword.value}`}>
+              <Link key={keyword.value} to={`/search/${keyword.type}/${keyword.value}`}>
                 {keyword.value}
               </Link>
             );

@@ -8,7 +8,7 @@ import SearchBox from './SearchBox';
 const Header: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const authenticated = useAppSelector((state) => state.auth.accessToken);
+  const authToken = useAppSelector((state) => state.auth.accessToken);
 
   const handleLogout = (): void => {
     dispatch(logoutAction());
@@ -22,7 +22,7 @@ const Header: React.FC = () => {
           <SearchBox />
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
-            {authenticated ? (
+            {authToken ? (
               <Nav>
                 <Nav.Link href="/">Home</Nav.Link>
                 <Nav.Link href="/collection">Collection</Nav.Link>

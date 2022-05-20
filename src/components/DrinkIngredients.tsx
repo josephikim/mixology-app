@@ -2,12 +2,11 @@ import React from 'react';
 import { Row, ListGroup } from 'react-bootstrap';
 
 import { IDrinkDoc } from '../db/Drink';
-import { ISearchResult } from '../types';
 
 import '../styles/DrinkIngredients.css';
 
 interface DrinkIngredientsProps {
-  data: IDrinkDoc | ISearchResult;
+  data: IDrinkDoc;
 }
 
 interface IngredientsEntry {
@@ -15,7 +14,7 @@ interface IngredientsEntry {
   entry: string;
 }
 
-const buildIngredients = (drink: IDrinkDoc | ISearchResult): IngredientsEntry[] => {
+const buildIngredients = (drink: IDrinkDoc): IngredientsEntry[] => {
   const drinkClone = JSON.parse(JSON.stringify(drink));
   const data: IngredientsEntry[] = [];
 

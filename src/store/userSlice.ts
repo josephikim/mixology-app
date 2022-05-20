@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
+import { IUserCollectionItemDoc } from 'src/db/UserCollectionItem';
 
 import { UserApi } from '../api';
 import { IDrinkDoc } from '../db/Drink';
-import { IGetVideosResult, ISearchResult } from '../types';
+import { IKeywordDoc } from '../db/Keyword';
 
 enum Status {
   idle = 'IDLE',
@@ -16,9 +17,10 @@ interface UserState {
   error?: string;
   errorType?: string;
   drinks: IDrinkDoc[];
-  searchResults?: ISearchResult[];
+  keywords: IKeywordDoc[];
+  randomDrink: IDrinkDoc;
+  collection?: IUserCollectionItemDoc[];
   searchPayload?: SearchPayload;
-  searchStatus: keyof typeof Status;
 }
 
 type ApiAccessError = {
@@ -39,18 +41,43 @@ export type SearchPayload = {
 export const initialState: UserState = {
   status: 'idle',
   drinks: [],
-  searchStatus: 'idle'
+  keywords: [],
+  randomDrink: {} as IDrinkDoc
 };
 
-export const addDrink = createAsyncThunk('user/addDrink', async (idDrink: string): Promise<IDrinkDoc> => {
+export const getKeywords = createAsyncThunk('user/getKeywords', async (): Promise<IKeywordDoc[]> => {
   const api = new UserApi();
-  const result = await api.addDrink(idDrink);
+  const result = await api.getKeywords();
 
   return result;
 });
 
+export const getRandomDrink = createAsyncThunk('user/getRandomDrink', async (): Promise<IDrinkDoc> => {
+  const api = new UserApi();
+  const result = await api.getRandomDrink();
+
+  return result;
+});
+
+export const getDrinks = createAsyncThunk<
+  IDrinkDoc[],
+  string[],
+  {
+    rejectValue: ApiAccessError;
+  }
+>('user/getDrinks', async (ids, { rejectWithValue }) => {
+  const api = new UserApi();
+
+  try {
+    const response = await api.getDrinks(ids);
+    return response;
+  } catch (err) {
+    return rejectWithValue(err);
+  }
+});
+
 export const getSearchResults = createAsyncThunk<
-  ISearchResult[],
+  IDrinkDoc[],
   SearchPayload,
   {
     rejectValue: ApiAccessError;
@@ -67,8 +94,35 @@ export const getSearchResults = createAsyncThunk<
   }
 });
 
+export const addCollectionItem = createAsyncThunk(
+  'user/addCollectionItem',
+  async (idDrink: string): Promise<IUserCollectionItemDoc> => {
+    const api = new UserApi();
+    const result = await api.addCollectionItem(idDrink);
+
+    return result;
+  }
+);
+
+export const deleteCollectionItem = createAsyncThunk<
+  IUserCollectionItemDoc,
+  string,
+  {
+    rejectValue: ApiAccessError;
+  }
+>('user/deleteCollectionItem', async (idDrink, { rejectWithValue }) => {
+  const api = new UserApi();
+
+  try {
+    const response = await api.deleteCollectionItem(idDrink);
+    return response;
+  } catch (err) {
+    return rejectWithValue(err);
+  }
+});
+
 export const saveNotes = createAsyncThunk<
-  IDrinkDoc,
+  IUserCollectionItemDoc,
   NotesPayload,
   {
     rejectValue: ApiAccessError;
@@ -84,80 +138,91 @@ export const saveNotes = createAsyncThunk<
   }
 });
 
-export const deleteDrink = createAsyncThunk<
-  IDrinkDoc,
-  string,
-  {
-    rejectValue: ApiAccessError;
-  }
->('user/deleteDrink', async (idDrink, { rejectWithValue }) => {
-  const api = new UserApi();
-
-  try {
-    const response = await api.deleteDrink(idDrink);
-    return response;
-  } catch (err) {
-    return rejectWithValue(err);
-  }
-});
-
-export const getVideos = createAsyncThunk('user/getVideos', async (drinkId: string): Promise<IGetVideosResult> => {
-  const api = new UserApi();
-  const result = await api.getVideos(drinkId);
-
-  return result;
-});
-
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    drinksUpdated: (state: UserState, action: PayloadAction<IDrinkDoc[]>) => {
-      state.drinks = action.payload;
+    updateCollection: (state: UserState, action: PayloadAction<IUserCollectionItemDoc[]>) => {
+      state.collection = action.payload;
     }
   },
   // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {
     builder
+      .addCase(getKeywords.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getKeywords.fulfilled, (state: UserState, action) => {
+        state.keywords = action.payload;
+        state.status = 'succeeded';
+      })
+      .addCase(getKeywords.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(getRandomDrink.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getRandomDrink.fulfilled, (state: UserState, action) => {
+        state.randomDrink = action.payload;
+        state.status = 'succeeded';
+      })
+      .addCase(getRandomDrink.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(getDrinks.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getDrinks.fulfilled, (state: UserState, action) => {
+        state.drinks = action.payload;
+        state.status = 'succeeded';
+      })
+      .addCase(getDrinks.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
       .addCase(getSearchResults.pending, (state, action) => {
         state.status = 'loading';
-        state.searchStatus = 'loading';
         state.searchPayload = action.meta.arg;
       })
-      .addCase(getSearchResults.fulfilled, (state, action) => {
+      .addCase(getSearchResults.fulfilled, (state: UserState, action) => {
         const results = action.payload;
         state.status = 'succeeded';
-        state.searchStatus = 'succeeded';
-        state.searchResults = results;
+        state.drinks = results;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.status = 'failed';
-        state.searchStatus = 'failed';
+        state.drinks = [];
         state.error = action.error.message;
         if (action.payload) {
           state.errorType = action.payload.type;
         }
       })
-      .addCase(addDrink.pending, (state) => {
+      .addCase(addCollectionItem.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(addDrink.fulfilled, (state: UserState, action) => {
+      .addCase(addCollectionItem.fulfilled, (state: UserState, action) => {
         const result = action.payload;
-        const newState = [...state.drinks, result];
+        const newState = [...(state.collection as IUserCollectionItemDoc[]), result];
         state.status = 'succeeded';
-        state.drinks = newState;
+        state.collection = newState;
       })
-      .addCase(addDrink.rejected, (state, action) => {
+      .addCase(addCollectionItem.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })
       .addCase(saveNotes.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(saveNotes.fulfilled, (state, action) => {
-        state.drinks = state.drinks.map((drink) =>
-          drink._id === action.payload._id ? { ...drink, notes: action.payload.notes } : drink
-        );
+      .addCase(saveNotes.fulfilled, (state: UserState, action) => {
+        if (state.collection) {
+          state.collection = state.collection.map((item) =>
+            item.idDrink === action.payload.idDrink
+              ? ({ ...item, notes: action.payload.notes } as IUserCollectionItemDoc)
+              : item
+          );
+        }
         state.status = 'succeeded';
       })
       .addCase(saveNotes.rejected, (state, action) => {
@@ -167,36 +232,25 @@ export const userSlice = createSlice({
           state.errorType = action.payload.type;
         }
       })
-      .addCase(deleteDrink.pending, (state) => {
+      .addCase(deleteCollectionItem.pending, (state) => {
         state.status = 'loading';
       })
-      .addCase(deleteDrink.fulfilled, (state, action) => {
-        state.drinks = state.drinks.filter((drink) => drink._id !== action.payload._id);
+      .addCase(deleteCollectionItem.fulfilled, (state, action) => {
+        if (state.collection) {
+          state.collection = state.collection.filter((item) => item.idDrink !== action.payload.idDrink);
+        }
         state.status = 'succeeded';
       })
-      .addCase(deleteDrink.rejected, (state, action) => {
+      .addCase(deleteCollectionItem.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
         if (action.payload) {
           state.errorType = action.payload.type;
         }
-      })
-      .addCase(getVideos.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getVideos.fulfilled, (state, action) => {
-        state.drinks = state.drinks.map((drink) =>
-          drink._id === action.payload.drinkId ? { ...drink, youtubeVideos: action.payload.videos } : drink
-        );
-        state.status = 'succeeded';
-      })
-      .addCase(getVideos.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
       });
   }
 });
 
-export const { drinksUpdated } = userSlice.actions;
+export const { updateCollection } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { logoutAction } from '../../store';
-import { SearchPayload, getSearchResults } from '../../store/userSlice';
+import { getSearchResults, SearchPayload } from '../../store/userSlice';
 import ContentWrapper from '../../layout/ContentWrapper';
 import SearchResultItem from './SearchResultItem';
-import { ISearchResult } from '../../types';
 
 import './SearchResults.css';
 
@@ -18,6 +17,9 @@ type UrlParams = {
 
 const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();
+  const [isSearchSuccess, setIsSearchSuccess] = useState(false);
+  const [isSearchFail, setIsSearchFail] = useState(false);
+
   const errorType = useAppSelector((state) => state.user.errorType);
 
   useEffect(() => {
@@ -29,61 +31,67 @@ const SearchResults: React.FC = () => {
 
   const { type, query } = useParams<UrlParams>();
 
-  const searchStatus = useAppSelector((state) => state.user.searchStatus);
+  const status = useAppSelector((state) => state.user.status);
   const searchPayload = useAppSelector((state) => state.user.searchPayload) as SearchPayload;
-  const searchResults = useAppSelector((state) => state.user.searchResults) as ISearchResult[];
-  let isNewSearchType = false;
-  let isNewSearchQuery = false;
+  const drinks = useAppSelector((state) => state.user.drinks);
 
-  if (searchPayload !== undefined && Object.keys(searchPayload).length > 0) {
-    isNewSearchType = searchPayload.type.toLowerCase() !== (type as string).toLowerCase();
-  }
-  if (searchPayload !== undefined && Object.keys(searchPayload).length > 0) {
-    isNewSearchQuery = searchPayload.query.toLowerCase() !== (query as string).toLowerCase();
+  let isSearchPayloadMatch = false;
+
+  if (
+    searchPayload !== undefined &&
+    searchPayload.type.toLowerCase() === (type as string).toLowerCase() &&
+    searchPayload.query.toLowerCase() === (query as string).toLowerCase()
+  ) {
+    isSearchPayloadMatch = true;
   }
 
-  const handleSearch = async () => {
-    if (searchStatus !== 'loading' && (!searchPayload || isNewSearchType || isNewSearchQuery)) {
+  const isSearchComplete = isSearchPayloadMatch && drinks !== undefined && status !== 'loading';
+
+  useEffect(() => {
+    if (!isSearchComplete) {
       dispatch(getSearchResults({ type, query } as UrlParams));
-    } else {
-      return;
     }
-  };
+  }, []);
 
-  handleSearch().catch((err) => {
-    alert(err);
-  });
+  if (isSearchComplete && status === 'succeeded' && !isSearchSuccess) setIsSearchSuccess(true);
+  if (isSearchComplete && status === 'failed' && !isSearchFail) setIsSearchFail(true);
 
   const renderContent = () => {
-    const isSearchLoading = searchStatus === 'idle' || searchStatus === 'loading';
-    const isSearchSuccess = searchStatus === 'succeeded' && !isNewSearchType && !isNewSearchQuery;
-    const isSearchFail = searchStatus === 'failed' && !isNewSearchType && !isNewSearchQuery;
+    const isSearchComplete = isSearchSuccess || isSearchFail;
 
-    // search finished
-    return (
-      <ContentWrapper>
-        <>
+    if (!isSearchComplete) {
+      return (
+        <ContentWrapper>
           <Row className="search-status">
             <Col>
-              {isSearchLoading && <h5>Retrieving data...</h5>}
-              {isSearchSuccess && <h5>{`Found ${searchResults.length} results for "${query}":`}</h5>}
+              <h5>Retrieving data...</h5>
+            </Col>
+          </Row>
+        </ContentWrapper>
+      );
+    } else {
+      return (
+        <ContentWrapper>
+          <Row className="search-status">
+            <Col>
+              {isSearchSuccess && <h5>{`Found ${drinks.length} results for "${query}":`}</h5>}
               {isSearchFail && <h5>Error retrieving data!</h5>}
             </Col>
           </Row>
           {isSearchSuccess && (
             <Row>
               <Col>
-                {searchResults.length > 0
-                  ? searchResults.map((result) => {
-                      return <SearchResultItem key={result.idDrink} data={result} />;
+                {drinks.length > 0
+                  ? drinks.map((drink) => {
+                      return <SearchResultItem key={drink.idDrink} drink={drink} />;
                     })
                   : null}
               </Col>
             </Row>
           )}
-        </>
-      </ContentWrapper>
-    );
+        </ContentWrapper>
+      );
+    }
   };
 
   return <div className="SearchResults">{renderContent()}</div>;

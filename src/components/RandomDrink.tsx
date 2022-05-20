@@ -9,7 +9,7 @@ import DrinkInstructions from './DrinkInstructions';
 import '../styles/RandomDrink.css';
 
 const RandomDrink: React.FC = () => {
-  const drink = useAppSelector((state) => state.base.randomDrink);
+  const drink = useAppSelector((state) => state.user.randomDrink);
 
   if (!drink || drink === undefined) return null;
 
@@ -17,7 +17,7 @@ const RandomDrink: React.FC = () => {
     <div className="RandomDrink">
       <Row>
         <Col>
-          <label>Random Drink</label>
+          <strong>Random Drink</strong>
         </Col>
       </Row>
 
@@ -62,7 +62,7 @@ const RandomDrink: React.FC = () => {
           <strong>Instructions:</strong>
         </Col>
         <Col md={8}>
-          <DrinkInstructions instructions={drink.strInstructions as string} />
+          <DrinkInstructions text={drink.strInstructions as string} />
         </Col>
       </Row>
 

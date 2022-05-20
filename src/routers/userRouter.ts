@@ -24,15 +24,15 @@ userRouter.get('/keywords', userController.getKeywords);
 
 userRouter.get('/randomDrink', userController.getRandomDrink);
 
+userRouter.post('/drinks', userController.getDrinks);
+
 userRouter.get('/search/:type/:query', userController.getSearchResults);
 
 // private routes
-userRouter.post('/addDrink', [authJwt.verifyToken], userController.addDrink);
+userRouter.post('/addCollectionItem', [authJwt.verifyToken], userController.addCollectionItem);
 
 userRouter.post('/saveNotes', [authJwt.verifyToken], userController.saveNotes);
 
-userRouter.post('/deleteDrink/:drinkId', [authJwt.verifyToken], userController.deleteDrink);
-
-userRouter.get('/getVideos/:drinkId', [authJwt.verifyToken], userController.getVideos);
+userRouter.post('/deleteCollectionItem/:idDrink', [authJwt.verifyToken], userController.deleteCollectionItem);
 
 export default userRouter;

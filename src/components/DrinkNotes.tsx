@@ -2,30 +2,30 @@ import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
 
-import { useAppSelector, useAppDispatch } from '../hooks';
+import { useAppDispatch } from '../hooks';
 import { saveNotes, NotesPayload } from '../store/userSlice';
 import { createAlert } from '../store/alertSlice';
 
 import '../styles/DrinkNotes.css';
 
 interface DrinkNotesProps {
-  drinkId: string;
+  notes: string;
+  idDrink: string;
 }
 
-const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
+const DrinkNotes: React.FC<DrinkNotesProps> = ({ notes, idDrink }) => {
   const dispatch = useAppDispatch();
-  const drink = useAppSelector((state) => state.user.drinks.filter((drink) => drink._id === props.drinkId))[0];
 
-  const [notesInput, setNotesInput] = useState(drink.notes);
+  const [notesInput, setNotesInput] = useState(notes);
 
   const handleClick = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
     event.preventDefault();
 
-    const isValidInput = (notesInput && !drink.notes) || (drink.notes && notesInput !== drink.notes);
+    const isValidInput = (notesInput && !notes) || (notes && notesInput !== notes);
 
     if (isValidInput) {
       const payload = {
-        idDrink: drink._id,
+        idDrink: idDrink,
         notes: notesInput
       } as NotesPayload;
 
@@ -56,7 +56,7 @@ const DrinkNotes: React.FC<DrinkNotesProps> = (props) => {
           onChange={(e): void => setNotesInput(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" id={drink._id} onClick={(e): Promise<void> => handleClick(e)}>
+      <Button variant="primary" id={idDrink} onClick={(e): Promise<void> => handleClick(e)}>
         Submit
       </Button>
     </Form>

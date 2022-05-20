@@ -1,16 +1,13 @@
-import mongoose, { ConnectOptions } from 'mongoose';
+import mongoose from 'mongoose';
 import Role from './Role';
 
 mongoose.Promise = global.Promise;
 
 // Connect to MongoDB
-const DB_URL = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`;
+const MONGO_URL = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DB}`;
 
 const db = mongoose
-  .connect(DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  } as ConnectOptions)
+  .connect(MONGO_URL)
   .then(() => {
     console.log('Successfully connected to MongoDB.');
     initialRoles();

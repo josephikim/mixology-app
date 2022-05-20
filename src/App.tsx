@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from './hooks';
 import { logoutAction } from './store';
-import { getKeywords, getRandomDrink } from './store/baseSlice';
+import { getKeywords, getRandomDrink } from './store/userSlice';
 import Home from './pages/Home/Home';
+import Drink from './pages/Drink/Drink';
 import Login from './pages/Login/Login';
 import SearchResults from './pages/SearchResults/SearchResults';
 import Registration from './pages/Registration/Registration';
@@ -18,7 +19,8 @@ import './styles/App.css';
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
 
-  const keywords = useAppSelector((state) => state.base.keywords);
+  const authToken = useAppSelector((state) => state.auth.accessToken);
+  const keywords = useAppSelector((state) => state.user.keywords);
 
   useEffect(() => {
     if (!keywords || keywords.length < 1) {
@@ -26,7 +28,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const randomDrink = useAppSelector((state) => state.base.randomDrink);
+  const randomDrink = useAppSelector((state) => state.user.randomDrink);
 
   useEffect(() => {
     if (!randomDrink || Object.keys(randomDrink).length === 0) {
@@ -61,8 +63,9 @@ const App: React.FC = () => {
           }
         />
         <Route path="/search/:type/:query" element={<SearchResults />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Registration />} />
+        <Route path="/drink/:id" element={<Drink />} />
+        <Route path="login" element={authToken ? <Navigate replace to="/" /> : <Login />} />
+        <Route path="register" element={authToken ? <Navigate replace to="/" /> : <Registration />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </div>

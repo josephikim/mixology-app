@@ -2,13 +2,13 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
 
-import { deleteDrink } from '../store/userSlice';
+import { deleteCollectionItem } from '../store/userSlice';
 import { createAlert } from '../store/alertSlice';
 import { useAppDispatch } from '../hooks';
 import { IDrinkDoc } from '../db/Drink';
 
 interface DeleteDrinkButtonProps {
-  drinkId: string;
+  idDrink: string;
   drinkName: string;
 }
 
@@ -19,9 +19,9 @@ const DeleteDrinkButton: React.FC<DeleteDrinkButtonProps> = (props) => {
     event.preventDefault();
 
     if (window.confirm(`Are you sure you wish to delete "${props.drinkName}" from your collection?`)) {
-      const resultAction = await dispatch(deleteDrink(props.drinkId));
+      const resultAction = await dispatch(deleteCollectionItem(props.idDrink));
 
-      if (resultAction.type === 'user/deleteDrink/fulfilled') {
+      if (resultAction.type === 'user/deleteCollectionItem/fulfilled') {
         const resultPayload = resultAction.payload as IDrinkDoc;
 
         const payload = {
@@ -37,7 +37,7 @@ const DeleteDrinkButton: React.FC<DeleteDrinkButtonProps> = (props) => {
 
   return (
     <div className="DeleteDrinkButton">
-      <Button variant="danger" id={props.drinkId} onClick={(e): Promise<void> => handleClick(e)}>
+      <Button variant="danger" id={props.idDrink} onClick={(e): Promise<void> => handleClick(e)}>
         Delete Drink
       </Button>
     </div>

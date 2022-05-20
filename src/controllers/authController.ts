@@ -1,16 +1,17 @@
-import jwt from 'jsonwebtoken';
-import { HydratedDocument } from 'mongoose';
 import { Request, Response, NextFunction } from 'express';
+import { HydratedDocument } from 'mongoose';
+import jwt from 'jsonwebtoken';
 
 import db from '../db';
-import { jwtSecretKey, jwtExpiration } from '../config/authConfig';
 import { IRoleDoc } from '../db/Role';
-import { IDrinkDoc } from '../db/Drink';
+import { IUserCollectionItemDoc } from '../db/UserCollectionItem';
+import { jwtSecretKey, jwtExpiration } from '../config/authConfig';
+import { IAuthToken } from '../types';
 
 const User = db.user;
 const Role = db.role;
-const Drink = db.drink;
 const RefreshToken = db.refreshToken;
+const UserCollectionItem = db.userCollectionItem;
 
 const register = (req: Request, res: Response, next: NextFunction): NextFunction | void => {
   const user = new User({
@@ -97,31 +98,24 @@ const login = (req: Request, res: Response, next: NextFunction): NextFunction | 
         authorities.push('ROLE_' + user.roles[i].name.toUpperCase());
       }
 
-      const loginData = {
+      const tokenResult = {
         userId: user._id,
         roles: authorities,
         accessToken: token,
         refreshToken: refreshToken,
         tokenType: 'jwt'
+      } as IAuthToken;
+
+      const userCollection = (await UserCollectionItem.find({
+        user: user._id
+      }).exec()) as IUserCollectionItemDoc[];
+
+      const response = {
+        token: tokenResult,
+        collection: userCollection
       };
 
-      Drink.find(
-        {
-          user: user._id
-        },
-        (err: any, drinks: HydratedDocument<IDrinkDoc>[]) => {
-          if (err) {
-            return next(err);
-          }
-
-          const drinkData = drinks ? drinks : [];
-
-          res.status(200).send({
-            loginData,
-            drinkData
-          });
-        }
-      );
+      res.status(200).send(response);
     });
 };
 

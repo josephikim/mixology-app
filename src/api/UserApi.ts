@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 import settings from './Settings';
-import store from '../store/index';
 import * as ApiHelper from '../utils/ApiHelper';
 import { StorageHelper } from '../utils/StorageHelper';
+import store from '../store/index';
 import { accessTokenUpdated } from '../store/authSlice';
 import { NotesPayload, SearchPayload } from '../store/userSlice';
-import { ISearchResult, IGetVideosResult } from '../types';
 import { IDrinkDoc } from '../db/Drink';
 import { IKeywordDoc } from '../db/Keyword';
+import { IUserCollectionItemDoc } from '../db/UserCollectionItem';
 
 const userApiClient = axios.create({
   baseURL: settings.baseUrl,
@@ -78,66 +78,58 @@ export class UserApi {
     return response.data as IKeywordDoc[];
   }
 
-  async getRandomDrink(): Promise<ISearchResult> {
+  async getRandomDrink(): Promise<IDrinkDoc> {
     const url = `${userApiClient.defaults.baseURL}/randomDrink/`;
     const response = await userApiClient.get(url);
 
-    return response.data as ISearchResult;
-  }
-
-  async addDrink(idDrink: string): Promise<IDrinkDoc> {
-    const userId = store.getState().auth.userId;
-    const storedResult = store
-      .getState()
-      .user.searchResults.filter((result: ISearchResult) => result.idDrink == idDrink)[0];
-    const storedResultClone = JSON.parse(JSON.stringify(storedResult));
-
-    const drink = {
-      ...storedResultClone,
-      idDrinkApi: storedResultClone.idDrink,
-      user: userId,
-      rating: undefined
-    };
-
-    delete drink['idDrink'];
-
-    const url = `${userApiClient.defaults.baseURL}/addDrink`;
-    const response = await userApiClient.post(url, drink);
-
     return response.data as IDrinkDoc;
   }
 
-  async saveNotes(payload: NotesPayload): Promise<IDrinkDoc> {
-    const url = `${userApiClient.defaults.baseURL}/saveNotes`;
-    const response = await userApiClient.post(url, payload);
+  async getDrinks(ids: string[]): Promise<IDrinkDoc[]> {
+    const url = `${userApiClient.defaults.baseURL}/drinks/`;
+    const response = await userApiClient.post(url, { ids });
 
-    return response.data as IDrinkDoc;
+    return response.data as IDrinkDoc[];
   }
 
-  async deleteDrink(drinkId: string): Promise<IDrinkDoc> {
-    const url = `${userApiClient.defaults.baseURL}/deleteDrink/${drinkId}`;
-    const response = await userApiClient.post(url);
-
-    return response.data as IDrinkDoc;
-  }
-
-  async getVideos(drinkId: string): Promise<IGetVideosResult> {
-    const url = `${userApiClient.defaults.baseURL}/getVideos/${drinkId}`;
-    const response = await userApiClient.get(url);
-
-    return response.data as IGetVideosResult;
-  }
-
-  async getSearchResults(payload: SearchPayload): Promise<ISearchResult[]> {
+  async getSearchResults(payload: SearchPayload): Promise<IDrinkDoc[]> {
     const url = `${userApiClient.defaults.baseURL}/search/${payload.type}/${payload.query}`;
     const response = await userApiClient.get(url);
 
-    let results = [];
+    let results = [] as IDrinkDoc[];
 
     if (response.status === 200 && response.data.length > 0) {
-      results = response.data;
+      results = response.data as IDrinkDoc[];
     }
 
-    return results as ISearchResult[];
+    return results;
+  }
+
+  async addCollectionItem(idDrink: string): Promise<IUserCollectionItemDoc> {
+    const userId = store.getState().auth.userId;
+
+    const payload = {
+      user: userId,
+      idDrink: idDrink
+    };
+
+    const url = `${userApiClient.defaults.baseURL}/addCollectionItem`;
+    const response = await userApiClient.post(url, payload);
+
+    return response.data as IUserCollectionItemDoc;
+  }
+
+  async saveNotes(payload: NotesPayload): Promise<IUserCollectionItemDoc> {
+    const url = `${userApiClient.defaults.baseURL}/saveNotes`;
+    const response = await userApiClient.post(url, payload);
+
+    return response.data as IUserCollectionItemDoc;
+  }
+
+  async deleteCollectionItem(idDrink: string): Promise<IUserCollectionItemDoc> {
+    const url = `${userApiClient.defaults.baseURL}/deleteCollectionItem/${idDrink}`;
+    const response = await userApiClient.post(url);
+
+    return response.data as IUserCollectionItemDoc;
   }
 }

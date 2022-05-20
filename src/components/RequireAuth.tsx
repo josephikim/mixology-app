@@ -10,8 +10,8 @@ interface RequireAuthProps {
 
 const RequireAuth: React.FC<RequireAuthProps> = ({ children, redirectTo }) => {
   const authToken = useAppSelector((state) => state.auth.accessToken);
-  const isAuthenticated = !!authToken;
-  return isAuthenticated ? (
+
+  return authToken ? (
     <div>
       <Outlet />
     </div>

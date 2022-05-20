@@ -2,12 +2,12 @@ import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
 
 import db from '../db';
-import { IDrinkDoc } from '../db/Drink';
 import { IKeywordDoc } from '../db/Keyword';
-import { YoutubeVideo, IGetVideosResult } from '../types';
+import { IDrinkDoc } from 'src/db/Drink';
 
 const Drink = db.drink;
 const Keyword = db.keyword;
+const UserCollectionItem = db.userCollectionItem;
 
 const allAccess = (req: Request, res: Response): void => {
   res.status(200).send('Public Content.');
@@ -54,7 +54,7 @@ const getKeywords = async (req: Request, res: Response, next: NextFunction): Pro
           Keyword.find(
             { type: { $in: ['category', 'ingredient', 'glass', 'alcohol'] } },
             ['type', 'value', '-_id'],
-            function (err: any, docs: IDrinkDoc[]) {
+            function (err, docs) {
               if (err) {
                 return next(err);
               } else {
@@ -74,10 +74,234 @@ const getKeywords = async (req: Request, res: Response, next: NextFunction): Pro
   }
 };
 
+const getRandomDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  try {
+    // Search cocktail API for random drink
+    const url = `${process.env.THECOCKTAILDB_API_URL}/random.php`;
+
+    const response = await axios.get(url);
+
+    if (response.status === 204 || (!response.data.drinks && response.status === 200)) {
+      res.status(204).send({ message: 'No results available.' });
+    }
+
+    const idDrink = response.data.drinks[0].idDrink as string;
+
+    // Search Drink collection for matching drink
+    Drink.findOne({ idDrink: idDrink }).exec(async (err, doc) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (!doc) {
+        // If matching drink not found, search cocktail API by idDrink, then save result as new Drink doc
+        const url = `${process.env.THECOCKTAILDB_API_URL}/lookup.php?i=${idDrink}`;
+
+        const response = await axios.get(url);
+
+        // No content found
+        if (response.status === 204 || (!response.data.drinks && response.status === 200)) {
+          res.status(204).send({ message: 'No results available.' });
+        }
+
+        const newDrink = new Drink(response.data.drinks[0]);
+
+        newDrink.save((err, doc) => {
+          if (err) {
+            return next(err);
+          }
+
+          res.status(200).send(doc);
+        });
+      } else {
+        res.status(200).send(doc);
+      }
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getDrinks = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  const ids = req.body.ids;
+
+  try {
+    Drink.find({ idDrink: { $in: ids } }).exec(async (err, docs) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (!docs) {
+        return next(new Error('Drinks not found'));
+      }
+
+      res.status(200).send(docs);
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const getSearchResults = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  const { type, query } = req.params;
+
+  try {
+    // Search cocktail API by search type and query
+    let url = process.env.THECOCKTAILDB_API_URL as string;
+
+    switch (type) {
+      case 'category': {
+        url += `/filter.php?c=${query}`;
+        break;
+      }
+      case 'ingredient': {
+        url += `/filter.php?i=${encodeURIComponent(query)}`;
+        break;
+      }
+      case 'glass': {
+        url += `/filter.php?g=${encodeURIComponent(query)}`;
+        break;
+      }
+      case 'alcohol': {
+        url += `/filter.php?a=${encodeURIComponent(query)}`;
+        break;
+      }
+      case 'drink':
+      default: {
+        url += `/search.php?s=${encodeURIComponent(query)}`;
+        break;
+      }
+    }
+
+    const response = await axios.get(url);
+
+    // No content found
+    if (response.status === 204) {
+      res.status(204).send({ message: 'No results available.' });
+    }
+
+    const results = response.data.drinks as IDrinkDoc[];
+
+    // Create array of drink ids from results
+    const ids = results.map((result) => {
+      return result.idDrink as string;
+    });
+
+    // Resolve array of promises where each id triggers a search for matching Drink doc. If doc not found, get drink info via cocktail API search and save result as new Drink doc.
+    const promises = [] as any;
+
+    for (let index = 0; index < ids.length; index++) {
+      promises.push(
+        new Promise((resolve) => {
+          Drink.findOne({ idDrink: ids[index] }).exec(async (err, doc) => {
+            if (err) {
+              return next(err);
+            }
+
+            if (!doc) {
+              // Search cocktail API by drink ID
+              const url = `${process.env.THECOCKTAILDB_API_URL}/lookup.php?i=${ids[index]}`;
+
+              const response = await axios.get(url);
+
+              // No content found
+              if (response.status === 204 || response.data.drinks === null) return;
+
+              const result = response.data.drinks[0];
+
+              // save result as new Drink
+              const newDrink = new Drink(result);
+
+              newDrink.save((err, doc) => {
+                if (err) {
+                  return next(err);
+                }
+
+                resolve(doc);
+              });
+            } else {
+              resolve(doc);
+            }
+          });
+        })
+      );
+    }
+
+    Promise.all(promises).then((results) => {
+      res.status(200).send(results);
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
+const addCollectionItem = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  UserCollectionItem.findOne({ user: req.body.user, idDrink: req.body.idDrink }).exec((err, doc) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (doc == null) {
+      try {
+        const data = {
+          ...req.body
+        };
+
+        const newItem = new UserCollectionItem(data);
+
+        newItem.save((err, doc) => {
+          if (err) {
+            return next(err);
+          }
+
+          res.status(200).send(doc);
+        });
+      } catch (err) {
+        return next(err);
+      }
+    } else {
+      res.status(409).send({ message: 'Entry already exists in database.' });
+    }
+  });
+};
+
+const saveNotes = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  UserCollectionItem.findOneAndUpdate(
+    { idDrink: req.body.idDrink },
+    {
+      $set: { notes: req.body.notes }
+    },
+    {
+      new: true
+    }
+  ).exec((err, doc) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!doc) {
+      return next(new Error('Collection item not found!'));
+    }
+
+    res.status(200).send(doc);
+  });
+};
+
+const deleteCollectionItem = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  UserCollectionItem.findOneAndDelete({ idDrink: req.params.idDrink }).exec((err, doc) => {
+    if (err) {
+      return next(err);
+    } else {
+      res.status(200).send(doc);
+    }
+  });
+};
+
+// Not an express middleware
 const getKeywordsByType = async (type: string): Promise<IKeywordDoc[] | void> => {
   if (!type) return;
 
-  let url = `${process.env.THECOCKTAILDB_API_URL}list.php?`;
+  let url = `${process.env.THECOCKTAILDB_API_URL}/list.php?`;
 
   switch (type) {
     case 'category': {
@@ -135,196 +359,11 @@ const getKeywordsByType = async (type: string): Promise<IKeywordDoc[] | void> =>
       return {
         type: type,
         value: result[dataField]
-      } as IKeywordDoc;
+      };
     });
     return keywords;
   } catch (err) {
     return Promise.reject(err);
-  }
-};
-
-const getRandomDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  try {
-    // Search random drink
-    const url = `${process.env.THECOCKTAILDB_API_URL}random.php`;
-
-    const response = await axios.get(url);
-
-    // No content found
-    if (response.status === 204 || (!response.data.drinks && response.status === 200)) {
-      res.status(204).send({ message: 'No results available.' });
-    }
-
-    const result = response.data.drinks[0];
-
-    res.status(200).send(result);
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const getSearchResults = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  try {
-    const { type, query } = req.params;
-
-    let url = process.env.THECOCKTAILDB_API_URL as string;
-
-    switch (type) {
-      case 'category': {
-        url += `filter.php?c=${query}`;
-        break;
-      }
-      case 'ingredient': {
-        url += `filter.php?i=${encodeURIComponent(query)}`;
-        break;
-      }
-      case 'glass': {
-        url += `filter.php?g=${encodeURIComponent(query)}`;
-        break;
-      }
-      case 'alcohol': {
-        url += `filter.php?a=${encodeURIComponent(query)}`;
-        break;
-      }
-      case 'drink':
-      default: {
-        url += `search.php?s=${encodeURIComponent(query)}`;
-        break;
-      }
-    }
-
-    const response = await axios.get(url);
-
-    // No content found
-    if (response.status === 204) {
-      res.status(204).send({ message: 'No results available.' });
-    }
-
-    const results = response.data.drinks;
-
-    res.status(200).send(results);
-  } catch (err) {
-    return next(err);
-  }
-};
-
-const addDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  Drink.findOne({ user: req.body.user, idDrinkApi: req.body.idDrinkApi }).exec((err, drink) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (drink == null) {
-      try {
-        const data = {
-          ...req.body
-        };
-
-        const newDrink = new Drink(data);
-
-        newDrink.save((err, doc) => {
-          if (err) {
-            return next(err);
-          }
-
-          res.status(200).send(doc);
-        });
-      } catch (err) {
-        return next(err);
-      }
-    } else {
-      res.status(409).send({ message: 'Entry already exists in database.' });
-    }
-  });
-};
-
-const saveNotes = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  Drink.findOneAndUpdate(
-    { _id: req.body.idDrink },
-    {
-      $set: { notes: req.body.notes }
-    },
-    {
-      new: true
-    }
-  ).exec((err, drink) => {
-    if (err) {
-      return next(err);
-    }
-
-    if (!drink) {
-      return next(new Error('Drink not found'));
-    }
-
-    res.status(200).send(drink);
-  });
-};
-
-const deleteDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  const id = req.params.drinkId;
-
-  Drink.findOneAndDelete({ _id: id }, function (err: any, doc: IDrinkDoc) {
-    if (err) {
-      return next(err);
-    } else {
-      res.status(200).send(doc);
-    }
-  });
-};
-
-const getVideos = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  try {
-    const drink = (await Drink.findById(req.params.drinkId)) as IDrinkDoc;
-
-    if (drink) {
-      const url = `${process.env.YOUTUBE_API_URL}/search?key=${
-        process.env.YOUTUBE_API_KEY
-      }&type=video&part=snippet&q=${encodeURIComponent(drink.strDrink as string).replace(
-        /%20/g,
-        '+'
-      )}+recipe&maxResults=5`;
-
-      // Call Youtube API with search query
-      const response = await axios.get(url);
-
-      if (!response.data.items || response.data.items.length < 1) {
-        res.status(204).send({ message: 'No results available.' });
-      }
-
-      // Create array of objects from youtube response
-      const videos: YoutubeVideo[] = [];
-
-      response.data.items.map((item: any) => {
-        const obj = {
-          id: item.id.videoId,
-          title: item.snippet.title,
-          channelTitle: item.snippet.channelTitle,
-          description: item.snippet.description,
-          publishedAt: item.snippet.publishedAt
-        } as YoutubeVideo;
-        videos.push(obj);
-      });
-
-      // Save videos on drink doc, then send response
-      drink.youtubeVideos = videos;
-
-      drink.save((err, doc) => {
-        if (err) {
-          return next(err);
-        }
-
-        const result = {
-          drinkId: doc._id,
-          videos: doc.youtubeVideos
-        } as IGetVideosResult;
-
-        res.status(200).send(result);
-      });
-    } else {
-      res.status(500).send({ message: 'Entry not found.' });
-    }
-  } catch (err) {
-    return next(err);
   }
 };
 
@@ -333,13 +372,13 @@ const userController = {
   userAccess,
   adminAccess,
   moderatorAccess,
+  getDrinks,
   getKeywords,
   getRandomDrink,
   getSearchResults,
-  addDrink,
+  addCollectionItem,
   saveNotes,
-  deleteDrink,
-  getVideos
+  deleteCollectionItem
 };
 
 export default userController;

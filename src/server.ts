@@ -1,7 +1,8 @@
 import path from 'path';
 import express, { Request, Response, NextFunction } from 'express';
-import db from './db';
 import cors from 'cors';
+
+import db from './db';
 import apiRouter from './routers';
 
 const BUILD_DIR = __dirname;

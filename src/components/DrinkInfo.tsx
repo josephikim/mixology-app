@@ -17,28 +17,28 @@ const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
     <div className="DrinkInfo">
       <Row>
         <Col md={4}>
-          <strong>Name:</strong>
+          <h6>Name:</h6>
         </Col>
         <Col md={8}>{data.strDrink}</Col>
       </Row>
 
       <Row>
         <Col md={4}>
-          <strong>Category:</strong>
+          <h6>Category:</h6>
         </Col>
         <Col md={8}>{data.strAlcoholic ? <Badge bg="secondary">{data.strAlcoholic}</Badge> : null}</Col>
       </Row>
 
       <Row>
         <Col md={4}>
-          <strong>Glass:</strong>
+          <h6>Glass:</h6>
         </Col>
         <Col md={8}>{data.strGlass}</Col>
       </Row>
 
       <Row>
         <Col md={4}>
-          <strong>Tags:</strong>
+          <h6>Tags:</h6>
         </Col>
         <Col md={8}>
           <DrinkTags tags={data.strTags as string} />

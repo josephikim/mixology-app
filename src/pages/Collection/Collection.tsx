@@ -3,7 +3,8 @@ import { Accordion, Container, Tabs, Tab, Row, Col, Image } from 'react-bootstra
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { logoutAction } from '../../store';
-import { getVideos } from '../../store/userSlice';
+import { IDrinkDoc } from '../../db/Drink';
+import { IUserCollectionItemDoc } from '../../db/UserCollectionItem';
 import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkInfo from '../../components/DrinkInfo';
 import DrinkIngredients from '../../components/DrinkIngredients';
@@ -24,94 +25,92 @@ const Collection: React.FC = () => {
     }
   }, [errorType]);
 
-  const drinks = useAppSelector((state) => state.user.drinks);
+  const collection = useAppSelector((state) => state.user.collection) as IUserCollectionItemDoc[];
+  const drinks = useAppSelector((state) => state.user.drinks) as IDrinkDoc[];
 
-  const handleSelectTab = (key: string, drinkId: string): void => {
-    if (key !== 'videos') return;
+  const renderCollectionItem = (idDrink: string) => {
+    const collectionItem = collection.filter((item) => (item.idDrink = idDrink))[0];
+    const collectionItemDrink = drinks.filter((drink) => (drink.idDrink = idDrink))[0];
+    if (collectionItemDrink === undefined || Object.keys(collectionItemDrink).length < 1) return null;
 
-    const videos = drinks.filter((drink) => drink._id === drinkId)[0].youtubeVideos;
-
-    // If videos found in saved drink, do nothing
-    if (videos && videos.length > 0) return;
-
-    dispatch(getVideos(drinkId));
+    return (
+      <Accordion.Item eventKey={collectionItemDrink.idDrink} key={collectionItemDrink.idDrink}>
+        <Accordion.Header>{collectionItemDrink.strDrink}</Accordion.Header>
+        <Accordion.Body>
+          <Tabs defaultActiveKey="info">
+            <Tab eventKey="info" title="Info">
+              <Row>
+                <Col md={6}>
+                  <ContentWrapper>
+                    <DrinkInfo data={collectionItemDrink} />
+                  </ContentWrapper>
+                </Col>
+                <Col md={6}>
+                  <ContentWrapper>
+                    <Image width={250} height={250} src={collectionItemDrink.strDrinkThumb} fluid />
+                  </ContentWrapper>
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey="recipe" title="Recipe">
+              <Row>
+                <Col md={6}>
+                  <ContentWrapper>
+                    <DrinkIngredients data={collectionItemDrink} />
+                    <DrinkInstructions text={collectionItemDrink.strInstructions as string} />
+                  </ContentWrapper>
+                </Col>
+                <Col md={6}>
+                  <ContentWrapper>
+                    <Image width={250} height={250} src={collectionItemDrink.strDrinkThumb} fluid />
+                  </ContentWrapper>
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey="notes" title="Notes">
+              <Row>
+                <Col md={8}>
+                  <ContentWrapper>
+                    <DrinkNotes notes={collectionItem.notes as string} idDrink={collectionItem.idDrink} />
+                  </ContentWrapper>
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey="videos" title="Videos">
+              <Row>
+                <Col>
+                  <ContentWrapper>
+                    <Youtube videos={collectionItemDrink.youtubeVideos} />
+                  </ContentWrapper>
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey="options" title="Options">
+              <Row>
+                <Col md={6}>
+                  <ContentWrapper>
+                    <DeleteDrinkButton
+                      idDrink={collectionItemDrink.idDrink}
+                      drinkName={collectionItemDrink.strDrink as string}
+                    />
+                  </ContentWrapper>
+                </Col>
+              </Row>
+            </Tab>
+          </Tabs>
+        </Accordion.Body>
+      </Accordion.Item>
+    );
   };
 
   return (
     <div className="Collection">
       <Container>
         <ContentWrapper>
-          {drinks.length > 0 ? (
-            <Accordion defaultActiveKey={drinks[0]._id} alwaysOpen>
-              {drinks.map((drink, index) =>
-                drink && index === undefined ? null : (
-                  <Accordion.Item eventKey={drink._id} key={drink._id}>
-                    <Accordion.Header>{drink.strDrink}</Accordion.Header>
-                    <Accordion.Body>
-                      <Tabs
-                        defaultActiveKey="info"
-                        onSelect={(key): void => handleSelectTab(key as string, drink._id as string)}
-                      >
-                        <Tab eventKey="info" title="Info">
-                          <Row>
-                            <Col md={6}>
-                              <ContentWrapper>
-                                <DrinkInfo data={drink} />
-                              </ContentWrapper>
-                            </Col>
-                            <Col md={6}>
-                              <ContentWrapper>
-                                <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
-                              </ContentWrapper>
-                            </Col>
-                          </Row>
-                        </Tab>
-                        <Tab eventKey="recipe" title="Recipe">
-                          <Row>
-                            <Col md={6}>
-                              <ContentWrapper>
-                                <DrinkIngredients data={drink} />
-                                <DrinkInstructions instructions={drink.strInstructions as string} />
-                              </ContentWrapper>
-                            </Col>
-                            <Col md={6}>
-                              <ContentWrapper>
-                                <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
-                              </ContentWrapper>
-                            </Col>
-                          </Row>
-                        </Tab>
-                        <Tab eventKey="notes" title="Notes">
-                          <Row>
-                            <Col md={8}>
-                              <ContentWrapper>
-                                <DrinkNotes drinkId={drink._id} />
-                              </ContentWrapper>
-                            </Col>
-                          </Row>
-                        </Tab>
-                        <Tab eventKey="videos" title="Videos">
-                          <Row>
-                            <Col>
-                              <ContentWrapper>
-                                <Youtube videos={drink.youtubeVideos} />
-                              </ContentWrapper>
-                            </Col>
-                          </Row>
-                        </Tab>
-                        <Tab eventKey="options" title="Options">
-                          <Row>
-                            <Col md={6}>
-                              <ContentWrapper>
-                                <DeleteDrinkButton drinkId={drink._id} drinkName={drink.strDrink as string} />
-                              </ContentWrapper>
-                            </Col>
-                          </Row>
-                        </Tab>
-                      </Tabs>
-                    </Accordion.Body>
-                  </Accordion.Item>
-                )
+          {collection.length > 0 ? (
+            <Accordion defaultActiveKey={collection[0].idDrink} alwaysOpen>
+              {collection.map((item, index) =>
+                item === undefined || index === undefined ? null : renderCollectionItem(item.idDrink)
               )}
             </Accordion>
           ) : (

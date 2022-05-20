@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
 import { AuthApi } from '../api';
-import { IRegistration, ILogin, TokenResult } from '../types';
-import { drinksUpdated } from './userSlice';
+import { IRegistration, ILogin, IAuthToken } from '../types';
+import { updateCollection } from './userSlice';
 
 enum Status {
   idle = 'IDLE',
@@ -27,21 +27,27 @@ export const initialState: AuthState = {
 
 export const register = createAsyncThunk(
   'auth/register',
-  async ({ username, password }: IRegistration): Promise<TokenResult> => {
+  async ({ username, password }: IRegistration, { dispatch }): Promise<IAuthToken> => {
     const api = new AuthApi();
     const res = await api.registerUser({ username, password });
-    const { token } = res;
+
+    const { token, collection } = res;
+
+    dispatch(updateCollection(collection));
+
     return token;
   }
 );
 
 export const login = createAsyncThunk(
   'auth/login',
-  async ({ username, password }: ILogin, { dispatch }): Promise<TokenResult> => {
+  async ({ username, password }: ILogin, { dispatch }): Promise<IAuthToken> => {
     const api = new AuthApi();
     const res = await api.loginUser({ username, password });
-    const { token, drinks } = res;
-    dispatch(drinksUpdated(drinks));
+    const { token, collection } = res;
+
+    dispatch(updateCollection(collection));
+
     return token;
   }
 );
@@ -61,7 +67,7 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(register.fulfilled, (state, action) => {
-        const tokenData = action.payload.data[0];
+        const tokenData = action.payload;
         state.status = 'succeeded';
         state.userId = tokenData.userId;
         state.accessToken = tokenData.accessToken;
@@ -75,7 +81,7 @@ export const authSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(login.fulfilled, (state, action) => {
-        const tokenData = action.payload.data[0];
+        const tokenData = action.payload;
         state.status = 'succeeded';
         state.userId = tokenData.userId;
         state.accessToken = tokenData.accessToken;

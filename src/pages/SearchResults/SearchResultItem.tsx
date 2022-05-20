@@ -2,57 +2,66 @@ import React from 'react';
 import { Badge, Image, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { addDrink } from '../../store/userSlice';
+import { addCollectionItem } from '../../store/userSlice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { ISearchResult } from '../../types';
+import { IDrinkDoc } from '../../db/Drink';
 
 import './SearchResultItem.css';
 
 interface SearchResultItemProps {
-  data: ISearchResult;
+  drink: IDrinkDoc;
 }
 
-const SearchResultItem: React.FC<SearchResultItemProps> = ({ data }) => {
+const SearchResultItem: React.FC<SearchResultItemProps> = ({ drink }) => {
   const dispatch = useAppDispatch();
-  const drinks = useAppSelector((state) => state.user.drinks);
+  const authToken = useAppSelector((state) => state.auth.accessToken);
+  const collection = useAppSelector((state) => state.user.collection) as IDrinkDoc[];
+
+  let collectionIncludesSearchResult = false;
+
+  if (collection) {
+    collectionIncludesSearchResult = collection.some((item) => item.idDrink === drink.idDrink);
+  }
 
   const handleClick = (event: React.MouseEvent<HTMLElement>): void => {
     const idDrink = event.currentTarget.id;
     if (!idDrink) return;
 
-    dispatch(addDrink(idDrink));
+    if (authToken) {
+      dispatch(addCollectionItem(idDrink));
+    } else {
+      alert('Please login to manage your collection.');
+    }
   };
-
-  const matchesSavedDrink = drinks.some((savedDrink) => savedDrink.idDrinkApi === data.idDrink);
 
   return (
     <div className="SearchResultItem">
       <div className="search-result-item-cell search-result-item-cell--1">
         <div className="search-result-item-item">
-          <Link to={`/drink/${data.idDrink}`}>
-            <Image src={data.strDrinkThumb} />
+          <Link to={`/drink/${drink.idDrink}`}>
+            <Image src={drink.strDrinkThumb} />
           </Link>
         </div>
       </div>
       <div className="search-result-item-cell search-result-item-cell--2">
         <div className="search-result-item-item">
-          <Link to={`/drink/${data.idDrink}`}>{data.strDrink}</Link>
+          <Link to={`/drink/${drink.idDrink}`}>{drink.strDrink}</Link>
         </div>
       </div>
       <div className="search-result-item-cell search-result-item-cell--3">
         <div className="search-result-item-item">
-          {data.strAlcoholic ? <Badge bg="secondary">{data.strAlcoholic}</Badge> : null}
+          {drink.strAlcoholic ? <Badge bg="secondary">{drink.strAlcoholic}</Badge> : null}
         </div>
       </div>
       <div className="search-result-item-cell search-result-item-cell--4">
         <div className="search-result-item-item">
           <div className="btn">
-            {matchesSavedDrink ? (
+            {collectionIncludesSearchResult ? (
               <Button>
                 Added <i className="las la-check"></i>
               </Button>
             ) : (
-              <Button id={data.idDrink} onClick={(e: React.MouseEvent<HTMLElement>): void => handleClick(e)}>
+              <Button id={drink.idDrink} onClick={(e: React.MouseEvent<HTMLElement>): void => handleClick(e)}>
                 Add to collection
               </Button>
             )}

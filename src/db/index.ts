@@ -4,6 +4,7 @@ import Role from './Role';
 import RefreshToken from './RefreshToken';
 import Drink from './Drink';
 import Keyword from './Keyword';
+import UserCollectionItem from './UserCollectionItem';
 
 const db = {
   connection,
@@ -13,6 +14,7 @@ const db = {
   refreshToken: RefreshToken,
   drink: Drink,
   keyword: Keyword,
+  userCollectionItem: UserCollectionItem,
   roles: ['user', 'admin', 'moderator']
 };
 

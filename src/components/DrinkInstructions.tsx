@@ -4,15 +4,15 @@ import { Row, Col } from 'react-bootstrap';
 import '../styles/DrinkInstructions.css';
 
 interface DrinkInstructionsProps {
-  instructions: string;
+  text: string;
 }
 
-const DrinkInstructions: React.FC<DrinkInstructionsProps> = ({ instructions }) => {
+const DrinkInstructions: React.FC<DrinkInstructionsProps> = ({ text }) => {
   return (
     <div className="DrinkInstructions">
       <Row>
         <Col>
-          <p>{instructions}</p>
+          <p>{text}</p>
         </Col>
       </Row>
     </div>

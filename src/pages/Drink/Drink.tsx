@@ -30,7 +30,7 @@ const Drink: React.FC = () => {
 
   useEffect(() => {
     if (!drinkLoaded && userStatus !== 'loading') {
-      dispatch(getDrinks([id as string]));
+      dispatch(getDrinks());
     }
   }, []);
 

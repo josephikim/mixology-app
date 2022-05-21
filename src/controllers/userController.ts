@@ -123,10 +123,8 @@ const getRandomDrink = async (req: Request, res: Response, next: NextFunction): 
 };
 
 const getDrinks = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  const ids = req.body.ids;
-
   try {
-    Drink.find({ idDrink: { $in: ids } }).exec(async (err, docs) => {
+    Drink.find().exec(async (err, docs) => {
       if (err) {
         return next(err);
       }

@@ -24,7 +24,7 @@ userRouter.get('/keywords', userController.getKeywords);
 
 userRouter.get('/randomDrink', userController.getRandomDrink);
 
-userRouter.post('/drinks', userController.getDrinks);
+userRouter.get('/drinks', userController.getDrinks);
 
 userRouter.get('/search/:type/:query', userController.getSearchResults);
 

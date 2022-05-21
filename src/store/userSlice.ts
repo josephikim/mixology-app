@@ -59,21 +59,11 @@ export const getRandomDrink = createAsyncThunk('user/getRandomDrink', async (): 
   return result;
 });
 
-export const getDrinks = createAsyncThunk<
-  IDrinkDoc[],
-  string[],
-  {
-    rejectValue: ApiAccessError;
-  }
->('user/getDrinks', async (ids, { rejectWithValue }) => {
+export const getDrinks = createAsyncThunk('user/getDrinks', async (): Promise<IDrinkDoc[]> => {
   const api = new UserApi();
+  const result = await api.getDrinks();
 
-  try {
-    const response = await api.getDrinks(ids);
-    return response;
-  } catch (err) {
-    return rejectWithValue(err);
-  }
+  return result;
 });
 
 export const getSearchResults = createAsyncThunk<

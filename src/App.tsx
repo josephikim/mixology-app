@@ -3,8 +3,9 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from './hooks';
 import { logoutAction } from './store';
-import { getKeywords, getRandomDrink } from './store/userSlice';
+import { getKeywords, getRandomDrink, getDrinks } from './store/userSlice';
 import Home from './pages/Home/Home';
+import Drinks from './pages/Drinks/Drinks';
 import Drink from './pages/Drink/Drink';
 import Login from './pages/Login/Login';
 import SearchResults from './pages/SearchResults/SearchResults';
@@ -18,6 +19,15 @@ import './styles/App.css';
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
+
+  const errorType = useAppSelector((state) => state.user.errorType);
+
+  useEffect(() => {
+    if (errorType === 'refreshToken' || errorType === 'accessToken' || errorType === 'role') {
+      alert('Access error occurred. Please login again.');
+      dispatch(logoutAction());
+    }
+  }, [errorType]);
 
   const authToken = useAppSelector((state) => state.auth.accessToken);
   const keywords = useAppSelector((state) => state.user.keywords);
@@ -36,14 +46,13 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const errorType = useAppSelector((state) => state.user.errorType);
+  const drinks = useAppSelector((state) => state.user.drinks);
 
   useEffect(() => {
-    if (errorType === 'refreshToken' || errorType === 'accessToken' || errorType === 'role') {
-      alert('Access error occurred. Please login again.');
-      dispatch(logoutAction());
+    if (!drinks || drinks.length < 1) {
+      dispatch(getDrinks());
     }
-  }, [errorType]);
+  }, []);
 
   const alerts = useAppSelector((state) => state.alert.alerts);
 
@@ -64,6 +73,7 @@ const App: React.FC = () => {
         />
         <Route path="/search/:type/:query" element={<SearchResults />} />
         <Route path="/drink/:id" element={<Drink />} />
+        <Route path="/drinks" element={<Drinks />} />
         <Route path="login" element={authToken ? <Navigate replace to="/" /> : <Login />} />
         <Route path="register" element={authToken ? <Navigate replace to="/" /> : <Registration />} />
         <Route path="/" element={<Home />} />

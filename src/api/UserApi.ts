@@ -85,9 +85,9 @@ export class UserApi {
     return response.data as IDrinkDoc;
   }
 
-  async getDrinks(ids: string[]): Promise<IDrinkDoc[]> {
+  async getDrinks(): Promise<IDrinkDoc[]> {
     const url = `${userApiClient.defaults.baseURL}/drinks/`;
-    const response = await userApiClient.post(url, { ids });
+    const response = await userApiClient.get(url);
 
     return response.data as IDrinkDoc[];
   }

@@ -33,7 +33,7 @@ const buildIngredients = (drink: IDrinkDoc): IngredientsEntry[] => {
         // property value is null
         if (!drinkClone[measureProp] || !drinkClone[prop]) continue;
 
-        const result = `\u2022 ${drinkClone[measureProp] ? drinkClone[measureProp] : ''}${drinkClone[prop]}`;
+        const result = `\u2022 ${drinkClone[measureProp] ? drinkClone[measureProp] : ''} ${drinkClone[prop]}`;
 
         data.push({
           key: key,

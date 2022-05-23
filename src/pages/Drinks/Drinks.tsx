@@ -29,10 +29,8 @@ const Drinks: React.FC = () => {
             <Row>
               {drinksSorted.map((drink) => {
                 return (
-                  <Col md={3}>
-                    <Link key={drink.idDrink} to={`/drink/${drink.idDrink}`}>
-                      {drink.strDrink}
-                    </Link>
+                  <Col key={drink.idDrink} md={3}>
+                    <Link to={`/drink/${drink.idDrink}`}>{drink.strDrink}</Link>
                   </Col>
                 );
               })}

@@ -17,22 +17,22 @@ const Home: React.FC = () => {
         </div>
         <div className="home-cell home-cell--2">
           <div className="home-item">
-            <KeywordLinks type="category" />
+            <KeywordLinks type="ingredient" />
           </div>
         </div>
         <div className="home-cell home-cell--3">
           <div className="home-item">
-            <KeywordLinks type="ingredient" />
+            <KeywordLinks type="category" />
           </div>
         </div>
         <div className="home-cell home-cell--4">
-          <div className="home-item">
-            <KeywordLinks type="glass" />
+          <div className="fp-item">
+            <KeywordLinks type="alcohol" />
           </div>
         </div>
         <div className="home-cell home-cell--5">
-          <div className="fp-item">
-            <KeywordLinks type="alcohol" />
+          <div className="home-item">
+            <KeywordLinks type="glass" />
           </div>
         </div>
       </Container>

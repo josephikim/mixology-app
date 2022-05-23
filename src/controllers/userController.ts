@@ -203,7 +203,7 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
               const response = await axios.get(url);
 
               // No content found
-              if (response.status === 204 || response.data.drinks === null) return;
+              if (response.status === 204 || response.data.drinks == null) return;
 
               const result = response.data.drinks[0];
 

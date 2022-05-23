@@ -38,14 +38,14 @@ const SearchResults: React.FC = () => {
   let isSearchPayloadMatch = false;
 
   if (
-    searchPayload !== undefined &&
+    searchPayload != undefined &&
     searchPayload.type.toLowerCase() === (type as string).toLowerCase() &&
     searchPayload.query.toLowerCase() === (query as string).toLowerCase()
   ) {
     isSearchPayloadMatch = true;
   }
 
-  const isSearchComplete = isSearchPayloadMatch && drinks !== undefined && status !== 'loading';
+  const isSearchComplete = isSearchPayloadMatch && drinks != undefined && status !== 'loading';
 
   useEffect(() => {
     if (!isSearchComplete) {

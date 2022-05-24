@@ -164,7 +164,6 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
         url += `/filter.php?a=${encodeURIComponent(query)}`;
         break;
       }
-      case 'drink':
       default: {
         url += `/search.php?s=${encodeURIComponent(query)}`;
         break;
@@ -172,14 +171,15 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
     }
 
     const response = await axios.get(url);
-
+    console.log('response.status', response.status);
+    console.log('response.data.drinks.length', response.data.drinks.length);
     // No content found
     if (response.status === 204) {
       res.status(204).send({ message: 'No results available.' });
     }
 
     const results = response.data.drinks as IDrinkDoc[];
-
+    console.log('results', results);
     // Create array of drink ids from results
     const ids = results.map((result) => {
       return result.idDrink as string;

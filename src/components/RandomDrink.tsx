@@ -13,6 +13,8 @@ const RandomDrink: React.FC = () => {
 
   if (!drink || drink == undefined) return null;
 
+  const includesTags = drink.strTags && drink.strTags.length > 0;
+
   return (
     <div className="RandomDrink">
       <Row>
@@ -66,7 +68,7 @@ const RandomDrink: React.FC = () => {
         </Col>
       </Row>
 
-      {drink.strTags ? (
+      {includesTags ? (
         <Row>
           <Col md={4}>
             <strong>Tags:</strong>

@@ -3,7 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from './hooks';
 import { logoutAction } from './store';
-import { getKeywords, getRandomDrink, getDrinks } from './store/userSlice';
+import { getKeywords, getRandomDrink, getDrinks } from './store/baseSlice';
 import Home from './pages/Home/Home';
 import Drinks from './pages/Drinks/Drinks';
 import Drink from './pages/Drink/Drink';
@@ -30,7 +30,7 @@ const App: React.FC = () => {
   }, [errorType]);
 
   const authToken = useAppSelector((state) => state.auth.accessToken);
-  const keywords = useAppSelector((state) => state.user.keywords);
+  const keywords = useAppSelector((state) => state.base.keywords);
 
   useEffect(() => {
     if (!keywords || keywords.length < 1) {
@@ -38,7 +38,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const randomDrink = useAppSelector((state) => state.user.randomDrink);
+  const randomDrink = useAppSelector((state) => state.base.randomDrink);
 
   useEffect(() => {
     if (!randomDrink || Object.keys(randomDrink).length === 0) {
@@ -46,7 +46,7 @@ const App: React.FC = () => {
     }
   }, []);
 
-  const drinks = useAppSelector((state) => state.user.drinks);
+  const drinks = useAppSelector((state) => state.base.drinks);
 
   useEffect(() => {
     if (!drinks || drinks.length < 1) {

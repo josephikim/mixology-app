@@ -3,7 +3,6 @@ import { IUserCollectionItemDoc } from 'src/db/UserCollectionItem';
 
 import { UserApi } from '../api';
 import { IDrinkDoc } from '../db/Drink';
-import { IKeywordDoc } from '../db/Keyword';
 
 enum Status {
   idle = 'IDLE',
@@ -16,9 +15,6 @@ interface UserState {
   status: keyof typeof Status;
   error?: string;
   errorType?: string;
-  drinks: IDrinkDoc[];
-  keywords: IKeywordDoc[];
-  randomDrink: IDrinkDoc;
   collection?: IUserCollectionItemDoc[];
   searchPayload?: SearchPayload;
   searchResults?: IDrinkDoc[];
@@ -40,32 +36,8 @@ export type SearchPayload = {
 };
 
 export const initialState: UserState = {
-  status: 'idle',
-  drinks: [],
-  keywords: [],
-  randomDrink: {} as IDrinkDoc
+  status: 'idle'
 };
-
-export const getKeywords = createAsyncThunk('user/getKeywords', async (): Promise<IKeywordDoc[]> => {
-  const api = new UserApi();
-  const result = await api.getKeywords();
-
-  return result;
-});
-
-export const getRandomDrink = createAsyncThunk('user/getRandomDrink', async (): Promise<IDrinkDoc> => {
-  const api = new UserApi();
-  const result = await api.getRandomDrink();
-
-  return result;
-});
-
-export const getDrinks = createAsyncThunk('user/getDrinks', async (): Promise<IDrinkDoc[]> => {
-  const api = new UserApi();
-  const result = await api.getDrinks();
-
-  return result;
-});
 
 export const getSearchResults = createAsyncThunk<
   IDrinkDoc[],
@@ -147,39 +119,6 @@ export const userSlice = createSlice({
   // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {
     builder
-      .addCase(getKeywords.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getKeywords.fulfilled, (state: UserState, action) => {
-        state.keywords = action.payload;
-        state.status = 'succeeded';
-      })
-      .addCase(getKeywords.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
-      .addCase(getRandomDrink.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getRandomDrink.fulfilled, (state: UserState, action) => {
-        state.randomDrink = action.payload;
-        state.status = 'succeeded';
-      })
-      .addCase(getRandomDrink.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
-      .addCase(getDrinks.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getDrinks.fulfilled, (state: UserState, action) => {
-        state.drinks = action.payload;
-        state.status = 'succeeded';
-      })
-      .addCase(getDrinks.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
       .addCase(getSearchResults.pending, (state, action) => {
         state.status = 'loading';
         state.searchPayload = action.meta.arg;

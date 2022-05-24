@@ -20,13 +20,16 @@ const AddCollectionItemButton: React.FC<AddCollectionItemButtonProps> = ({ idDri
   const authToken = useAppSelector((state) => state.auth.accessToken);
   const collection = useAppSelector((state) => state.user.collection);
   let collectionItem = {} as IUserCollectionItemDoc;
+  let collectionItemMatchesDrink = false;
 
   // check if user's collection includes drink
   if (collection && collection.length > 0) {
     collectionItem = collection.filter((item) => item.idDrink === idDrink)[0];
   }
 
-  const collectionItemMatchesDrink = collectionItem.idDrink === idDrink;
+  if (collectionItem && collectionItem.idDrink) {
+    collectionItemMatchesDrink = collectionItem.idDrink === idDrink;
+  }
 
   const handleClick = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
     event.preventDefault();

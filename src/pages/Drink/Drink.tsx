@@ -4,7 +4,7 @@ import { Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { IUserCollectionItemDoc } from '../../db/UserCollectionItem';
-import { getDrinks } from '../../store/userSlice';
+import { getDrinks } from '../../store/baseSlice';
 import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkInfo from '../../components/DrinkInfo';
 import DrinkIngredients from '../../components/DrinkIngredients';
@@ -23,7 +23,7 @@ const Drink: React.FC = () => {
   const { id } = useParams<UrlParams>();
   const dispatch = useAppDispatch();
   const authToken = useAppSelector((state) => state.auth.accessToken);
-  const drink = useAppSelector((state) => state.user.drinks).filter((drink) => drink.idDrink === id)[0];
+  const drink = useAppSelector((state) => state.base.drinks).filter((drink) => drink.idDrink === id)[0];
   const drinkLoaded = drink && drink.idDrink === id;
 
   const collection = useAppSelector((state) => state.user.collection) as IUserCollectionItemDoc[];

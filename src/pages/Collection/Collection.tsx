@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Accordion, Container, Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
 
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { logoutAction } from '../../store';
+import { useAppSelector } from '../../hooks';
 import { IDrinkDoc } from '../../db/Drink';
 import { IUserCollectionItemDoc } from '../../db/UserCollectionItem';
 import ContentWrapper from '../../layout/ContentWrapper';
@@ -14,19 +13,8 @@ import DeleteDrinkButton from '../../components/DeleteDrinkButton';
 import Youtube from '../../components/Youtube';
 
 const Collection: React.FC = () => {
-  const dispatch = useAppDispatch();
-
-  const errorType = useAppSelector((state) => state.user.errorType);
-
-  useEffect(() => {
-    if (errorType === 'refreshToken' || errorType === 'accessToken' || errorType === 'role') {
-      alert('Access error occurred. Please login again.');
-      dispatch(logoutAction());
-    }
-  }, [errorType]);
-
   const collection = useAppSelector((state) => state.user.collection) as IUserCollectionItemDoc[];
-  const drinks = useAppSelector((state) => state.user.drinks) as IDrinkDoc[];
+  const drinks = useAppSelector((state) => state.base.drinks) as IDrinkDoc[];
 
   const renderCollectionItem = (idDrink: string) => {
     const collectionItem = collection.filter((item) => (item.idDrink = idDrink))[0];

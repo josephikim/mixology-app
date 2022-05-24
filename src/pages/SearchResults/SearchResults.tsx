@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
-import { logoutAction } from '../../store';
 import { getSearchResults, SearchPayload } from '../../store/userSlice';
 import { IDrinkDoc } from '../../db/Drink';
 import ContentWrapper from '../../layout/ContentWrapper';
@@ -18,17 +17,9 @@ type UrlParams = {
 
 const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();
+
   const [isSearchSuccess, setIsSearchSuccess] = useState(false);
   const [isSearchFail, setIsSearchFail] = useState(false);
-
-  const errorType = useAppSelector((state) => state.user.errorType);
-
-  useEffect(() => {
-    if (errorType === 'refreshToken' || errorType === 'accessToken' || errorType === 'role') {
-      alert('Access error occurred. Please login again.');
-      dispatch(logoutAction());
-    }
-  }, [errorType]);
 
   const { type, query } = useParams<UrlParams>();
 

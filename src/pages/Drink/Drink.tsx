@@ -22,14 +22,13 @@ const Drink: React.FC = () => {
   const { id } = useParams<UrlParams>();
   const dispatch = useAppDispatch();
   const authToken = useAppSelector((state) => state.auth.accessToken);
-  const userStatus = useAppSelector((state) => state.user.status);
   const drink = useAppSelector((state) => state.user.drinks).filter((drink) => drink.idDrink === id)[0];
   const drinkLoaded = drink && drink.idDrink === id;
 
   const collection = useAppSelector((state) => state.user.collection) as IUserCollectionItemDoc[];
 
   useEffect(() => {
-    if (!drinkLoaded && userStatus !== 'loading') {
+    if (!drinkLoaded) {
       dispatch(getDrinks());
     }
   }, []);

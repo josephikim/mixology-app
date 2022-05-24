@@ -47,12 +47,12 @@ const SearchResults: React.FC = () => {
   }
 
   useEffect(() => {
-    if (isNewSearch && status !== 'loading') {
+    if (isNewSearch) {
       dispatch(getSearchResults({ type, query } as UrlParams));
     }
   }, []);
 
-  // Determine search end status
+  // Set search end status
   if (!isNewSearch && status === 'succeeded' && !isSearchSuccess) setIsSearchSuccess(true);
   if (!isNewSearch && status === 'failed' && !isSearchFail) setIsSearchFail(true);
 
@@ -74,7 +74,7 @@ const SearchResults: React.FC = () => {
         <ContentWrapper>
           <Row className="search-status">
             <Col>
-              {isSearchSuccess && <h5>{`Found ${searchResults.length} results for "${query}":`}</h5>}
+              {isSearchSuccess && <h5>{`Found ${searchResults.length} results for "${query}"`}</h5>}
               {isSearchFail && <h5>Error retrieving data!</h5>}
             </Col>
           </Row>

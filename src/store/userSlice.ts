@@ -85,15 +85,22 @@ export const getSearchResults = createAsyncThunk<
   }
 });
 
-export const addCollectionItem = createAsyncThunk(
-  'user/addCollectionItem',
-  async (idDrink: string): Promise<IUserCollectionItemDoc> => {
-    const api = new UserApi();
-    const result = await api.addCollectionItem(idDrink);
-
-    return result;
+export const addCollectionItem = createAsyncThunk<
+  IUserCollectionItemDoc,
+  string,
+  {
+    rejectValue: ApiAccessError;
   }
-);
+>('user/addCollectionItem', async (idDrink, { rejectWithValue }) => {
+  const api = new UserApi();
+
+  try {
+    const response = await api.addCollectionItem(idDrink);
+    return response;
+  } catch (err) {
+    return rejectWithValue(err);
+  }
+});
 
 export const deleteCollectionItem = createAsyncThunk<
   IUserCollectionItemDoc,
@@ -202,6 +209,9 @@ export const userSlice = createSlice({
       .addCase(addCollectionItem.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+        if (action.payload) {
+          state.errorType = action.payload.type;
+        }
       })
       .addCase(saveNotes.pending, (state) => {
         state.status = 'loading';

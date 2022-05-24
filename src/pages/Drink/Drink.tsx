@@ -11,6 +11,7 @@ import DrinkIngredients from '../../components/DrinkIngredients';
 import DrinkInstructions from '../../components/DrinkInstructions';
 import DrinkNotes from '../../components/DrinkNotes';
 import Youtube from '../../components/Youtube';
+import AddCollectionItemButton from '../../components/AddCollectionItemButton';
 
 import './Drink.css';
 
@@ -50,12 +51,17 @@ const Drink: React.FC = () => {
         <Tabs defaultActiveKey="info">
           <Tab eventKey="info" title="Info">
             <Row>
-              <Col md={6}>
+              <Col md={4}>
                 <ContentWrapper>
                   <DrinkInfo data={drink} />
                 </ContentWrapper>
               </Col>
-              <Col md={6}>
+              <Col md={4}>
+                <ContentWrapper>
+                  <AddCollectionItemButton idDrink={drink.idDrink} />
+                </ContentWrapper>
+              </Col>
+              <Col md={4}>
                 <ContentWrapper>
                   <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
                 </ContentWrapper>
@@ -70,10 +76,15 @@ const Drink: React.FC = () => {
                   <DrinkIngredients data={drink} />
                 </ContentWrapper>
               </Col>
-              <Col md={8}>
+              <Col md={4}>
                 <ContentWrapper>
                   <h6>Instructions:</h6>
                   <DrinkInstructions text={drink.strInstructions as string} />
+                </ContentWrapper>
+              </Col>
+              <Col md={4}>
+                <ContentWrapper>
+                  <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
                 </ContentWrapper>
               </Col>
             </Row>

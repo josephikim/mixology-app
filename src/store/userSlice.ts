@@ -21,6 +21,7 @@ interface UserState {
   randomDrink: IDrinkDoc;
   collection?: IUserCollectionItemDoc[];
   searchPayload?: SearchPayload;
+  searchResults?: IDrinkDoc[];
 }
 
 type ApiAccessError = {
@@ -179,11 +180,11 @@ export const userSlice = createSlice({
       .addCase(getSearchResults.fulfilled, (state: UserState, action) => {
         const results = action.payload;
         state.status = 'succeeded';
-        state.drinks = results;
+        state.searchResults = results;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.status = 'failed';
-        state.drinks = [];
+        state.searchResults = [];
         state.error = action.error.message;
         if (action.payload) {
           state.errorType = action.payload.type;

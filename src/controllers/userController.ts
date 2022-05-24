@@ -164,7 +164,6 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
         url += `/filter.php?a=${encodeURIComponent(query)}`;
         break;
       }
-      case 'drink':
       default: {
         url += `/search.php?s=${encodeURIComponent(query)}`;
         break;
@@ -174,60 +173,58 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
     const response = await axios.get(url);
 
     // No content found
-    if (response.status === 204) {
+    if (response.status === 204 || !response.data || !response.data.drinks) {
       res.status(204).send({ message: 'No results available.' });
-    }
+    } else {
+      const results = response.data.drinks as IDrinkDoc[];
 
-    const results = response.data.drinks as IDrinkDoc[];
+      // Create array of drink ids from results
+      const ids = results.map((result) => {
+        return result.idDrink as string;
+      });
 
-    // Create array of drink ids from results
-    const ids = results.map((result) => {
-      return result.idDrink as string;
-    });
+      // Resolve array of promises where each id triggers a search for matching Drink doc. If doc not found, get drink info via cocktail API search and save result as new Drink doc.
+      const promises = [] as any;
 
-    // Resolve array of promises where each id triggers a search for matching Drink doc. If doc not found, get drink info via cocktail API search and save result as new Drink doc.
-    const promises = [] as any;
+      for (let index = 0; index < ids.length; index++) {
+        promises.push(
+          new Promise((resolve) => {
+            Drink.findOne({ idDrink: ids[index] }).exec(async (err, doc) => {
+              if (err) {
+                return next(err);
+              }
 
-    for (let index = 0; index < ids.length; index++) {
-      promises.push(
-        new Promise((resolve) => {
-          Drink.findOne({ idDrink: ids[index] }).exec(async (err, doc) => {
-            if (err) {
-              return next(err);
-            }
+              if (!doc) {
+                // Search cocktail API by drink ID
+                const url = `${process.env.THECOCKTAILDB_API_URL}/lookup.php?i=${ids[index]}`;
 
-            if (!doc) {
-              // Search cocktail API by drink ID
-              const url = `${process.env.THECOCKTAILDB_API_URL}/lookup.php?i=${ids[index]}`;
+                const response = await axios.get(url);
 
-              const response = await axios.get(url);
+                // No content found
+                if (response.status === 204 || response.data.drinks == null) return;
 
-              // No content found
-              if (response.status === 204 || response.data.drinks === null) return;
+                const result = response.data.drinks[0];
 
-              const result = response.data.drinks[0];
+                // save result in Drink collection
+                const newDrink = new Drink(result);
 
-              // save result as new Drink
-              const newDrink = new Drink(result);
-
-              newDrink.save((err, doc) => {
-                if (err) {
-                  return next(err);
-                }
-
+                newDrink.save((err, doc) => {
+                  if (err) {
+                    return next(err);
+                  }
+                  resolve(doc);
+                });
+              } else {
                 resolve(doc);
-              });
-            } else {
-              resolve(doc);
-            }
-          });
-        })
-      );
+              }
+            });
+          })
+        );
+      }
+      Promise.all(promises).then((results) => {
+        res.status(200).send(results);
+      });
     }
-
-    Promise.all(promises).then((results) => {
-      res.status(200).send(results);
-    });
   } catch (err) {
     return next(err);
   }

@@ -31,7 +31,7 @@ const Collection: React.FC = () => {
   const renderCollectionItem = (idDrink: string) => {
     const collectionItem = collection.filter((item) => (item.idDrink = idDrink))[0];
     const collectionItemDrink = drinks.filter((drink) => (drink.idDrink = idDrink))[0];
-    if (collectionItemDrink === undefined || Object.keys(collectionItemDrink).length < 1) return null;
+    if (collectionItemDrink == undefined || Object.keys(collectionItemDrink).length < 1) return null;
 
     return (
       <Accordion.Item eventKey={collectionItemDrink.idDrink} key={collectionItemDrink.idDrink}>
@@ -110,7 +110,7 @@ const Collection: React.FC = () => {
           {collection.length > 0 ? (
             <Accordion defaultActiveKey={collection[0].idDrink} alwaysOpen>
               {collection.map((item, index) =>
-                item === undefined || index === undefined ? null : renderCollectionItem(item.idDrink)
+                item == undefined || index == undefined ? null : renderCollectionItem(item.idDrink)
               )}
             </Accordion>
           ) : (

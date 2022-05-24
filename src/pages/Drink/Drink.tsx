@@ -22,29 +22,28 @@ const Drink: React.FC = () => {
   const { id } = useParams<UrlParams>();
   const dispatch = useAppDispatch();
   const authToken = useAppSelector((state) => state.auth.accessToken);
-  const userStatus = useAppSelector((state) => state.user.status);
   const drink = useAppSelector((state) => state.user.drinks).filter((drink) => drink.idDrink === id)[0];
   const drinkLoaded = drink && drink.idDrink === id;
 
   const collection = useAppSelector((state) => state.user.collection) as IUserCollectionItemDoc[];
 
   useEffect(() => {
-    if (!drinkLoaded && userStatus !== 'loading') {
+    if (!drinkLoaded) {
       dispatch(getDrinks());
     }
   }, []);
 
-  let collectionIncludesDrink = false;
-  let matchedCollectionItem = {} as IUserCollectionItemDoc;
+  let collectionItemMatchesDrink = false;
 
   if (collection) {
-    collectionIncludesDrink = collection.some((item) => item.idDrink === id);
+    collectionItemMatchesDrink = collection.some((item) => item.idDrink === drink.idDrink);
   }
 
-  if (collectionIncludesDrink) {
-    matchedCollectionItem = collection.filter((item) => item.idDrink === id)[0];
-  }
+  let collectionItem = {} as IUserCollectionItemDoc;
 
+  if (collectionItemMatchesDrink) {
+    collectionItem = collection.filter((item) => item.idDrink === drink.idDrink)[0];
+  }
   return (
     <div className="Drink">
       {drinkLoaded ? (
@@ -88,12 +87,12 @@ const Drink: React.FC = () => {
               </Col>
             </Row>
           </Tab>
-          {authToken && collectionIncludesDrink && (
+          {authToken && collectionItemMatchesDrink && (
             <Tab eventKey="notes" title="Notes">
               <Row>
                 <Col md={8}>
                   <ContentWrapper>
-                    <DrinkNotes notes={matchedCollectionItem.notes as string} idDrink={matchedCollectionItem.idDrink} />
+                    <DrinkNotes notes={collectionItem.notes as string} idDrink={collectionItem.idDrink} />
                   </ContentWrapper>
                 </Col>
               </Row>

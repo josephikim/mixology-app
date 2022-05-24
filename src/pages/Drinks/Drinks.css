@@ -17,18 +17,14 @@
 }
 
 .Drinks .drinks-cell {
-  padding: 16px;
+  padding: 1rem;
   background-color: #fff;
   border-right: 1px solid #dadce0;
   border-bottom: 1px solid #dadce0;
 }
 
 .Drinks .drinks-cell--1 {
-  grid-row: 1;
-}
-
-.Drinks .drinks-cell--2 {
-  grid-row: 2;
+  border-bottom: none;
 }
 
 .Drinks .drinks-item {

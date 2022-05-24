@@ -11,7 +11,7 @@ import '../styles/RandomDrink.css';
 const RandomDrink: React.FC = () => {
   const drink = useAppSelector((state) => state.user.randomDrink);
 
-  if (!drink || drink === undefined) return null;
+  if (!drink || drink == undefined) return null;
 
   return (
     <div className="RandomDrink">

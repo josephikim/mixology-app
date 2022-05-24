@@ -5,6 +5,7 @@ import { Row, Col } from 'react-bootstrap';
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { logoutAction } from '../../store';
 import { getSearchResults, SearchPayload } from '../../store/userSlice';
+import { IDrinkDoc } from '../../db/Drink';
 import ContentWrapper from '../../layout/ContentWrapper';
 import SearchResultItem from './SearchResultItem';
 
@@ -33,33 +34,32 @@ const SearchResults: React.FC = () => {
 
   const status = useAppSelector((state) => state.user.status);
   const searchPayload = useAppSelector((state) => state.user.searchPayload) as SearchPayload;
-  const drinks = useAppSelector((state) => state.user.drinks);
+  const searchResults = useAppSelector((state) => state.user.searchResults) as IDrinkDoc[];
 
-  let isSearchPayloadMatch = false;
+  let isNewSearch = false;
 
   if (
-    searchPayload !== undefined &&
-    searchPayload.type.toLowerCase() === (type as string).toLowerCase() &&
-    searchPayload.query.toLowerCase() === (query as string).toLowerCase()
+    !searchPayload ||
+    searchPayload.type.toLowerCase() !== (type as string).toLowerCase() ||
+    searchPayload.query.toLowerCase() !== (query as string).toLowerCase()
   ) {
-    isSearchPayloadMatch = true;
+    isNewSearch = true;
   }
 
-  const isSearchComplete = isSearchPayloadMatch && drinks !== undefined && status !== 'loading';
-
   useEffect(() => {
-    if (!isSearchComplete) {
+    if (isNewSearch) {
       dispatch(getSearchResults({ type, query } as UrlParams));
     }
   }, []);
 
-  if (isSearchComplete && status === 'succeeded' && !isSearchSuccess) setIsSearchSuccess(true);
-  if (isSearchComplete && status === 'failed' && !isSearchFail) setIsSearchFail(true);
+  // Set search end status
+  if (!isNewSearch && status === 'succeeded' && !isSearchSuccess) setIsSearchSuccess(true);
+  if (!isNewSearch && status === 'failed' && !isSearchFail) setIsSearchFail(true);
 
   const renderContent = () => {
-    const isSearchComplete = isSearchSuccess || isSearchFail;
+    const isSearchPending = !isSearchSuccess && !isSearchFail;
 
-    if (!isSearchComplete) {
+    if (isSearchPending) {
       return (
         <ContentWrapper>
           <Row className="search-status">
@@ -74,16 +74,16 @@ const SearchResults: React.FC = () => {
         <ContentWrapper>
           <Row className="search-status">
             <Col>
-              {isSearchSuccess && <h5>{`Found ${drinks.length} results for "${query}":`}</h5>}
+              {isSearchSuccess && <h5>{`Found ${searchResults.length} results for "${query}"`}</h5>}
               {isSearchFail && <h5>Error retrieving data!</h5>}
             </Col>
           </Row>
           {isSearchSuccess && (
             <Row>
               <Col>
-                {drinks.length > 0
-                  ? drinks.map((drink) => {
-                      return <SearchResultItem key={drink.idDrink} drink={drink} />;
+                {searchResults.length > 0
+                  ? searchResults.map((result) => {
+                      return <SearchResultItem key={result.idDrink} drink={result} />;
                     })
                   : null}
               </Col>

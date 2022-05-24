@@ -11,7 +11,7 @@ interface DrinkInfoProps {
 }
 
 const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
-  if (!data || data === undefined) return null;
+  if (!data || data == undefined) return null;
 
   return (
     <div className="DrinkInfo">

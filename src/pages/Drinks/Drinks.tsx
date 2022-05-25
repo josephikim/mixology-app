@@ -15,27 +15,21 @@ const Drinks: React.FC = () => {
   return (
     <div className="Drinks">
       <Container>
-        <div className="drinks-cell drinks-cell--1">
-          <div className="drinks-item">
-            <Row>
-              <Col>
-                <label>All drinks</label>
-              </Col>
-            </Row>
-          </div>
-        </div>
-        <div className="drinks-cell drinks-cell--2">
-          <div className="drinks-item">
-            <Row>
-              {drinksSorted.map((drink) => {
-                return (
-                  <Col key={drink.idDrink} md={3}>
-                    <Link to={`/drink/${drink.idDrink}`}>{drink.strDrink}</Link>
-                  </Col>
-                );
-              })}
-            </Row>
-          </div>
+        <div className="DrinksWrapper">
+          <Row>
+            <Col>
+              <strong>All drinks</strong>
+            </Col>
+          </Row>
+          <Row>
+            {drinksSorted.map((drink) => {
+              return (
+                <Col key={drink.idDrink} md={3}>
+                  <Link to={`/drink/${drink.idDrink}`}>{drink.strDrink}</Link>
+                </Col>
+              );
+            })}
+          </Row>
         </div>
       </Container>
     </div>

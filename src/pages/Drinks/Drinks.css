@@ -1,33 +1,21 @@
 .Drinks {
-  border-top: 1px solid #dadce0;
-  overflow-x: hidden;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
-.Drinks label {
-  font-weight: bold;
-}
-
-.Drinks a {
-  display: inline-block;
-}
-
-.Drinks .container {
-  position: relative;
-  display: grid;
-}
-
-.Drinks .drinks-cell {
+.Drinks .DrinksWrapper {
   padding: 1rem;
   background-color: #fff;
   border-right: 1px solid #dadce0;
   border-bottom: 1px solid #dadce0;
+  overflow-x: hidden;
 }
 
-.Drinks .drinks-cell--1 {
-  border-bottom: none;
+.Drinks strong {
+  display: block;
+  margin-bottom: 0.7rem;
 }
 
-.Drinks .drinks-item {
-  display: flex;
-  height: 100%;
+.Drinks a {
+  display: block;
 }

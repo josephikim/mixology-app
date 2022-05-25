@@ -1,12 +1,13 @@
 .Home {
-  border-top: 1px solid #dadce0;
-  overflow-x: hidden;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .Home .container {
   position: relative;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  overflow-x: hidden;
 }
 
 .Home .home-cell {
@@ -35,9 +36,4 @@
 
 .Home .home-cell--5 {
   grid-column: 3;
-}
-
-.Home .home-item {
-  display: flex;
-  height: 100%;
 }

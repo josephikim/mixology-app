@@ -19,30 +19,32 @@ const AddCollectionItemButton: React.FC<AddCollectionItemButtonProps> = ({ idDri
 
   const authToken = useAppSelector((state) => state.auth.accessToken);
   const collection = useAppSelector((state) => state.user.collection);
+
+  // Find matching drink
+  let matchingDrink = {} as IDrinkDoc;
+
+  matchingDrink = useAppSelector((state) => state.base.drinks).filter((drink) => drink.idDrink === idDrink)[0];
+
+  if (!matchingDrink.idDrink) return null;
+
+  // Find collection item with matching drink
   let collectionItem = {} as IUserCollectionItemDoc;
-  let collectionItemMatchesDrink = false;
 
-  // check if user's collection includes drink
   if (collection && collection.length > 0) {
-    collectionItem = collection.filter((item) => item.idDrink === idDrink)[0];
-  }
-
-  if (collectionItem && collectionItem.idDrink) {
-    collectionItemMatchesDrink = collectionItem.idDrink === idDrink;
+    collectionItem = collection.filter((item) => item.idDrink === matchingDrink.idDrink)[0];
   }
 
   const handleClick = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
     event.preventDefault();
 
     if (authToken) {
-      const resultAction = await dispatch(addCollectionItem(idDrink));
-      if (resultAction.type === 'user/addCollectionItem/fulfilled') {
-        const resultPayload = resultAction.payload as IDrinkDoc;
+      const resultAction = await dispatch(addCollectionItem(matchingDrink.idDrink));
 
+      if (resultAction.type === 'user/addCollectionItem/fulfilled') {
         const payload = {
           id: uuid(),
           type: resultAction.type,
-          message: `${resultPayload.strDrink} successfully added to collection`
+          message: `${matchingDrink.strDrink} successfully added to collection`
         };
         dispatch(createAlert(payload));
       }
@@ -53,7 +55,7 @@ const AddCollectionItemButton: React.FC<AddCollectionItemButtonProps> = ({ idDri
 
   return (
     <div className="AddCollectionItemButton">
-      {collectionItemMatchesDrink ? (
+      {collectionItem && collectionItem.idDrink ? (
         <Button variant="success" id={collectionItem.idDrink}>
           Added to collection <i className="las la-check"></i>
         </Button>

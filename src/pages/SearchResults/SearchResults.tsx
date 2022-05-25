@@ -18,39 +18,53 @@ type UrlParams = {
 const SearchResults: React.FC = () => {
   const dispatch = useAppDispatch();
 
+  const { type, query } = useParams() as UrlParams;
+
   const [isSearchSuccess, setIsSearchSuccess] = useState(false);
   const [isSearchFail, setIsSearchFail] = useState(false);
-
-  const { type, query } = useParams<UrlParams>();
 
   const status = useAppSelector((state) => state.user.status);
   const searchPayload = useAppSelector((state) => state.user.searchPayload) as SearchPayload;
   const searchResults = useAppSelector((state) => state.user.searchResults) as IDrinkDoc[];
 
-  let isNewSearch = false;
+  // Set rendering conditions
+  let searchPayloadsMatch = false;
 
-  if (
-    !searchPayload ||
-    searchPayload.type.toLowerCase() !== (type as string).toLowerCase() ||
-    searchPayload.query.toLowerCase() !== (query as string).toLowerCase()
-  ) {
-    isNewSearch = true;
+  if (searchPayload) {
+    searchPayloadsMatch =
+      searchPayload.type.toLowerCase() === type.toLowerCase() &&
+      searchPayload.query.toLowerCase() === query.toLowerCase();
+  }
+
+  if (searchPayloadsMatch) {
+    if (status === 'succeeded' && !isSearchSuccess) setIsSearchSuccess(true);
+    if (status === 'failed' && !isSearchFail) setIsSearchFail(true);
+  } else {
+    if (isSearchSuccess) setIsSearchSuccess(false);
+    if (isSearchFail) setIsSearchFail(false);
   }
 
   useEffect(() => {
+    // Check conditions to dispatch search action
+    let isNewSearch = false;
+
+    if (!searchPayload) {
+      isNewSearch = true;
+    } else if ('type' in searchPayload && 'query' in searchPayload) {
+      isNewSearch =
+        searchPayload.type.toLowerCase() !== type.toLowerCase() ||
+        searchPayload.query.toLowerCase() !== query.toLowerCase();
+    }
+
     if (isNewSearch) {
       dispatch(getSearchResults({ type, query } as UrlParams));
     }
-  }, []);
-
-  // Set search end status
-  if (!isNewSearch && status === 'succeeded' && !isSearchSuccess) setIsSearchSuccess(true);
-  if (!isNewSearch && status === 'failed' && !isSearchFail) setIsSearchFail(true);
+  }, [type, query]);
 
   const renderContent = () => {
-    const isSearchPending = !isSearchSuccess && !isSearchFail;
+    const isSearchComplete = isSearchSuccess || isSearchFail;
 
-    if (isSearchPending) {
+    if (!isSearchComplete) {
       return (
         <ContentWrapper>
           <Row className="search-status">

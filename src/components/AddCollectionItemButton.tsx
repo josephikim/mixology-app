@@ -44,7 +44,6 @@ const AddCollectionItemButton: React.FC<AddCollectionItemButtonProps> = ({ idDri
           type: resultAction.type,
           message: `${resultPayload.strDrink} successfully added to collection`
         };
-
         dispatch(createAlert(payload));
       }
     } else {

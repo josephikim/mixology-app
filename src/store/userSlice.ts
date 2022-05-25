@@ -13,11 +13,11 @@ enum Status {
 
 interface UserState {
   status: keyof typeof Status;
-  error?: string;
-  errorType?: string;
-  collection?: IUserCollectionItemDoc[];
   searchPayload?: SearchPayload;
   searchResults?: IDrinkDoc[];
+  collection?: IUserCollectionItemDoc[];
+  error?: string;
+  errorType?: string;
 }
 
 type ApiAccessError = {
@@ -121,17 +121,17 @@ export const userSlice = createSlice({
     builder
       .addCase(getSearchResults.pending, (state, action) => {
         state.status = 'loading';
-        state.searchPayload = action.meta.arg;
       })
       .addCase(getSearchResults.fulfilled, (state: UserState, action) => {
         const results = action.payload;
         state.status = 'succeeded';
         state.searchResults = results;
+        state.searchPayload = action.meta.arg;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.status = 'failed';
-        state.searchResults = [];
         state.error = action.error.message;
+        state.searchPayload = action.meta.arg;
         if (action.payload) {
           state.errorType = action.payload.type;
         }

@@ -8,7 +8,7 @@ import { IDrinkDoc } from '../../db/Drink';
 import './Drinks.css';
 
 const Drinks: React.FC = () => {
-  const drinks = useAppSelector((state) => state.user.drinks) as IDrinkDoc[];
+  const drinks = useAppSelector((state) => state.base.drinks) as IDrinkDoc[];
 
   const drinksSorted = drinks.sort((a, b) => (a.strDrink as string).localeCompare(b.strDrink as string));
 

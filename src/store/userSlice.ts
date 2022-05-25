@@ -3,7 +3,6 @@ import { IUserCollectionItemDoc } from 'src/db/UserCollectionItem';
 
 import { UserApi } from '../api';
 import { IDrinkDoc } from '../db/Drink';
-import { IKeywordDoc } from '../db/Keyword';
 
 enum Status {
   idle = 'IDLE',
@@ -14,14 +13,11 @@ enum Status {
 
 interface UserState {
   status: keyof typeof Status;
-  error?: string;
-  errorType?: string;
-  drinks: IDrinkDoc[];
-  keywords: IKeywordDoc[];
-  randomDrink: IDrinkDoc;
-  collection?: IUserCollectionItemDoc[];
   searchPayload?: SearchPayload;
   searchResults?: IDrinkDoc[];
+  collection?: IUserCollectionItemDoc[];
+  error?: string;
+  errorType?: string;
 }
 
 type ApiAccessError = {
@@ -40,32 +36,8 @@ export type SearchPayload = {
 };
 
 export const initialState: UserState = {
-  status: 'idle',
-  drinks: [],
-  keywords: [],
-  randomDrink: {} as IDrinkDoc
+  status: 'idle'
 };
-
-export const getKeywords = createAsyncThunk('user/getKeywords', async (): Promise<IKeywordDoc[]> => {
-  const api = new UserApi();
-  const result = await api.getKeywords();
-
-  return result;
-});
-
-export const getRandomDrink = createAsyncThunk('user/getRandomDrink', async (): Promise<IDrinkDoc> => {
-  const api = new UserApi();
-  const result = await api.getRandomDrink();
-
-  return result;
-});
-
-export const getDrinks = createAsyncThunk('user/getDrinks', async (): Promise<IDrinkDoc[]> => {
-  const api = new UserApi();
-  const result = await api.getDrinks();
-
-  return result;
-});
 
 export const getSearchResults = createAsyncThunk<
   IDrinkDoc[],
@@ -85,15 +57,22 @@ export const getSearchResults = createAsyncThunk<
   }
 });
 
-export const addCollectionItem = createAsyncThunk(
-  'user/addCollectionItem',
-  async (idDrink: string): Promise<IUserCollectionItemDoc> => {
-    const api = new UserApi();
-    const result = await api.addCollectionItem(idDrink);
-
-    return result;
+export const addCollectionItem = createAsyncThunk<
+  IUserCollectionItemDoc,
+  string,
+  {
+    rejectValue: ApiAccessError;
   }
-);
+>('user/addCollectionItem', async (idDrink, { rejectWithValue }) => {
+  const api = new UserApi();
+
+  try {
+    const response = await api.addCollectionItem(idDrink);
+    return response;
+  } catch (err) {
+    return rejectWithValue(err);
+  }
+});
 
 export const deleteCollectionItem = createAsyncThunk<
   IUserCollectionItemDoc,
@@ -140,52 +119,19 @@ export const userSlice = createSlice({
   // Reducers for handling thunk-dispatched actions
   extraReducers: (builder) => {
     builder
-      .addCase(getKeywords.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getKeywords.fulfilled, (state: UserState, action) => {
-        state.keywords = action.payload;
-        state.status = 'succeeded';
-      })
-      .addCase(getKeywords.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
-      .addCase(getRandomDrink.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getRandomDrink.fulfilled, (state: UserState, action) => {
-        state.randomDrink = action.payload;
-        state.status = 'succeeded';
-      })
-      .addCase(getRandomDrink.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
-      .addCase(getDrinks.pending, (state) => {
-        state.status = 'loading';
-      })
-      .addCase(getDrinks.fulfilled, (state: UserState, action) => {
-        state.drinks = action.payload;
-        state.status = 'succeeded';
-      })
-      .addCase(getDrinks.rejected, (state, action) => {
-        state.status = 'failed';
-        state.error = action.error.message;
-      })
       .addCase(getSearchResults.pending, (state, action) => {
         state.status = 'loading';
-        state.searchPayload = action.meta.arg;
       })
       .addCase(getSearchResults.fulfilled, (state: UserState, action) => {
         const results = action.payload;
         state.status = 'succeeded';
         state.searchResults = results;
+        state.searchPayload = action.meta.arg;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.status = 'failed';
-        state.searchResults = [];
         state.error = action.error.message;
+        state.searchPayload = action.meta.arg;
         if (action.payload) {
           state.errorType = action.payload.type;
         }
@@ -202,6 +148,9 @@ export const userSlice = createSlice({
       .addCase(addCollectionItem.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
+        if (action.payload) {
+          state.errorType = action.payload.type;
+        }
       })
       .addCase(saveNotes.pending, (state) => {
         state.status = 'loading';

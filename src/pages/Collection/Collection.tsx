@@ -30,29 +30,35 @@ const Collection: React.FC = () => {
           <Tabs defaultActiveKey="info">
             <Tab eventKey="info" title="Info">
               <Row>
-                <Col md={6}>
-                  <ContentWrapper>
-                    <DrinkInfo data={matchingDrink} />
-                  </ContentWrapper>
-                </Col>
-                <Col md={6}>
+                <Col md={4}>
                   <ContentWrapper>
                     <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
+                  </ContentWrapper>
+                </Col>
+                <Col md={4}>
+                  <ContentWrapper>
+                    <DrinkInfo data={matchingDrink} />
                   </ContentWrapper>
                 </Col>
               </Row>
             </Tab>
             <Tab eventKey="recipe" title="Recipe">
               <Row>
-                <Col md={6}>
-                  <ContentWrapper>
-                    <DrinkIngredients data={matchingDrink} />
-                    <DrinkInstructions text={matchingDrink.strInstructions as string} />
-                  </ContentWrapper>
-                </Col>
-                <Col md={6}>
+                <Col md={4}>
                   <ContentWrapper>
                     <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
+                  </ContentWrapper>
+                </Col>
+                <Col md={4}>
+                  <ContentWrapper>
+                    <h6>Ingredients:</h6>
+                    <DrinkIngredients data={matchingDrink} />
+                  </ContentWrapper>
+                </Col>
+                <Col md={4}>
+                  <ContentWrapper>
+                    <h6>Instructions:</h6>
+                    <DrinkInstructions text={matchingDrink.strInstructions as string} />
                   </ContentWrapper>
                 </Col>
               </Row>
@@ -93,15 +99,13 @@ const Collection: React.FC = () => {
   return (
     <div className="Collection">
       <Container>
-        <ContentWrapper>
-          {collection && collection.length > 0 ? (
-            <Accordion defaultActiveKey={collection[0].idDrink} alwaysOpen>
-              {collection.map((item) => renderCollectionItem(item))}
-            </Accordion>
-          ) : (
-            <strong>No collection items found</strong>
-          )}
-        </ContentWrapper>
+        {collection && collection.length > 0 ? (
+          <Accordion defaultActiveKey={collection[0].idDrink} alwaysOpen>
+            {collection.map((item) => renderCollectionItem(item))}
+          </Accordion>
+        ) : (
+          <strong>No collection items found</strong>
+        )}
       </Container>
     </div>
   );

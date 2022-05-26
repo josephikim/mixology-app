@@ -1,10 +1,9 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
+import { Container, Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
 
-import { useAppSelector, useAppDispatch } from '../../hooks';
+import { useAppSelector } from '../../hooks';
 import { IUserCollectionItemDoc } from '../../db/UserCollectionItem';
-import { getDrinks } from '../../store/baseSlice';
 import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkInfo from '../../components/DrinkInfo';
 import DrinkIngredients from '../../components/DrinkIngredients';
@@ -21,18 +20,10 @@ type UrlParams = {
 
 const Drink: React.FC = () => {
   const { id } = useParams<UrlParams>();
-  const dispatch = useAppDispatch();
   const authToken = useAppSelector((state) => state.auth.accessToken);
   const drink = useAppSelector((state) => state.base.drinks).filter((drink) => drink.idDrink === id)[0];
-  const drinkLoaded = drink && drink.idDrink === id;
 
   const collection = useAppSelector((state) => state.user.collection) as IUserCollectionItemDoc[];
-
-  useEffect(() => {
-    if (!drinkLoaded) {
-      dispatch(getDrinks());
-    }
-  }, []);
 
   let collectionItemMatchesDrink = false;
 
@@ -47,69 +38,71 @@ const Drink: React.FC = () => {
   }
   return (
     <div className="Drink">
-      {drinkLoaded ? (
-        <Tabs defaultActiveKey="info">
-          <Tab eventKey="info" title="Info">
-            <Row>
-              <Col md={4}>
-                <ContentWrapper>
-                  <DrinkInfo data={drink} />
-                </ContentWrapper>
-              </Col>
-              <Col md={4}>
-                <ContentWrapper>
-                  <AddCollectionItemButton idDrink={drink.idDrink} />
-                </ContentWrapper>
-              </Col>
-              <Col md={4}>
-                <ContentWrapper>
-                  <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
-                </ContentWrapper>
-              </Col>
-            </Row>
-          </Tab>
-          <Tab eventKey="recipe" title="Recipe">
-            <Row>
-              <Col md={4}>
-                <ContentWrapper>
-                  <h6>Ingredients:</h6>
-                  <DrinkIngredients data={drink} />
-                </ContentWrapper>
-              </Col>
-              <Col md={4}>
-                <ContentWrapper>
-                  <h6>Instructions:</h6>
-                  <DrinkInstructions text={drink.strInstructions as string} />
-                </ContentWrapper>
-              </Col>
-              <Col md={4}>
-                <ContentWrapper>
-                  <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
-                </ContentWrapper>
-              </Col>
-            </Row>
-          </Tab>
-          <Tab eventKey="videos" title="Videos">
-            <Row>
-              <Col>
-                <ContentWrapper>
-                  <Youtube videos={drink.youtubeVideos} />
-                </ContentWrapper>
-              </Col>
-            </Row>
-          </Tab>
-          {authToken && collectionItemMatchesDrink && (
-            <Tab eventKey="notes" title="Notes">
+      {drink && drink.idDrink ? (
+        <Container>
+          <Tabs defaultActiveKey="info">
+            <Tab eventKey="info" title="Info">
               <Row>
-                <Col md={8}>
+                <Col md={4}>
                   <ContentWrapper>
-                    <DrinkNotes notes={collectionItem.notes as string} idDrink={collectionItem.idDrink} />
+                    <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
+                  </ContentWrapper>
+                </Col>
+                <Col md={4}>
+                  <ContentWrapper>
+                    <DrinkInfo data={drink} />
+                  </ContentWrapper>
+                </Col>
+                <Col md={4}>
+                  <ContentWrapper>
+                    <AddCollectionItemButton idDrink={drink.idDrink} />
                   </ContentWrapper>
                 </Col>
               </Row>
             </Tab>
-          )}
-        </Tabs>
+            <Tab eventKey="recipe" title="Recipe">
+              <Row>
+                <Col md={4}>
+                  <ContentWrapper>
+                    <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
+                  </ContentWrapper>
+                </Col>
+                <Col md={4}>
+                  <ContentWrapper>
+                    <h6>Ingredients:</h6>
+                    <DrinkIngredients data={drink} />
+                  </ContentWrapper>
+                </Col>
+                <Col md={4}>
+                  <ContentWrapper>
+                    <h6>Instructions:</h6>
+                    <DrinkInstructions text={drink.strInstructions as string} />
+                  </ContentWrapper>
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey="videos" title="Videos">
+              <Row>
+                <Col>
+                  <ContentWrapper>
+                    <Youtube videos={drink.youtubeVideos} />
+                  </ContentWrapper>
+                </Col>
+              </Row>
+            </Tab>
+            {authToken && collectionItemMatchesDrink && (
+              <Tab eventKey="notes" title="Notes">
+                <Row>
+                  <Col md={8}>
+                    <ContentWrapper>
+                      <DrinkNotes notes={collectionItem.notes as string} idDrink={collectionItem.idDrink} />
+                    </ContentWrapper>
+                  </Col>
+                </Row>
+              </Tab>
+            )}
+          </Tabs>
+        </Container>
       ) : (
         <Row>
           <Col>

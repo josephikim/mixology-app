@@ -3,19 +3,17 @@
 }
 .Drink .nav {
   margin: 0 auto;
-  max-width: 1080px;
 }
 
 .Drink .nav .nav-link {
-  background-color: #E8E8E8;
+  background-color: #e8e8e8;
 }
 
 .Drink .tab-content {
   margin: 0 auto;
-  max-width: 1080px;
   background-color: #fff;
 }
 
-.Drink div[id$="-recipe"] h6 {
+.Drink div[id$='-recipe'] h6 {
   margin-bottom: 1rem;
 }

@@ -10,10 +10,10 @@ import Drink from './pages/Drink/Drink';
 import Login from './pages/Login/Login';
 import SearchResults from './pages/SearchResults/SearchResults';
 import Registration from './pages/Registration/Registration';
+import Collection from './pages/Collection/Collection';
 import RequireAuth from './components/RequireAuth';
 import Header from './components/Header';
 import CustomAlert from './components/CustomAlert';
-import Collection from './pages/Collection/Collection';
 
 import './styles/App.css';
 

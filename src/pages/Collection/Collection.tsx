@@ -2,7 +2,6 @@ import React from 'react';
 import { Accordion, Container, Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
 
 import { useAppSelector } from '../../hooks';
-import { IDrinkDoc } from '../../db/Drink';
 import { IUserCollectionItemDoc } from '../../db/UserCollectionItem';
 import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkInfo from '../../components/DrinkInfo';
@@ -12,30 +11,33 @@ import DrinkNotes from '../../components/DrinkNotes';
 import DeleteDrinkButton from '../../components/DeleteDrinkButton';
 import Youtube from '../../components/Youtube';
 
+import './Collection.css';
+
 const Collection: React.FC = () => {
   const collection = useAppSelector((state) => state.user.collection) as IUserCollectionItemDoc[];
-  const drinks = useAppSelector((state) => state.base.drinks) as IDrinkDoc[];
 
-  const renderCollectionItem = (idDrink: string) => {
-    const collectionItem = collection.filter((item) => (item.idDrink = idDrink))[0];
-    const collectionItemDrink = drinks.filter((drink) => (drink.idDrink = idDrink))[0];
-    if (collectionItemDrink == undefined || Object.keys(collectionItemDrink).length < 1) return null;
+  const renderCollectionItem = (collectionItem: IUserCollectionItemDoc) => {
+    const matchingDrink = useAppSelector((state) => state.base.drinks).filter(
+      (drink) => drink.idDrink === collectionItem.idDrink
+    )[0];
+
+    if (!matchingDrink || !matchingDrink.idDrink) return null;
 
     return (
-      <Accordion.Item eventKey={collectionItemDrink.idDrink} key={collectionItemDrink.idDrink}>
-        <Accordion.Header>{collectionItemDrink.strDrink}</Accordion.Header>
+      <Accordion.Item eventKey={matchingDrink.idDrink} key={matchingDrink.idDrink}>
+        <Accordion.Header>{matchingDrink.strDrink}</Accordion.Header>
         <Accordion.Body>
           <Tabs defaultActiveKey="info">
             <Tab eventKey="info" title="Info">
               <Row>
                 <Col md={6}>
                   <ContentWrapper>
-                    <DrinkInfo data={collectionItemDrink} />
+                    <DrinkInfo data={matchingDrink} />
                   </ContentWrapper>
                 </Col>
                 <Col md={6}>
                   <ContentWrapper>
-                    <Image width={250} height={250} src={collectionItemDrink.strDrinkThumb} fluid />
+                    <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
                   </ContentWrapper>
                 </Col>
               </Row>
@@ -44,13 +46,13 @@ const Collection: React.FC = () => {
               <Row>
                 <Col md={6}>
                   <ContentWrapper>
-                    <DrinkIngredients data={collectionItemDrink} />
-                    <DrinkInstructions text={collectionItemDrink.strInstructions as string} />
+                    <DrinkIngredients data={matchingDrink} />
+                    <DrinkInstructions text={matchingDrink.strInstructions as string} />
                   </ContentWrapper>
                 </Col>
                 <Col md={6}>
                   <ContentWrapper>
-                    <Image width={250} height={250} src={collectionItemDrink.strDrinkThumb} fluid />
+                    <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
                   </ContentWrapper>
                 </Col>
               </Row>
@@ -68,7 +70,7 @@ const Collection: React.FC = () => {
               <Row>
                 <Col>
                   <ContentWrapper>
-                    <Youtube videos={collectionItemDrink.youtubeVideos} />
+                    <Youtube videos={matchingDrink.youtubeVideos} />
                   </ContentWrapper>
                 </Col>
               </Row>
@@ -77,10 +79,7 @@ const Collection: React.FC = () => {
               <Row>
                 <Col md={6}>
                   <ContentWrapper>
-                    <DeleteDrinkButton
-                      idDrink={collectionItemDrink.idDrink}
-                      drinkName={collectionItemDrink.strDrink as string}
-                    />
+                    <DeleteDrinkButton idDrink={matchingDrink.idDrink} drinkName={matchingDrink.strDrink as string} />
                   </ContentWrapper>
                 </Col>
               </Row>
@@ -95,16 +94,12 @@ const Collection: React.FC = () => {
     <div className="Collection">
       <Container>
         <ContentWrapper>
-          {collection.length > 0 ? (
+          {collection && collection.length > 0 ? (
             <Accordion defaultActiveKey={collection[0].idDrink} alwaysOpen>
-              {collection.map((item, index) =>
-                item == undefined || index == undefined ? null : renderCollectionItem(item.idDrink)
-              )}
+              {collection.map((item) => renderCollectionItem(item))}
             </Accordion>
           ) : (
-            <span>
-              Add drinks to your collection from the <a href="/search">Search</a> page.
-            </span>
+            <strong>No collection items found</strong>
           )}
         </ContentWrapper>
       </Container>

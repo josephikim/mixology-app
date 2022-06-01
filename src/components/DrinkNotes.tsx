@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Form } from 'react-bootstrap';
+import { Container, Button, Form } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
 
 import { useAppDispatch } from '../hooks';
@@ -46,20 +46,24 @@ const DrinkNotes: React.FC<DrinkNotesProps> = ({ notes, idDrink }) => {
   };
 
   return (
-    <Form className="DrinkNotes">
-      <Form.Group controlId="formNotes">
-        <Form.Control
-          as="textarea"
-          rows={5}
-          placeholder="enter text"
-          value={notesInput}
-          onChange={(e): void => setNotesInput(e.target.value)}
-        />
-      </Form.Group>
-      <Button variant="primary" id={idDrink} onClick={(e): Promise<void> => handleClick(e)}>
-        Submit
-      </Button>
-    </Form>
+    <div className="Drink">
+      <Container>
+        <Form className="DrinkNotes">
+          <Form.Group controlId="formNotes">
+            <Form.Control
+              as="textarea"
+              rows={5}
+              placeholder="enter text"
+              value={notesInput}
+              onChange={(e): void => setNotesInput(e.target.value)}
+            />
+          </Form.Group>
+          <Button variant="primary" id={idDrink} onClick={(e): Promise<void> => handleClick(e)}>
+            Submit
+          </Button>
+        </Form>
+      </Container>
+    </div>
   );
 };
 

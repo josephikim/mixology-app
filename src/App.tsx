@@ -36,7 +36,7 @@ const App: React.FC = () => {
     if (!keywords || keywords.length < 1) {
       dispatch(getKeywords());
     }
-  }, []);
+  }, [keywords]);
 
   const randomDrink = useAppSelector((state) => state.base.randomDrink);
 
@@ -44,7 +44,7 @@ const App: React.FC = () => {
     if (!randomDrink || Object.keys(randomDrink).length === 0) {
       dispatch(getRandomDrink());
     }
-  }, []);
+  }, [randomDrink]);
 
   const drinks = useAppSelector((state) => state.base.drinks);
 
@@ -52,7 +52,7 @@ const App: React.FC = () => {
     if (!drinks || drinks.length < 1) {
       dispatch(getDrinks());
     }
-  }, []);
+  }, [drinks]);
 
   const alerts = useAppSelector((state) => state.alert.alerts);
 

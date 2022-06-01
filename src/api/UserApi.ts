@@ -5,7 +5,7 @@ import * as ApiHelper from '../utils/ApiHelper';
 import { StorageHelper } from '../utils/StorageHelper';
 import store from '../store/index';
 import { accessTokenUpdated } from '../store/authSlice';
-import { NotesPayload, SearchPayload } from '../store/userSlice';
+import { AddCollectionItemPayload, NotesPayload, SearchPayload } from '../store/userSlice';
 import { IDrinkDoc } from '../db/Drink';
 import { IKeywordDoc } from '../db/Keyword';
 import { IUserCollectionItemDoc } from '../db/UserCollectionItem';
@@ -105,14 +105,7 @@ export class UserApi {
     return results;
   }
 
-  async addCollectionItem(idDrink: string): Promise<IUserCollectionItemDoc> {
-    const userId = store.getState().auth.userId;
-
-    const payload = {
-      user: userId,
-      idDrink: idDrink
-    };
-
+  async addCollectionItem(payload: AddCollectionItemPayload): Promise<IUserCollectionItemDoc> {
     const url = `${userApiClient.defaults.baseURL}/addCollectionItem`;
     const response = await userApiClient.post(url, payload);
 

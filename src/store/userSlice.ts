@@ -35,6 +35,11 @@ export type SearchPayload = {
   query: string;
 };
 
+export type AddCollectionItemPayload = {
+  user: string;
+  idDrink: string;
+};
+
 export const initialState: UserState = {
   status: 'idle'
 };
@@ -59,15 +64,15 @@ export const getSearchResults = createAsyncThunk<
 
 export const addCollectionItem = createAsyncThunk<
   IUserCollectionItemDoc,
-  string,
+  AddCollectionItemPayload,
   {
     rejectValue: ApiAccessError;
   }
->('user/addCollectionItem', async (idDrink, { rejectWithValue }) => {
+>('user/addCollectionItem', async (payload, { rejectWithValue }) => {
   const api = new UserApi();
 
   try {
-    const response = await api.addCollectionItem(idDrink);
+    const response = await api.addCollectionItem(payload);
     return response;
   } catch (err) {
     return rejectWithValue(err);
@@ -141,7 +146,7 @@ export const userSlice = createSlice({
       })
       .addCase(addCollectionItem.fulfilled, (state: UserState, action) => {
         const result = action.payload;
-        const newState = [...(state.collection as IUserCollectionItemDoc[]), result];
+        const newState = state.collection ? [...state.collection, result] : [result];
         state.status = 'succeeded';
         state.collection = newState;
       })

@@ -1,16 +1,16 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { cloneDeep } from 'lodash';
 
 import { useAppSelector } from '../../hooks';
-import { IDrinkDoc } from '../../db/Drink';
 
 import './Drinks.css';
 
 const Drinks: React.FC = () => {
-  const drinks = useAppSelector((state) => state.base.drinks) as IDrinkDoc[];
-
-  const drinksSorted = drinks.sort((a, b) => (a.strDrink as string).localeCompare(b.strDrink as string));
+  const drinks = useAppSelector((state) => state.base.drinks);
+  const drinksClone = cloneDeep(drinks);
+  const drinksSorted = drinksClone.sort((a, b) => (a.strDrink as string).localeCompare(b.strDrink as string));
 
   return (
     <div className="Drinks">

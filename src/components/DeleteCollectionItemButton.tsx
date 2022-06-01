@@ -7,19 +7,19 @@ import { createAlert } from '../store/alertSlice';
 import { useAppDispatch } from '../hooks';
 import { IDrinkDoc } from '../db/Drink';
 
-interface DeleteDrinkButtonProps {
+interface DeleteCollectionItemButtonProps {
   idDrink: string;
   drinkName: string;
 }
 
-const DeleteDrinkButton: React.FC<DeleteDrinkButtonProps> = (props) => {
+const DeleteCollectionItemButton: React.FC<DeleteCollectionItemButtonProps> = ({ idDrink, drinkName }) => {
   const dispatch = useAppDispatch();
 
   const handleClick = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
     event.preventDefault();
 
-    if (window.confirm(`Are you sure you wish to delete "${props.drinkName}" from your collection?`)) {
-      const resultAction = await dispatch(deleteCollectionItem(props.idDrink));
+    if (window.confirm(`Are you sure you wish to delete "${drinkName}" from your collection?`)) {
+      const resultAction = await dispatch(deleteCollectionItem(idDrink));
 
       if (resultAction.type === 'user/deleteCollectionItem/fulfilled') {
         const resultPayload = resultAction.payload as IDrinkDoc;
@@ -36,12 +36,12 @@ const DeleteDrinkButton: React.FC<DeleteDrinkButtonProps> = (props) => {
   };
 
   return (
-    <div className="DeleteDrinkButton">
-      <Button variant="danger" id={props.idDrink} onClick={(e): Promise<void> => handleClick(e)}>
+    <div className="DeleteCollectionItemButton">
+      <Button variant="danger" id={idDrink} onClick={(e): Promise<void> => handleClick(e)}>
         Delete Drink
       </Button>
     </div>
   );
 };
 
-export default DeleteDrinkButton;
+export default DeleteCollectionItemButton;

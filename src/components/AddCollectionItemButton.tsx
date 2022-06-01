@@ -1,9 +1,7 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { v4 as uuid } from 'uuid';
 
 import { addCollectionItem } from '../store/userSlice';
-import { createAlert } from '../store/alertSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
 
 interface AddCollectionItemButtonProps {
@@ -30,16 +28,7 @@ const AddCollectionItemButton: React.FC<AddCollectionItemButtonProps> = ({ idDri
         idDrink: idDrink
       };
 
-      const resultAction = await dispatch(addCollectionItem(payload));
-
-      if (resultAction.type === 'user/addCollectionItem/fulfilled') {
-        const alertPayload = {
-          id: uuid(),
-          type: resultAction.type,
-          message: `Drink successfully added to collection`
-        };
-        dispatch(createAlert(alertPayload));
-      }
+      await dispatch(addCollectionItem(payload));
     } else {
       alert('Please login to manage your collection.');
     }

@@ -26,7 +26,7 @@ const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
 
       <Row>
         <Col md={4}>
-          <h6>Alcohol:</h6>
+          <h6>Alcohol Content:</h6>
         </Col>
         <Col md={8}>{data.strAlcoholic ? <Badge bg="warning">{data.strAlcoholic}</Badge> : null}</Col>
       </Row>
@@ -42,7 +42,7 @@ const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
       )}
       <Row>
         <Col md={4}>
-          <h6>Glass:</h6>
+          <h6>Serving Glass:</h6>
         </Col>
         <Col md={8}>{data.strGlass}</Col>
       </Row>

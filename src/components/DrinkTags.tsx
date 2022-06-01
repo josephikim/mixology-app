@@ -13,7 +13,7 @@ const DrinkTags: React.FC<DrinkTagsProps> = ({ tags }) => {
     <div className="DrinkTags">
       {tagsArr.map((tag, index) => {
         return (
-          <Badge key={index} style={style}>
+          <Badge bg="secondary" key={index} style={style}>
             {tag}
           </Badge>
         );

@@ -1,10 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Col, Image } from 'react-bootstrap';
 
 import { useAppSelector } from '../../hooks';
 import ContentWrapper from '../../layout/ContentWrapper';
-import DrinkInfo from '../../components/DrinkInfo';
+import DrinkCategoryTags from '../../components/DrinkCategoryTags';
+import DrinkAlcoholTags from '../../components/DrinkAlcoholTags';
+import DrinkTags from '../../components/DrinkTags';
 import DrinkIngredients from '../../components/DrinkIngredients';
 import DrinkInstructions from '../../components/DrinkInstructions';
 import Youtube from '../../components/Youtube';
@@ -28,7 +30,7 @@ const Drink: React.FC = () => {
           <Row>
             <Col>
               <ContentWrapper>
-                <h6>Error loading drink...</h6>
+                <h6>Drink not...</h6>
               </ContentWrapper>
             </Col>
           </Row>
@@ -40,57 +42,89 @@ const Drink: React.FC = () => {
   return (
     <div className="Drink">
       <Container>
-        <Tabs defaultActiveKey="info">
-          <Tab eventKey="info" title="Info">
+        <div className="drink-cell drink-cell--1">
+          <div className="drink-item">
+            <h4 className="drink-item-heading">{matchingDrink.strDrink}</h4>
+            <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
+            <AddCollectionItemButton idDrink={matchingDrink.idDrink} />
+          </div>
+        </div>
+        <div className="drink-cell drink-cell--2">
+          <div className="drink-item">
             <Row>
-              <Col md={4}>
-                <ContentWrapper>
-                  <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
-                </ContentWrapper>
+              <Col md={5}>
+                <h5>Category</h5>
               </Col>
-              <Col md={4}>
-                <ContentWrapper>
-                  <DrinkInfo data={matchingDrink} />
-                </ContentWrapper>
-              </Col>
-              <Col md={4}>
-                <ContentWrapper>
-                  <AddCollectionItemButton idDrink={matchingDrink.idDrink} />
-                </ContentWrapper>
+
+              <Col md={7}>
+                {matchingDrink.strCategory && <DrinkCategoryTags category={matchingDrink.strCategory} />}
               </Col>
             </Row>
-          </Tab>
-          <Tab eventKey="recipe" title="Recipe">
+          </div>
+        </div>
+        <div className="drink-cell drink-cell--3">
+          <div className="drink-item">
             <Row>
-              <Col md={4}>
-                <ContentWrapper>
-                  <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
-                </ContentWrapper>
+              <Col md={5}>
+                <h5>Alcohol Content</h5>
               </Col>
-              <Col md={4}>
-                <ContentWrapper>
+
+              <Col md={7}>
+                {matchingDrink.strAlcoholic && <DrinkAlcoholTags alcohol={matchingDrink.strAlcoholic} />}
+              </Col>
+            </Row>
+          </div>
+        </div>
+        <div className="drink-cell drink-cell--4">
+          <div className="drink-item">
+            <Row>
+              <Col md={5}>
+                <h5>Tags</h5>
+              </Col>
+
+              <Col md={7}>{matchingDrink.strTags && <DrinkTags tags={matchingDrink.strTags} />}</Col>
+            </Row>
+          </div>
+        </div>
+        <div className="drink-cell drink-cell--5">
+          <div className="drink-item">
+            <Row>
+              <Col md={5}>
+                <h5>Serving Glass</h5>
+              </Col>
+
+              <Col md={7}>
+                <p>{matchingDrink.strGlass}</p>
+              </Col>
+            </Row>
+          </div>
+        </div>
+        <div className="drink-cell drink-cell--6">
+          <div className="drink-item">
+            <h5>Recipe</h5>
+            <ContentWrapper>
+              <Row>
+                <Col>
                   <h6>Ingredients:</h6>
                   <DrinkIngredients data={matchingDrink} />
-                </ContentWrapper>
-              </Col>
-              <Col md={4}>
-                <ContentWrapper>
+                </Col>
+
+                <Col>
                   <h6>Instructions:</h6>
                   <DrinkInstructions text={matchingDrink.strInstructions as string} />
-                </ContentWrapper>
-              </Col>
-            </Row>
-          </Tab>
-          <Tab eventKey="videos" title="Videos">
-            <Row>
-              <Col>
-                <ContentWrapper>
-                  <Youtube videos={matchingDrink.youtubeVideos} />
-                </ContentWrapper>
-              </Col>
-            </Row>
-          </Tab>
-        </Tabs>
+                </Col>
+              </Row>
+            </ContentWrapper>
+          </div>
+        </div>
+        <div className="drink-cell drink-cell--7">
+          <div className="drink-item">
+            <h5>Videos</h5>
+            <ContentWrapper>
+              <Youtube videos={matchingDrink.youtubeVideos} />
+            </ContentWrapper>
+          </div>
+        </div>
       </Container>
     </div>
   );

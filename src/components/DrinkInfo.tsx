@@ -19,23 +19,16 @@ const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
     <div className="DrinkInfo">
       <Row>
         <Col md={4}>
-          <h6>Name:</h6>
-        </Col>
-        <Col md={8}>{data.strDrink}</Col>
-      </Row>
-
-      <Row>
-        <Col md={4}>
           <h6>Category:</h6>
         </Col>
-        <Col md={8}>{data.strAlcoholic ? <Badge bg="secondary">{data.strAlcoholic}</Badge> : null}</Col>
+        <Col md={8}>{data.strCategory ? <Badge bg="primary">{data.strCategory}</Badge> : null}</Col>
       </Row>
 
       <Row>
         <Col md={4}>
-          <h6>Glass:</h6>
+          <h6>Alcohol:</h6>
         </Col>
-        <Col md={8}>{data.strGlass}</Col>
+        <Col md={8}>{data.strAlcoholic ? <Badge bg="warning">{data.strAlcoholic}</Badge> : null}</Col>
       </Row>
       {includesTags && (
         <Row>
@@ -47,6 +40,12 @@ const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
           </Col>
         </Row>
       )}
+      <Row>
+        <Col md={4}>
+          <h6>Glass:</h6>
+        </Col>
+        <Col md={8}>{data.strGlass}</Col>
+      </Row>
     </div>
   );
 };

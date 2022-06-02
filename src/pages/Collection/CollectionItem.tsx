@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Tabs, Tab, Row, Col } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import { useAppSelector } from '../../hooks';
@@ -7,6 +7,8 @@ import ContentWrapper from '../../layout/ContentWrapper';
 import Drink from '../../components/Drink';
 import DrinkNotes from '../../components/DrinkNotes';
 import DeleteCollectionItemButton from '../../components/DeleteCollectionItemButton';
+
+import './CollectionItem.css';
 
 type UrlParams = {
   id: string;
@@ -22,28 +24,35 @@ const CollectionItem: React.FC = () => {
     <div className="CollectionItem">
       {collectionItem && matchingDrink ? (
         <Container>
-          <div className="col-item-cell col-item-cell--1">
-            <div className="col-item-item">
-              <Drink />
-            </div>
-          </div>
-          <div className="col-item-cell col-item-cell--2">
-            <div className="col-item-item">
+          <Tabs defaultActiveKey="info">
+            <Tab eventKey="info" title="Info">
+              <Row>
+                <Col>
+                  <Drink />
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey="notes" title="Notes">
               <ContentWrapper>
                 <DrinkNotes notes={collectionItem.notes as string} idDrink={collectionItem.idDrink} />
               </ContentWrapper>
-            </div>
-          </div>
-          <div className="col-item-cell col-item-cell--3">
-            <div className="col-item-item">
+            </Tab>
+            <Tab eventKey="rating" title="Rating">
+              <Row>
+                <Col>
+                  <ContentWrapper>Rating</ContentWrapper>
+                </Col>
+              </Row>
+            </Tab>
+            <Tab eventKey="options" title="Options">
               <ContentWrapper>
                 <DeleteCollectionItemButton
                   idDrink={matchingDrink.idDrink}
                   drinkName={matchingDrink.strDrink as string}
                 />
               </ContentWrapper>
-            </div>
-          </div>
+            </Tab>
+          </Tabs>
         </Container>
       ) : (
         <Container>

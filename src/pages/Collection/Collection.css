@@ -3,10 +3,10 @@
   padding-bottom: 2rem;
 }
 
-.Collection .container {
+.Collection > .container {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 3fr;
   overflow-x: hidden;
 }
 
@@ -15,40 +15,4 @@
   background-color: #fff;
   border-right: 1px solid #dadce0;
   border-bottom: 1px solid #dadce0;
-}
-
-.Collection .collection-cell p,
-.Collection .collection-cell .CollectionIngredients .list-group-item {
-  font-size: 1rem;
-}
-
-.Collection .collection-cell .badge {
-  font-size: 0.8rem;
-}
-.Collection .collection-cell--1 {
-  grid-row: span 4;
-}
-.Collection .collection-cell--1 img {
-  margin: 2rem 0;
-}
-
-.Collection .collection-cell--2 {
-  grid-column: span 1;
-}
-
-.Collection .collection-cell--3 {
-  grid-column: span 1;
-}
-
-.Collection .collection-cell--4 {
-  grid-column: span 1;
-}
-.Collection .collection-cell--5 {
-  grid-column: span 1;
-}
-.Collection .collection-cell--6 {
-  grid-column: span 2;
-}
-.Collection .collection-cell--7 {
-  grid-column: span 2;
 }

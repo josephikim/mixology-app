@@ -23,7 +23,7 @@ const CollectionLinks: React.FC<CollectionLinksProps> = ({ drinks }) => {
     <div className="CollectionLinks">
       <Row>
         <Col>
-          <strong>My Collection</strong>
+          <h5>My Collection</h5>
         </Col>
       </Row>
 

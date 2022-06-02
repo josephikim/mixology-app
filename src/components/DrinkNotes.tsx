@@ -46,7 +46,7 @@ const DrinkNotes: React.FC<DrinkNotesProps> = ({ notes, idDrink }) => {
   };
 
   return (
-    <div className="Drink">
+    <div className="DrinkNotes">
       <Container>
         <Form className="DrinkNotes">
           <Form.Group controlId="formNotes">

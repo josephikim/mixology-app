@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { cloneDeep } from 'lodash';
 
 import { useAppSelector, useAppDispatch } from './hooks';
 import { logoutAction } from './store';
@@ -59,18 +58,6 @@ const App: React.FC = () => {
   const userId = useAppSelector((state) => state.auth.userId);
   const alerts = useAppSelector((state) => state.alert.alerts);
 
-  const collectionDrinkIds = useAppSelector((state) => state.user.collection)?.map((item) => item.idDrink) as string[];
-
-  const matchingDrinks = useAppSelector((state) => state.base.drinks).filter((drink) =>
-    collectionDrinkIds.includes(drink.idDrink)
-  );
-
-  const clonedMatchingDrinks = cloneDeep(matchingDrinks);
-
-  const defaultItemId = clonedMatchingDrinks.sort((a, b) =>
-    (a.strDrink as string).localeCompare(b.strDrink as string)
-  )[0].idDrink;
-
   return (
     <div className="App">
       <Header />
@@ -100,7 +87,7 @@ const App: React.FC = () => {
               </RequireAuth>
             }
           />
-          <Route path="*" element={<Navigate to={`${userId}/${defaultItemId}`} />} />
+          <Route path="*" element={<Navigate to="/collection" />} />
         </Route>
       </Routes>
     </div>

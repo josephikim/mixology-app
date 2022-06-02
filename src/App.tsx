@@ -1,16 +1,18 @@
 import React, { useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { cloneDeep } from 'lodash';
 
 import { useAppSelector, useAppDispatch } from './hooks';
 import { logoutAction } from './store';
 import { getKeywords, getRandomDrink, getDrinks } from './store/baseSlice';
 import Home from './pages/Home/Home';
 import Drinks from './pages/Drinks/Drinks';
-import Drink from './pages/Drink/Drink';
+import Drink from './components/Drink';
 import Login from './pages/Login/Login';
 import SearchResults from './pages/SearchResults/SearchResults';
 import Registration from './pages/Registration/Registration';
 import Collection from './pages/Collection/Collection';
+import CollectionItem from './pages/Collection/CollectionItem';
 import RequireAuth from './components/RequireAuth';
 import Header from './components/Header';
 import CustomAlert from './components/CustomAlert';
@@ -29,7 +31,6 @@ const App: React.FC = () => {
     }
   }, [errorType]);
 
-  const authToken = useAppSelector((state) => state.auth.accessToken);
   const keywords = useAppSelector((state) => state.base.keywords);
 
   useEffect(() => {
@@ -54,7 +55,21 @@ const App: React.FC = () => {
     }
   }, [drinks]);
 
+  const authToken = useAppSelector((state) => state.auth.accessToken);
+  const userId = useAppSelector((state) => state.auth.userId);
   const alerts = useAppSelector((state) => state.alert.alerts);
+
+  const collectionDrinkIds = useAppSelector((state) => state.user.collection)?.map((item) => item.idDrink) as string[];
+
+  const matchingDrinks = useAppSelector((state) => state.base.drinks).filter((drink) =>
+    collectionDrinkIds.includes(drink.idDrink)
+  );
+
+  const clonedMatchingDrinks = cloneDeep(matchingDrinks);
+
+  const defaultItemId = clonedMatchingDrinks.sort((a, b) =>
+    (a.strDrink as string).localeCompare(b.strDrink as string)
+  )[0].idDrink;
 
   return (
     <div className="App">
@@ -63,6 +78,12 @@ const App: React.FC = () => {
         <CustomAlert key={alert.id} data={alert} />
       ))}
       <Routes>
+        <Route path="/search/:type/:query" element={<SearchResults />} />
+        <Route path="/drink/:id" element={<Drink />} />
+        <Route path="/drinks" element={<Drinks />} />
+        <Route path="login" element={authToken ? <Navigate to="/" replace /> : <Login />} />
+        <Route path="register" element={authToken ? <Navigate to="/" replace /> : <Registration />} />
+        <Route path="/" element={<Home />} />
         <Route
           path="/collection"
           element={
@@ -70,13 +91,17 @@ const App: React.FC = () => {
               <Collection />
             </RequireAuth>
           }
-        />
-        <Route path="/search/:type/:query" element={<SearchResults />} />
-        <Route path="/drink/:id" element={<Drink />} />
-        <Route path="/drinks" element={<Drinks />} />
-        <Route path="login" element={authToken ? <Navigate replace to="/" /> : <Login />} />
-        <Route path="register" element={authToken ? <Navigate replace to="/" /> : <Registration />} />
-        <Route path="/" element={<Home />} />
+        >
+          <Route
+            path={`${userId}/:id`}
+            element={
+              <RequireAuth redirectTo="/login">
+                <CollectionItem />
+              </RequireAuth>
+            }
+          />
+          <Route path="*" element={<Navigate to={`${userId}/${defaultItemId}`} />} />
+        </Route>
       </Routes>
     </div>
   );

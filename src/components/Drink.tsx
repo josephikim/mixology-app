@@ -2,17 +2,17 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col, Image } from 'react-bootstrap';
 
-import { useAppSelector } from '../../hooks';
-import ContentWrapper from '../../layout/ContentWrapper';
-import DrinkCategoryTags from '../../components/DrinkCategoryTags';
-import DrinkAlcoholTags from '../../components/DrinkAlcoholTags';
-import DrinkTags from '../../components/DrinkTags';
-import DrinkIngredients from '../../components/DrinkIngredients';
-import DrinkInstructions from '../../components/DrinkInstructions';
-import Youtube from '../../components/Youtube';
-import AddCollectionItemButton from '../../components/AddCollectionItemButton';
+import { useAppSelector } from '../hooks';
+import ContentWrapper from '../layout/ContentWrapper';
+import DrinkCategoryTags from './DrinkCategoryTags';
+import DrinkAlcoholTags from './DrinkAlcoholTags';
+import DrinkTags from './DrinkTags';
+import DrinkIngredients from './DrinkIngredients';
+import DrinkInstructions from './DrinkInstructions';
+import Youtube from './Youtube';
+import AddCollectionItemButton from './AddCollectionItemButton';
 
-import './Drink.css';
+import '../styles/Drink.css';
 
 type UrlParams = {
   id: string;
@@ -30,7 +30,7 @@ const Drink: React.FC = () => {
           <Row>
             <Col>
               <ContentWrapper>
-                <h6>Drink not...</h6>
+                <h6>Drink not found...</h6>
               </ContentWrapper>
             </Col>
           </Row>

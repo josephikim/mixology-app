@@ -8,6 +8,7 @@
   display: grid;
   min-height: 30rem;
   grid-template-columns: 1fr 3fr;
+  column-gap: 18px;
   overflow-x: hidden;
 }
 

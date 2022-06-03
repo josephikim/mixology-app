@@ -65,12 +65,6 @@ const App: React.FC = () => {
         <CustomAlert key={alert.id} data={alert} />
       ))}
       <Routes>
-        <Route path="/search/:type/:query" element={<SearchResults />} />
-        <Route path="/drink/:id" element={<Drink />} />
-        <Route path="/drinks" element={<Drinks />} />
-        <Route path="login" element={authToken ? <Navigate to="/" replace /> : <Login />} />
-        <Route path="register" element={authToken ? <Navigate to="/" replace /> : <Registration />} />
-        <Route path="/" element={<Home />} />
         <Route
           path="/collection"
           element={
@@ -79,16 +73,24 @@ const App: React.FC = () => {
             </RequireAuth>
           }
         >
-          <Route
-            path={`${userId}/:id`}
-            element={
-              <RequireAuth redirectTo="/login">
-                <CollectionItem />
-              </RequireAuth>
-            }
-          />
+          {userId && (
+            <Route
+              path={`${userId}/:id`}
+              element={
+                <RequireAuth redirectTo="/login">
+                  <CollectionItem />
+                </RequireAuth>
+              }
+            />
+          )}
           <Route path="*" element={<Navigate to="/collection" />} />
         </Route>
+        <Route path="/search/:type/:query" element={<SearchResults />} />
+        <Route path="/drink/:id" element={<Drink />} />
+        <Route path="/drinks" element={<Drinks />} />
+        <Route path="login" element={authToken ? <Navigate to="/" replace /> : <Login />} />
+        <Route path="register" element={authToken ? <Navigate to="/" replace /> : <Registration />} />
+        <Route path="/" element={<Home />} />
       </Routes>
     </div>
   );

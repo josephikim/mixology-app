@@ -27,7 +27,7 @@ const DeleteCollectionItemButton: React.FC<DeleteCollectionItemButtonProps> = ({
         const payload = {
           id: uuid(),
           type: resultAction.type,
-          message: `${resultPayload.strDrink} successfully deleted`
+          message: `Collection item #${resultPayload.idDrink} successfully deleted`
         };
 
         dispatch(createAlert(payload));

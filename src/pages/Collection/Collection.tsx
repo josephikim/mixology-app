@@ -1,31 +1,31 @@
 import React from 'react';
 import { Outlet, useLocation, Navigate } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import { cloneDeep } from 'lodash';
 
 import { useAppSelector } from '../../hooks';
 import { IDrinkDoc } from '../../db/Drink';
+import ContentWrapper from '../../layout/ContentWrapper';
 import CollectionLinks from './CollectionLinks';
 
 import './Collection.css';
 
 const Collection: React.FC = () => {
   const location = useLocation();
-  const isDefaultRoute = location.pathname.endsWith('collection/') || location.pathname.endsWith('collection');
+  const isBaseRoute = location.pathname.endsWith('collection/') || location.pathname.endsWith('collection');
 
   const userId = useAppSelector((state) => state.auth.userId);
 
   const collectionDrinkIds = useAppSelector((state) => state.user.collection)?.map((item) => item.idDrink) as string[];
 
-  const matchingDrinks = collectionDrinkIds.map((id) =>
-    useAppSelector((state) => state.base.drinks).find((drink) => drink.idDrink === id)
+  const matchingDrinks = useAppSelector((state) => state.base.drinks).filter((drink) =>
+    collectionDrinkIds.includes(drink.idDrink)
   ) as IDrinkDoc[];
 
-  const clonedMatchingDrinks = cloneDeep(matchingDrinks);
+  const defaultItemId = matchingDrinks.sort((a, b) => (a.strDrink as string).localeCompare(b.strDrink as string))[0]
+    ?.idDrink;
 
-  const defaultItemId = clonedMatchingDrinks.sort((a, b) =>
-    (a.strDrink as string).localeCompare(b.strDrink as string)
-  )[0].idDrink;
+  const isCollectionEmpty = !collectionDrinkIds || collectionDrinkIds.length < 1 || !defaultItemId;
 
   return (
     <div className="Collection">
@@ -37,7 +37,17 @@ const Collection: React.FC = () => {
         </div>
         <div className="collection-cell collection-cell--2">
           <div className="collection-item">
-            {isDefaultRoute ? <Navigate to={`${userId}/${defaultItemId}`} /> : <Outlet />}
+            {isCollectionEmpty ? (
+              <ContentWrapper>
+                <div>
+                  Add drinks to your collection from the <Link to="/drinks">Drinks page</Link>.
+                </div>
+              </ContentWrapper>
+            ) : isBaseRoute ? (
+              <Navigate to={`${userId}/${defaultItemId}`} />
+            ) : (
+              <Outlet />
+            )}
           </div>
         </div>
       </Container>

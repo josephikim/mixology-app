@@ -17,9 +17,11 @@ const RandomDrink: React.FC = () => {
 
   return (
     <div className="RandomDrink">
+      <h6>Random Drink</h6>
+
       <Row>
         <Col>
-          <strong>Random Drink</strong>
+          <h4>{drink.strDrink}</h4>
         </Col>
       </Row>
 
@@ -30,52 +32,49 @@ const RandomDrink: React.FC = () => {
       </Row>
 
       <Row>
-        <Col md={4}>
-          <strong>Name:</strong>
-        </Col>
-        <Col md={8}>{drink.strDrink}</Col>
+        <div className="flex-container">
+          <Col>
+            <h6>Category</h6>
+          </Col>
+          <Col>{drink.strAlcoholic ? <Badge bg="secondary">{drink.strAlcoholic}</Badge> : null}</Col>
+        </div>
       </Row>
 
       <Row>
-        <Col md={4}>
-          <strong>Category:</strong>
-        </Col>
-        <Col md={8}>{drink.strAlcoholic ? <Badge bg="secondary">{drink.strAlcoholic}</Badge> : null}</Col>
+        <div className="flex-container">
+          <Col>
+            <h6>Serving Glass</h6>
+          </Col>
+          <Col>{drink.strGlass}</Col>
+        </div>
       </Row>
 
-      <Row>
-        <Col md={4}>
-          <strong>Glass:</strong>
-        </Col>
-        <Col md={8}>{drink.strGlass}</Col>
-      </Row>
+      <h6>Ingredients</h6>
 
       <Row>
-        <Col md={4}>
-          <strong>Ingredients:</strong>
-        </Col>
-        <Col md={8}>
+        <Col>
           <DrinkIngredients data={drink} />
         </Col>
       </Row>
 
+      <h6>Instructions</h6>
+
       <Row>
-        <Col md={4}>
-          <strong>Instructions:</strong>
-        </Col>
-        <Col md={8}>
+        <Col>
           <DrinkInstructions text={drink.strInstructions as string} />
         </Col>
       </Row>
 
       {includesTags ? (
         <Row>
-          <Col md={4}>
-            <strong>Tags:</strong>
-          </Col>
-          <Col md={8}>
-            <DrinkTags tags={drink.strTags as string} />
-          </Col>
+          <div className="flex-container">
+            <Col>
+              <h6>Tags</h6>
+            </Col>
+            <Col>
+              <DrinkTags tags={drink.strTags as string} />
+            </Col>
+          </div>
         </Row>
       ) : null}
     </div>

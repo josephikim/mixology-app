@@ -25,7 +25,7 @@ const Collection: React.FC = () => {
   const defaultItemId = matchingDrinks.sort((a, b) => (a.strDrink as string).localeCompare(b.strDrink as string))[0]
     ?.idDrink;
 
-  const isCollectionEmpty = !collectionDrinkIds || collectionDrinkIds.length < 1 || !defaultItemId;
+  const isCollectionEmpty = !collectionDrinkIds || collectionDrinkIds.length < 1 || !defaultItemId || !userId;
 
   return (
     <div className="Collection">

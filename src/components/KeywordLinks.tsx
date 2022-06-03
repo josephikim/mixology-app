@@ -25,7 +25,7 @@ const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
     <div className="KeywordLinks">
       <Row>
         <Col>
-          <strong>Search by {type}</strong>
+          <h6>Search by {type}</h6>
         </Col>
       </Row>
 

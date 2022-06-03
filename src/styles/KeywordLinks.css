@@ -1,6 +1,6 @@
-.KeywordLinks strong {
+.KeywordLinks h6 {
   display: block;
-  margin-bottom: 0.7rem;
+  margin-bottom: 1rem;
 }
 
 .KeywordLinks a {

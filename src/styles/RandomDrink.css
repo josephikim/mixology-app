@@ -1,3 +1,22 @@
 .RandomDrink img {
   max-width: 250px;
 }
+
+.RandomDrink h6 {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.RandomDrink > .row {
+  margin-bottom: 1rem;
+}
+
+.RandomDrink > .row .flex-container {
+  display: flex;
+  min-height: 36px;
+  align-items: center;
+}
+
+.RandomDrink > .row .flex-container h6 {
+  margin-bottom: 0;
+}

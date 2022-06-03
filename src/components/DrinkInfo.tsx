@@ -1,51 +1,129 @@
 import React from 'react';
-import { Row, Col, Badge } from 'react-bootstrap';
+import { useParams } from 'react-router-dom';
+import { Container, Row, Col, Image } from 'react-bootstrap';
 
-import { IDrinkDoc } from '../db/Drink';
+import { useAppSelector } from '../hooks';
+import ContentWrapper from '../layout/ContentWrapper';
+import DrinkCategoryTags from './DrinkCategoryTags';
+import DrinkAlcoholTags from './DrinkAlcoholTags';
 import DrinkTags from './DrinkTags';
+import DrinkIngredients from './DrinkIngredients';
+import DrinkInstructions from './DrinkInstructions';
+import Youtube from './Youtube';
 
 import '../styles/DrinkInfo.css';
 
-interface DrinkInfoProps {
-  data: IDrinkDoc;
-}
+type UrlParams = {
+  id: string;
+};
 
-const DrinkInfo: React.FC<DrinkInfoProps> = ({ data }) => {
-  if (!data || data == undefined) return null;
+const DrinkInfo: React.FC = () => {
+  const { id } = useParams<UrlParams>();
 
-  const includesTags = data.strTags && data.strTags.length > 0;
+  const matchingDrink = useAppSelector((state) => state.base.drinks).find((drink) => drink.idDrink === id);
+
+  if (!matchingDrink || !matchingDrink.idDrink) {
+    return (
+      <div className="Drink">
+        <Container>
+          <Row>
+            <Col>
+              <ContentWrapper>
+                <h6>Drink not found...</h6>
+              </ContentWrapper>
+            </Col>
+          </Row>
+        </Container>
+      </div>
+    );
+  }
 
   return (
     <div className="DrinkInfo">
-      <Row>
-        <Col md={4}>
-          <h6>Category:</h6>
-        </Col>
-        <Col md={8}>{data.strCategory ? <Badge bg="primary">{data.strCategory}</Badge> : null}</Col>
-      </Row>
+      <Container>
+        <div className="drink-info-cell drink-info-cell--1">
+          <div className="drink-info-item">
+            <h4 className="drink-info-item-heading">{matchingDrink.strDrink}</h4>
+            <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
+          </div>
+        </div>
+        <div className="drink-info-cell drink-info-cell--2">
+          <div className="drink-info-item">
+            <Row>
+              <Col md={5}>
+                <h5>Category</h5>
+              </Col>
 
-      <Row>
-        <Col md={4}>
-          <h6>Alcohol Content:</h6>
-        </Col>
-        <Col md={8}>{data.strAlcoholic ? <Badge bg="warning">{data.strAlcoholic}</Badge> : null}</Col>
-      </Row>
-      {includesTags && (
-        <Row>
-          <Col md={4}>
-            <h6>Tags:</h6>
-          </Col>
-          <Col md={8}>
-            <DrinkTags tags={data.strTags as string} />
-          </Col>
-        </Row>
-      )}
-      <Row>
-        <Col md={4}>
-          <h6>Serving Glass:</h6>
-        </Col>
-        <Col md={8}>{data.strGlass}</Col>
-      </Row>
+              <Col md={7}>
+                {matchingDrink.strCategory && <DrinkCategoryTags category={matchingDrink.strCategory} />}
+              </Col>
+            </Row>
+          </div>
+        </div>
+        <div className="drink-info-cell drink-info-cell--3">
+          <div className="drink-info-item">
+            <Row>
+              <Col md={5}>
+                <h5>Alcohol Content</h5>
+              </Col>
+
+              <Col md={7}>
+                {matchingDrink.strAlcoholic && <DrinkAlcoholTags alcohol={matchingDrink.strAlcoholic} />}
+              </Col>
+            </Row>
+          </div>
+        </div>
+        <div className="drink-info-cell drink-info-cell--4">
+          <div className="drink-info-item">
+            <Row>
+              <Col md={5}>
+                <h5>Tags</h5>
+              </Col>
+
+              <Col md={7}>{matchingDrink.strTags && <DrinkTags tags={matchingDrink.strTags} />}</Col>
+            </Row>
+          </div>
+        </div>
+        <div className="drink-info-cell drink-info-cell--5">
+          <div className="drink-info-item">
+            <Row>
+              <Col md={5}>
+                <h5>Serving Glass</h5>
+              </Col>
+
+              <Col md={7}>
+                <p>{matchingDrink.strGlass}</p>
+              </Col>
+            </Row>
+          </div>
+        </div>
+        <div className="drink-info-cell drink-info-cell--6">
+          <div className="drink-info-item">
+            <h5>Recipe</h5>
+            <ContentWrapper>
+              <Row>
+                <Col>
+                  <h6>Ingredients:</h6>
+                  <DrinkIngredients data={matchingDrink} />
+                </Col>
+
+                <Col>
+                  <h6>Instructions:</h6>
+                  <DrinkInstructions text={matchingDrink.strInstructions as string} />
+                </Col>
+              </Row>
+            </ContentWrapper>
+          </div>
+        </div>
+        <div className="drink-info-cell drink-info-cell--7">
+          <div className="drink-info-item">
+            <h5>Videos</h5>
+            <ContentWrapper>
+              <Youtube videos={matchingDrink.youtubeVideos} />
+            </ContentWrapper>
+          </div>
+        </div>
+      </Container>
     </div>
   );
 };

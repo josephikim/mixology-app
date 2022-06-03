@@ -1,0 +1,15 @@
+.Drink {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.Drink > .container {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow-x: hidden;
+}
+
+.Drink .drink-cell {
+  background-color: #fff;
+}

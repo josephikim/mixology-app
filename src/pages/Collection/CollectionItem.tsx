@@ -3,8 +3,7 @@ import { Container, Tabs, Tab, Row, Col } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import { useAppSelector } from '../../hooks';
-import ContentWrapper from '../../layout/ContentWrapper';
-import Drink from '../../components/Drink';
+import DrinkInfo from '../../components/DrinkInfo';
 import DrinkNotes from '../../components/DrinkNotes';
 import DeleteCollectionItemButton from '../../components/DeleteCollectionItemButton';
 
@@ -28,29 +27,18 @@ const CollectionItem: React.FC = () => {
             <Tab eventKey="info" title="Info">
               <Row>
                 <Col>
-                  <Drink />
+                  <DrinkInfo />
                 </Col>
               </Row>
             </Tab>
             <Tab eventKey="notes" title="Notes">
-              <ContentWrapper>
-                <DrinkNotes notes={collectionItem.notes as string} idDrink={collectionItem.idDrink} />
-              </ContentWrapper>
-            </Tab>
-            <Tab eventKey="rating" title="Rating">
-              <Row>
-                <Col>
-                  <ContentWrapper>Rating</ContentWrapper>
-                </Col>
-              </Row>
+              <DrinkNotes notes={collectionItem.notes as string} idDrink={collectionItem.idDrink} />
             </Tab>
             <Tab eventKey="options" title="Options">
-              <ContentWrapper>
-                <DeleteCollectionItemButton
-                  idDrink={matchingDrink.idDrink}
-                  drinkName={matchingDrink.strDrink as string}
-                />
-              </ContentWrapper>
+              <DeleteCollectionItemButton
+                idDrink={matchingDrink.idDrink}
+                drinkName={matchingDrink.strDrink as string}
+              />
             </Tab>
           </Tabs>
         </Container>

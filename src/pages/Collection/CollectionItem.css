@@ -5,3 +5,11 @@
 .CollectionItem .Drink .drink-cell {
   border: none;
 }
+
+.CollectionItem .DrinkNotes {
+  margin: 2rem 0;
+}
+
+.CollectionItem .DeleteCollectionItemButton {
+  margin: 2rem 0;
+}

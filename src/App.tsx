@@ -6,7 +6,7 @@ import { logoutAction } from './store';
 import { getKeywords, getRandomDrink, getDrinks } from './store/baseSlice';
 import Home from './pages/Home/Home';
 import Drinks from './pages/Drinks/Drinks';
-import Drink from './components/Drink';
+import Drink from './pages/Drink/Drink';
 import Login from './pages/Login/Login';
 import SearchResults from './pages/SearchResults/SearchResults';
 import Registration from './pages/Registration/Registration';

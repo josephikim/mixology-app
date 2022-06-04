@@ -21,17 +21,16 @@ const buildIngredients = (drink: IDrinkDoc): IngredientsEntry[] => {
   for (const prop in drinkClone) {
     if (Object.prototype.hasOwnProperty.call(drinkClone, prop)) {
       if (prop.startsWith('strIngredient')) {
+        // property value is undefined
+        if (!drinkClone[prop]) continue;
+
         // parse numeric key from property name e.g '2' from 'strIngredient2'
         const matchesArr = prop.match(/\d+$/);
 
-        // no property with numeric suffix found
         if (!matchesArr || matchesArr.length < 1) continue;
 
         const key = matchesArr[0];
         const measureProp = `strMeasure${key}`;
-
-        // property value is null
-        if (!drinkClone[measureProp] || !drinkClone[prop]) continue;
 
         const result = `\u2022 ${drinkClone[measureProp] ? drinkClone[measureProp] : ''} ${drinkClone[prop]}`;
 

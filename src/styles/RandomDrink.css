@@ -20,3 +20,8 @@
 .RandomDrink > .row .flex-container h6 {
   margin-bottom: 0;
 }
+
+.RandomDrink > .row .flex-container .flex-container-btn {
+  font-size: 0.8rem;
+  float: right;
+}

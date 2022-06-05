@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { UserApi } from '../api';
 import { IDrinkDoc } from '../db/Drink';
 import { IKeywordDoc } from '../db/Keyword';
+import { ApiAccessError } from '../types';
 
 enum Status {
   idle = 'IDLE',
@@ -47,6 +48,23 @@ export const getDrinks = createAsyncThunk('base/getDrinks', async (): Promise<ID
   return result;
 });
 
+export const getDrinkWithVideos = createAsyncThunk<
+  IDrinkDoc,
+  string,
+  {
+    rejectValue: ApiAccessError;
+  }
+>('user/getDrinkWithVideos', async (idDrink, { rejectWithValue }) => {
+  const api = new UserApi();
+
+  try {
+    const response = await api.getDrinkWithVideos(idDrink);
+    return response;
+  } catch (err) {
+    return rejectWithValue(err);
+  }
+});
+
 export const baseSlice = createSlice({
   name: 'base',
   initialState,
@@ -84,6 +102,24 @@ export const baseSlice = createSlice({
         state.status = 'succeeded';
       })
       .addCase(getDrinks.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(getDrinkWithVideos.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getDrinkWithVideos.fulfilled, (state: BaseState, action) => {
+        const newState = state.drinks.map((drink) => {
+          if (drink.idDrink === action.payload.idDrink) {
+            return action.payload;
+          } else {
+            return drink;
+          }
+        });
+        state.drinks = newState;
+        state.status = 'succeeded';
+      })
+      .addCase(getDrinkWithVideos.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       });

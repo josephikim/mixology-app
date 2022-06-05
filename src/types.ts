@@ -16,6 +16,11 @@ export type YoutubeVideo = {
   publishedAt?: string;
 };
 
+export type ApiAccessError = {
+  type: string;
+  message: string;
+};
+
 export interface IAuthToken {
   userId: string;
   roles: string[];

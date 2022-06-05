@@ -1,20 +1,29 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
+import { useAppDispatch } from '../hooks';
 import YoutubeEmbed from './YoutubeEmbed';
 import YoutubeMeta from './YoutubeMeta';
 import { YoutubeVideo } from '../types';
-
+import { getDrinkWithVideos } from '../store/baseSlice';
 interface YoutubeProps {
+  idDrink: string;
   videos?: YoutubeVideo[];
 }
 
-const Youtube: React.FC<YoutubeProps> = (props) => {
+const Youtube: React.FC<YoutubeProps> = ({ idDrink, videos }) => {
+  const dispatch = useAppDispatch();
+  const isDrinkMissingVideos = idDrink && (!videos || !videos.length);
   const style = { marginTop: '1.5rem', marginBottom: '1.5rem' };
+
+  if (isDrinkMissingVideos) {
+    dispatch(getDrinkWithVideos(idDrink));
+  }
+
   return (
     <div className="Youtube">
-      {props.videos && props.videos.length > 0 ? (
-        props.videos.map((video) => {
+      {videos && videos.length > 0 ? (
+        videos.map((video) => {
           return (
             <Row style={style} key={video.id}>
               <Col md={4}>

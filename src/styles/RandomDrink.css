@@ -1,5 +1,6 @@
 .RandomDrink img {
   max-width: 250px;
+  margin-bottom: 1rem;
 }
 
 .RandomDrink h6 {
@@ -14,7 +15,6 @@
 .RandomDrink > .row .flex-container {
   display: flex;
   min-height: 36px;
-  align-items: center;
 }
 
 .RandomDrink > .row .flex-container h6 {

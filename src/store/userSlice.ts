@@ -3,6 +3,7 @@ import { IUserCollectionItemDoc } from 'src/db/UserCollectionItem';
 
 import { UserApi } from '../api';
 import { IDrinkDoc } from '../db/Drink';
+import { ApiAccessError } from '../types';
 
 enum Status {
   idle = 'IDLE',
@@ -19,11 +20,6 @@ interface UserState {
   error?: string;
   errorType?: string;
 }
-
-type ApiAccessError = {
-  type: string;
-  message: string;
-};
 
 export type NotesPayload = {
   idDrink: string;

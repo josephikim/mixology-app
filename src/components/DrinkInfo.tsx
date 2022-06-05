@@ -119,7 +119,7 @@ const DrinkInfo: React.FC = () => {
           <div className="drink-info-item">
             <h5>Videos</h5>
             <ContentWrapper>
-              <Youtube videos={matchingDrink.youtubeVideos} />
+              <Youtube idDrink={matchingDrink.idDrink} videos={matchingDrink.youtubeVideos} />
             </ContentWrapper>
           </div>
         </div>

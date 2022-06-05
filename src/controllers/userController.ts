@@ -3,7 +3,8 @@ import axios from 'axios';
 
 import db from '../db';
 import { IKeywordDoc } from '../db/Keyword';
-import { IDrinkDoc } from 'src/db/Drink';
+import { IDrinkDoc } from '../db/Drink';
+import { YoutubeVideo } from '../types';
 
 const Drink = db.drink;
 const Keyword = db.keyword;
@@ -362,6 +363,69 @@ const getKeywordsByType = async (type: string): Promise<IKeywordDoc[] | void> =>
   }
 };
 
+const getDrinkWithVideos = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  try {
+    await Drink.findOne({ idDrink: req.params.idDrink }).exec(async (err, doc) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (doc) {
+        const videos = doc.youtubeVideos;
+
+        const isVideosEmpty = !videos || !videos.length;
+
+        if (isVideosEmpty) {
+          const url = `${process.env.YOUTUBE_API_URL}/search?key=${
+            process.env.YOUTUBE_API_KEY
+          }&type=video&part=snippet&q=${encodeURIComponent(doc.strDrink as string).replace(
+            /%20/g,
+            '+'
+          )}+recipe&maxResults=5`;
+
+          // Call Youtube API with search query
+          const response = await axios.get(url);
+
+          if (!response.data.items || response.data.items.length < 1) {
+            res.status(204).send({ message: 'No results available.' });
+          }
+
+          // Create array of YoutubeVideo objects from response
+          const videosResult: YoutubeVideo[] = [];
+
+          response.data.items.map((item: any) => {
+            const obj = {
+              id: item.id.videoId,
+              title: item.snippet.title,
+              channelTitle: item.snippet.channelTitle,
+              description: item.snippet.description,
+              publishedAt: item.snippet.publishedAt
+            } as YoutubeVideo;
+            videosResult.push(obj);
+          });
+
+          // Save videos on drink doc, then send result
+          doc.youtubeVideos = videosResult;
+
+          doc.save((err, doc) => {
+            if (err) {
+              return next(err);
+            }
+
+            res.status(200).send(doc);
+          });
+        } else {
+          res.status(200).send(doc);
+        }
+      } else {
+        res.status(500).send({ message: 'Entry not found.' });
+      }
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const userController = {
   allAccess,
   userAccess,
@@ -373,7 +437,8 @@ const userController = {
   getSearchResults,
   addCollectionItem,
   saveNotes,
-  deleteCollectionItem
+  deleteCollectionItem,
+  getDrinkWithVideos
 };
 
 export default userController;

@@ -28,6 +28,8 @@ userRouter.get('/drinks', userController.getDrinks);
 
 userRouter.get('/search/:type/:query', userController.getSearchResults);
 
+userRouter.get('/getDrinkWithVideos/:idDrink', userController.getDrinkWithVideos);
+
 // private routes
 userRouter.post('/addCollectionItem', [authJwt.verifyToken], userController.addCollectionItem);
 

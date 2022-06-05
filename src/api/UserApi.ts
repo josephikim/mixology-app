@@ -125,4 +125,11 @@ export class UserApi {
 
     return response.data as IUserCollectionItemDoc;
   }
+
+  async getDrinkWithVideos(idDrink: string): Promise<IDrinkDoc> {
+    const url = `${userApiClient.defaults.baseURL}/getDrinkWithVideos/${idDrink}`;
+    const response = await userApiClient.get(url);
+
+    return response.data as IDrinkDoc;
+  }
 }

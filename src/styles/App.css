@@ -1,22 +1,28 @@
-body, html {
+body,
+html {
   height: 100%;
   margin: 0;
 }
 
 .App::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0px;
   right: 0px;
   bottom: 0px;
   left: 0px;
-  background-color: rgba(255, 255, 255, 0.5);
   z-index: -1;
 }
 
 .App {
   position: relative;
   min-height: 100vh;
-  background-color: rgb(112, 128, 144);
+  background-color: #95a0aa;
   z-index: 0;
+}
+
+h4,
+h5,
+h6 {
+  font-family: 'Bebas Neue';
 }

@@ -28,12 +28,12 @@ userRouter.get('/drinks', userController.getDrinks);
 
 userRouter.get('/search/:type/:query', userController.getSearchResults);
 
-userRouter.get('/getDrinkWithVideos/:idDrink', userController.getDrinkWithVideos);
+userRouter.get('/drinkWithVideos/:idDrink', userController.getDrinkWithVideos);
 
 // private routes
-userRouter.post('/addCollectionItem', [authJwt.verifyToken], userController.addCollectionItem);
+userRouter.post('/collectionItem', [authJwt.verifyToken], userController.addCollectionItem);
 
-userRouter.post('/saveNotes', [authJwt.verifyToken], userController.saveNotes);
+userRouter.post('/notes', [authJwt.verifyToken], userController.saveNotes);
 
 userRouter.post('/deleteCollectionItem/:idDrink', [authJwt.verifyToken], userController.deleteCollectionItem);
 

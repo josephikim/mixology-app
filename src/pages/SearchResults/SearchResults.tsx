@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Row, Col } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import { useAppSelector, useAppDispatch } from '../../hooks';
 import { getSearchResults, SearchPayload } from '../../store/userSlice';
@@ -99,7 +99,11 @@ const SearchResults: React.FC = () => {
     }
   };
 
-  return <div className="SearchResults">{renderContent()}</div>;
+  return (
+    <div className="SearchResults">
+      <Container>{renderContent()}</Container>
+    </div>
+  );
 };
 
 export default SearchResults;

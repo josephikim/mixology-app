@@ -8,7 +8,6 @@
   display: grid;
   min-height: 30rem;
   grid-template-columns: 1fr 3fr;
-  column-gap: 18px;
   overflow-x: hidden;
 }
 
@@ -17,4 +16,9 @@
   background-color: #fff;
   border-right: 1px solid #dadce0;
   border-bottom: 1px solid #dadce0;
+}
+
+.Collection .collection-cell--1 {
+  background-color: #fffffe;
+  border-right: none;
 }

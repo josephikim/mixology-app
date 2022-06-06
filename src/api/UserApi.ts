@@ -106,14 +106,14 @@ export class UserApi {
   }
 
   async addCollectionItem(payload: AddCollectionItemPayload): Promise<IUserCollectionItemDoc> {
-    const url = `${userApiClient.defaults.baseURL}/addCollectionItem`;
+    const url = `${userApiClient.defaults.baseURL}/collectionItem`;
     const response = await userApiClient.post(url, payload);
 
     return response.data as IUserCollectionItemDoc;
   }
 
   async saveNotes(payload: NotesPayload): Promise<IUserCollectionItemDoc> {
-    const url = `${userApiClient.defaults.baseURL}/saveNotes`;
+    const url = `${userApiClient.defaults.baseURL}/notes`;
     const response = await userApiClient.post(url, payload);
 
     return response.data as IUserCollectionItemDoc;
@@ -127,7 +127,7 @@ export class UserApi {
   }
 
   async getDrinkWithVideos(idDrink: string): Promise<IDrinkDoc> {
-    const url = `${userApiClient.defaults.baseURL}/getDrinkWithVideos/${idDrink}`;
+    const url = `${userApiClient.defaults.baseURL}/drinkWithVideos/${idDrink}`;
     const response = await userApiClient.get(url);
 
     return response.data as IDrinkDoc;

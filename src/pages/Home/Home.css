@@ -6,7 +6,7 @@
 .Home .container {
   position: relative;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 2fr 3fr 2fr;
   overflow-x: hidden;
 }
 
@@ -35,5 +35,6 @@
 }
 
 .Home .home-cell--5 {
+  grid-row: span 2;
   grid-column: 3;
 }

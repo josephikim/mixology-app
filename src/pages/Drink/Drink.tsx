@@ -1,10 +1,9 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Container, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import { IDrinkDoc } from '../../db/Drink';
 import { useAppSelector } from '../../hooks';
-import ContentWrapper from '../../layout/ContentWrapper';
 import DrinkInfo from '../../components/DrinkInfo';
 import AddCollectionItemButton from '../../components/AddCollectionItemButton';
 
@@ -21,16 +20,28 @@ const Drink: React.FC = () => {
 
   return (
     <div className="Drink">
-      <Container>
-        <div className="drink-cell drink-cell--1">
-          <div className="drink-item">
-            <ContentWrapper>
-              <DrinkInfo />
+      {drink ? (
+        <Container>
+          <div className="drink-cell drink-cell--1">
+            <div className="drink-item">
+              <h4 className="drink-info-item-heading">{drink.strDrink}</h4>
+              <Image width={250} height={250} src={drink.strDrinkThumb} fluid />
               <AddCollectionItemButton idDrink={drink.idDrink} />
-            </ContentWrapper>
+            </div>
           </div>
-        </div>
-      </Container>
+          <div className="drink-cell drink-cell--2">
+            <div className="drink-item">
+              <DrinkInfo />
+            </div>
+          </div>
+        </Container>
+      ) : (
+        <Container>
+          <div className="drink-cell drink-cell--1">
+            <div className="drink-item">Loading drink...</div>
+          </div>
+        </Container>
+      )}
     </div>
   );
 };

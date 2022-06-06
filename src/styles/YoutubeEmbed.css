@@ -6,6 +6,7 @@
   max-width: 100%;
   background: #000;
   margin: 5px;
+  margin-bottom: 2rem;
 }
 
 .YoutubeEmbed .youtube-player iframe {
@@ -51,6 +52,6 @@
   margin-left: -36px;
   margin-top: -36px;
   position: absolute;
-  background: url("https://i.imgur.com/TxzC70f.png") no-repeat;
+  background: url('https://i.imgur.com/TxzC70f.png') no-repeat;
   cursor: pointer;
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 
 import { useAppSelector } from '../hooks';
 import ContentWrapper from '../layout/ContentWrapper';
@@ -43,12 +43,6 @@ const DrinkInfo: React.FC = () => {
       <Container>
         <div className="drink-info-cell drink-info-cell--1">
           <div className="drink-info-item">
-            <h4 className="drink-info-item-heading">{matchingDrink.strDrink}</h4>
-            <Image width={250} height={250} src={matchingDrink.strDrinkThumb} fluid />
-          </div>
-        </div>
-        <div className="drink-info-cell drink-info-cell--2">
-          <div className="drink-info-item">
             <Row>
               <Col md={5}>
                 <h5>Category</h5>
@@ -60,7 +54,7 @@ const DrinkInfo: React.FC = () => {
             </Row>
           </div>
         </div>
-        <div className="drink-info-cell drink-info-cell--3">
+        <div className="drink-info-cell drink-info-cell--2">
           <div className="drink-info-item">
             <Row>
               <Col md={5}>
@@ -73,18 +67,18 @@ const DrinkInfo: React.FC = () => {
             </Row>
           </div>
         </div>
-        <div className="drink-info-cell drink-info-cell--4">
+        <div className="drink-info-cell drink-info-cell--3">
           <div className="drink-info-item">
             <Row>
               <Col md={5}>
-                <h5>Tags</h5>
+                <h5>IBA Tags</h5>
               </Col>
 
               <Col md={7}>{matchingDrink.strTags && <DrinkTags tags={matchingDrink.strTags} />}</Col>
             </Row>
           </div>
         </div>
-        <div className="drink-info-cell drink-info-cell--5">
+        <div className="drink-info-cell drink-info-cell--4">
           <div className="drink-info-item">
             <Row>
               <Col md={5}>
@@ -97,25 +91,25 @@ const DrinkInfo: React.FC = () => {
             </Row>
           </div>
         </div>
-        <div className="drink-info-cell drink-info-cell--6">
+        <div className="drink-info-cell drink-info-cell--5">
           <div className="drink-info-item">
             <h5>Recipe</h5>
             <ContentWrapper>
               <Row>
                 <Col>
-                  <h6>Ingredients:</h6>
+                  <h6>Ingredients</h6>
                   <DrinkIngredients data={matchingDrink} />
                 </Col>
 
                 <Col>
-                  <h6>Instructions:</h6>
+                  <h6>Instructions</h6>
                   <DrinkInstructions text={matchingDrink.strInstructions as string} />
                 </Col>
               </Row>
             </ContentWrapper>
           </div>
         </div>
-        <div className="drink-info-cell drink-info-cell--7">
+        <div className="drink-info-cell drink-info-cell--6">
           <div className="drink-info-item">
             <h5>Videos</h5>
             <ContentWrapper>

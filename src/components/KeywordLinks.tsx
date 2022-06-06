@@ -25,14 +25,14 @@ const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
     <div className="KeywordLinks">
       <Row>
         <Col>
-          <h6>Search by {type}</h6>
+          <h5>Search by {type}</h5>
         </Col>
       </Row>
 
       <Row>
         {keywordsByType.map((keyword) => {
           return (
-            <Col key={keyword.value} md={6}>
+            <Col key={keyword.value} md={type === 'ingredient' ? 4 : 6}>
               <Link to={`/search/${keyword.type}/${keyword.value}`}>{keyword.value}</Link>
             </Col>
           );

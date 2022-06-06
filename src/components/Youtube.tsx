@@ -26,10 +26,10 @@ const Youtube: React.FC<YoutubeProps> = ({ idDrink, videos }) => {
         videos.map((video) => {
           return (
             <Row style={style} key={video.id}>
-              <Col md={4}>
+              <Col md={6}>
                 <YoutubeEmbed embedId={video.id as string} />
               </Col>
-              <Col md={8}>
+              <Col md={6}>
                 <YoutubeMeta
                   id={video.id}
                   title={video.title}

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Badge, Image } from 'react-bootstrap';
+import { Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 import { IDrinkDoc } from '../../db/Drink';
@@ -27,11 +27,6 @@ const SearchResultItem: React.FC<SearchResultItemProps> = ({ drink }) => {
         </div>
       </div>
       <div className="search-result-item-cell search-result-item-cell--3">
-        <div className="search-result-item-item">
-          {drink.strAlcoholic ? <Badge bg="secondary">{drink.strAlcoholic}</Badge> : null}
-        </div>
-      </div>
-      <div className="search-result-item-cell search-result-item-cell--4">
         <div className="search-result-item-item">
           <AddCollectionItemButton idDrink={drink.idDrink} />
         </div>

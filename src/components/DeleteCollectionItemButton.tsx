@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { deleteCollectionItem } from '../store/userSlice';
 import { createAlert } from '../store/alertSlice';
 import { useAppDispatch } from '../hooks';
-import { IDrinkDoc } from '../db/Drink';
+import { IUserCollectionItemDoc } from '../db/UserCollectionItem';
 
 interface DeleteCollectionItemButtonProps {
   idDrink: string;
@@ -24,7 +24,7 @@ const DeleteCollectionItemButton: React.FC<DeleteCollectionItemButtonProps> = ({
       const resultAction = await dispatch(deleteCollectionItem(idDrink));
 
       if (resultAction.type === 'user/deleteCollectionItem/fulfilled') {
-        const resultPayload = resultAction.payload as IDrinkDoc;
+        const resultPayload = resultAction.payload as IUserCollectionItemDoc;
 
         const payload = {
           id: uuid(),

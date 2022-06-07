@@ -79,7 +79,7 @@ const SearchResults: React.FC = () => {
         <ContentWrapper>
           <Row className="search-status">
             <Col>
-              {isSearchSuccess && <strong>{`Found ${searchResults.length} results for "${query}"`}</strong>}
+              {isSearchSuccess && <p>{`Found ${searchResults.length} results for "${query}"`}</p>}
               {isSearchFail && <strong>Error retrieving data!</strong>}
             </Col>
           </Row>

@@ -2,7 +2,7 @@
   margin-bottom: 2rem;
 }
 
-.SearchResults .search-status strong {
+.SearchResults .search-status p {
   display: block;
   margin: 0 auto;
   max-width: 1080px;

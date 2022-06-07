@@ -10,20 +10,21 @@
   -moz-border-radius: 10px;
   border-radius: 10px;
   /* box-shadow */
-  -webkit-box-shadow: rgba(0,0,0,0.3) 0px 0 8px;
-  -moz-box-shadow: rgba(0,0,0,0.3) 0 0 8px;
-  box-shadow: rgba(0,0,0,0.3) 0 0 8px;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0px 0 8px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.3) 0 0 8px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 8px;
+  grid-template-columns: 1fr 2fr 1fr;
 }
 
 .SearchResultItem img {
   max-width: 85px;
   max-height: 85px;
-  border: 1px solid #BEBEBE;
+  border: 1px solid #bebebe;
 }
 
 .SearchResultItem button {
   min-width: 150px;
+  float: right;
 }
 
 .SearchResultItem .search-result-item-cell {

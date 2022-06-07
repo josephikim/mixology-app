@@ -4,7 +4,8 @@ import { YoutubeVideo } from '../types';
 
 export interface IDrinkDoc extends Document {
   idDrink: string;
-  strDrink?: string;
+  strDrink: string;
+  strDrinkThumb: string;
   strTags?: string;
   strIBA?: string;
   strAlcoholic?: string;
@@ -15,7 +16,6 @@ export interface IDrinkDoc extends Document {
   strInstructionsES?: string;
   strInstructionsFR?: string;
   strInstructionsIT?: string;
-  strDrinkThumb?: string;
   strIngredient1?: string;
   strIngredient2?: string;
   strIngredient3?: string;
@@ -56,7 +56,12 @@ const drinkSchema = new Schema({
     required: true
   },
   strDrink: {
-    type: String
+    type: String,
+    required: true
+  },
+  strDrinkThumb: {
+    type: String,
+    required: true
   },
   strTags: {
     type: String
@@ -83,9 +88,6 @@ const drinkSchema = new Schema({
     type: String
   },
   strInstructionsIT: {
-    type: String
-  },
-  strDrinkThumb: {
     type: String
   },
   strIngredient1: {

@@ -101,7 +101,7 @@ export class UserApi {
     let results = [] as IDrinkDoc[];
 
     if (response.status === 200 && response.data.length > 0) {
-      results = response.data as IDrinkDoc[];
+      results = response.data;
     }
 
     return results;

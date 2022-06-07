@@ -146,6 +146,9 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
 
   try {
     // Search cocktail API by search type and query
+    // Search results' data depends on search type
+    // 'category', 'ingredient', glass', or 'alcohol' search will return basic fields only
+    // Default search (by cocktail name) returns full drink objects
     let url = process.env.THECOCKTAILDB_API_URL as string;
 
     switch (type) {
@@ -165,6 +168,7 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
         url += `/filter.php?a=${encodeURIComponent(query)}`;
         break;
       }
+      // Searches by cocktail name
       default: {
         url += `/search.php?s=${encodeURIComponent(query)}`;
         break;
@@ -178,53 +182,7 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
       res.status(204).send({ message: 'No results available.' });
     } else {
       const results = response.data.drinks as IDrinkDoc[];
-
-      // Create array of drink ids from results
-      const ids = results.map((result) => {
-        return result.idDrink as string;
-      });
-
-      // Resolve array of promises where each id triggers a search for matching Drink doc. If doc not found, get drink info via cocktail API search and save result as new Drink doc.
-      const promises = [] as any;
-
-      for (let index = 0; index < ids.length; index++) {
-        promises.push(
-          new Promise((resolve) => {
-            Drink.findOne({ idDrink: ids[index] }).exec(async (err, doc) => {
-              if (err) {
-                return next(err);
-              }
-
-              if (!doc) {
-                // Search cocktail API by drink ID
-                const url = `${process.env.THECOCKTAILDB_API_URL}/lookup.php?i=${ids[index]}`;
-
-                const response = await axios.get(url);
-
-                // No content found
-                if (response.status === 204 || response.data.drinks == null) return;
-
-                const result = response.data.drinks[0];
-
-                // save result in Drink collection
-                const newDrink = new Drink(result);
-
-                newDrink.save((err, doc) => {
-                  if (err) {
-                    return next(err);
-                  }
-                  resolve(doc);
-                });
-              } else {
-                resolve(doc);
-              }
-            });
-          })
-        );
-      }
-      Promise.all(promises).then((results) => {
-        res.status(200).send(results);
-      });
+      res.status(200).send(results);
     }
   } catch (err) {
     return next(err);

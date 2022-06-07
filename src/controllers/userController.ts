@@ -123,6 +123,77 @@ const getRandomDrink = async (req: Request, res: Response, next: NextFunction): 
   }
 };
 
+const getDrink = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  try {
+    Drink.findOne({ idDrink: req.params.idDrink }).exec(async (err, doc) => {
+      if (err) {
+        return next(err);
+      }
+
+      if (!doc) {
+        const url = `${process.env.THECOCKTAILDB_API_URL}/lookup.php?i=${req.params.idDrink}`;
+
+        const response = await axios.get(url);
+
+        // No content found
+        if (response.status === 204 || response.data.drinks == null) {
+          res.status(204).send({ message: 'No result available.' });
+        }
+
+        const result = response.data.drinks[0];
+
+        // create new Drink doc
+        const newDrink = new Drink(result);
+
+        // add videos data from Youtube
+        const youtubeUrl = `${process.env.YOUTUBE_API_URL}/search?key=${
+          process.env.YOUTUBE_API_KEY
+        }&type=video&part=snippet&q=${encodeURIComponent(result.strDrink as string).replace(
+          /%20/g,
+          '+'
+        )}+recipe&maxResults=5`;
+
+        // Call Youtube API with search query
+        const youtubeResponse = await axios.get(youtubeUrl);
+
+        if (!youtubeResponse.data.items || youtubeResponse.data.items.length < 1) {
+          res.status(204).send({ message: 'No results available.' });
+        }
+
+        // Create array of YoutubeVideo objects
+        const videosResult: YoutubeVideo[] = [];
+
+        youtubeResponse.data.items.map((item: any) => {
+          const obj = {
+            id: item.id.videoId,
+            title: item.snippet.title,
+            channelTitle: item.snippet.channelTitle,
+            description: item.snippet.description,
+            publishedAt: item.snippet.publishedAt
+          } as YoutubeVideo;
+          videosResult.push(obj);
+        });
+
+        // Save videos on drink doc, then send result
+        newDrink.youtubeVideos = videosResult;
+
+        console.log('newDrink.youtubeVideos', newDrink.youtubeVideos);
+        console.log('newDrink.youtubeVideos[0]', newDrink.youtubeVideos[0]);
+        newDrink.save((err, doc) => {
+          if (err) {
+            return next(err);
+          }
+          res.status(200).send(doc);
+        });
+      } else {
+        res.status(200).send(doc);
+      }
+    });
+  } catch (err) {
+    return next(err);
+  }
+};
+
 const getDrinks = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
     Drink.find().exec(async (err, docs) => {
@@ -389,6 +460,7 @@ const userController = {
   userAccess,
   adminAccess,
   moderatorAccess,
+  getDrink,
   getDrinks,
   getKeywords,
   getRandomDrink,

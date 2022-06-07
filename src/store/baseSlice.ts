@@ -41,6 +41,13 @@ export const getRandomDrink = createAsyncThunk('base/getRandomDrink', async (): 
   return result;
 });
 
+export const getDrink = createAsyncThunk('base/getDrink', async (idDrink: string): Promise<IDrinkDoc> => {
+  const api = new UserApi();
+  const result = await api.getDrink(idDrink);
+
+  return result;
+});
+
 export const getDrinks = createAsyncThunk('base/getDrinks', async (): Promise<IDrinkDoc[]> => {
   const api = new UserApi();
   const result = await api.getDrinks();
@@ -91,6 +98,18 @@ export const baseSlice = createSlice({
         state.status = 'succeeded';
       })
       .addCase(getRandomDrink.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+      })
+      .addCase(getDrink.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(getDrink.fulfilled, (state: BaseState, action) => {
+        const newState = [...state.drinks, action.payload];
+        state.drinks = newState;
+        state.status = 'succeeded';
+      })
+      .addCase(getDrink.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
       })

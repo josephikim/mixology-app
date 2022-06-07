@@ -85,6 +85,13 @@ export class UserApi {
     return response.data as IDrinkDoc;
   }
 
+  async getDrink(idDrink: string): Promise<IDrinkDoc> {
+    const url = `${userApiClient.defaults.baseURL}/drink/${idDrink}`;
+    const response = await userApiClient.get(url);
+
+    return response.data as IDrinkDoc;
+  }
+
   async getDrinks(): Promise<IDrinkDoc[]> {
     const url = `${userApiClient.defaults.baseURL}/drinks/`;
     const response = await userApiClient.get(url);

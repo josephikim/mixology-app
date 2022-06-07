@@ -93,7 +93,9 @@ export class UserApi {
   }
 
   async getSearchResults(payload: SearchPayload): Promise<IDrinkDoc[]> {
-    const url = `${userApiClient.defaults.baseURL}/search/${payload.type}/${payload.query}`;
+    const url = `${userApiClient.defaults.baseURL}/search/${encodeURIComponent(payload.type)}/${encodeURIComponent(
+      payload.query
+    )}`;
     const response = await userApiClient.get(url);
 
     let results = [] as IDrinkDoc[];

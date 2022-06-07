@@ -33,7 +33,9 @@ const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
         {keywordsByType.map((keyword) => {
           return (
             <Col key={keyword.value} md={type === 'ingredient' ? 4 : 6}>
-              <Link to={`/search/${keyword.type}/${keyword.value}`}>{keyword.value}</Link>
+              <Link to={`/search/${encodeURIComponent(keyword.type)}/${encodeURIComponent(keyword.value)}`}>
+                {keyword.value}
+              </Link>
             </Col>
           );
         })}

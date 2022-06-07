@@ -150,7 +150,7 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
 
     switch (type) {
       case 'category': {
-        url += `/filter.php?c=${query}`;
+        url += `/filter.php?c=${encodeURIComponent(query)}`;
         break;
       }
       case 'ingredient': {

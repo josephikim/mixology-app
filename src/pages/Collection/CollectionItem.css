@@ -6,8 +6,17 @@
   border: none;
 }
 
-.CollectionItem .tab-content-cont__rating {
-  margin: 2rem 1.5rem;
+.CollectionItem .tab-content-cont__info {
+  padding: 1rem;
+  border-left: 1px solid #dadce0;
+  border-right: 1px solid #dadce0;
+}
+
+.CollectionItem .tab-content-cont__info img {
+  max-width: 250px;
+  width: 100%;
+  display: block;
+  margin: 0 auto;
 }
 
 .CollectionItem .DrinkNotes {
@@ -16,4 +25,8 @@
 
 .CollectionItem .DeleteCollectionItemButton {
   margin: 2rem 0;
+}
+
+.CollectionItem .dv-star-rating {
+  margin-top: 1rem;
 }

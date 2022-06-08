@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 
 import { IDrinkDoc } from '../../db/Drink';
@@ -19,6 +19,8 @@ const CollectionLinks: React.FC<CollectionLinksProps> = ({ drinks }) => {
 
   const userId = useAppSelector((state) => state.auth.userId);
 
+  const activeClassName = 'active';
+
   return (
     <div className="CollectionLinks">
       <Row>
@@ -31,7 +33,12 @@ const CollectionLinks: React.FC<CollectionLinksProps> = ({ drinks }) => {
         {drinksSorted.map((drink) => {
           return (
             <Col key={drink.idDrink} xs={12}>
-              <Link to={`/collection/${userId}/${drink.idDrink}`}>{drink.strDrink}</Link>
+              <NavLink
+                to={`/collection/${userId}/${drink.idDrink}`}
+                className={({ isActive }) => (isActive ? activeClassName : undefined)}
+              >
+                {drink.strDrink}
+              </NavLink>
             </Col>
           );
         })}

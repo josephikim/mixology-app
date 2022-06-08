@@ -290,6 +290,28 @@ const addCollectionItem = async (req: Request, res: Response, next: NextFunction
   });
 };
 
+const setRating = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+  UserCollectionItem.findOneAndUpdate(
+    { idDrink: req.body.idDrink },
+    {
+      $set: { rating: req.body.rating }
+    },
+    {
+      new: true
+    }
+  ).exec((err, doc) => {
+    if (err) {
+      return next(err);
+    }
+
+    if (!doc) {
+      return next(new Error('Collection item not found!'));
+    }
+
+    res.status(200).send(doc);
+  });
+};
+
 const saveNotes = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   UserCollectionItem.findOneAndUpdate(
     { idDrink: req.body.idDrink },
@@ -466,6 +488,7 @@ const userController = {
   getRandomDrink,
   getSearchResults,
   addCollectionItem,
+  setRating,
   saveNotes,
   deleteCollectionItem,
   getDrinkWithVideos

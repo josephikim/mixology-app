@@ -6,6 +6,10 @@
   border: none;
 }
 
+.CollectionItem .tab-content-cont__rating {
+  margin: 2rem 1.5rem;
+}
+
 .CollectionItem .DrinkNotes {
   margin: 2rem 0;
 }

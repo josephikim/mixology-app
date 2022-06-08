@@ -21,6 +21,11 @@ interface UserState {
   errorType?: string;
 }
 
+export type RatingPayload = {
+  idDrink: string;
+  rating: number;
+};
+
 export type NotesPayload = {
   idDrink: string;
   notes: string;
@@ -92,6 +97,24 @@ export const deleteCollectionItem = createAsyncThunk<
   }
 });
 
+export const setRating = createAsyncThunk<
+  IUserCollectionItemDoc,
+  RatingPayload,
+  {
+    rejectValue: ApiAccessError;
+  }
+>('user/setRating', async (payload, { rejectWithValue }) => {
+  const api = new UserApi();
+
+  try {
+    const response = await api.setRating(payload);
+
+    return response;
+  } catch (err) {
+    return rejectWithValue(err);
+  }
+});
+
 export const saveNotes = createAsyncThunk<
   IUserCollectionItemDoc,
   NotesPayload,
@@ -147,6 +170,26 @@ export const userSlice = createSlice({
         state.collection = newState;
       })
       .addCase(addCollectionItem.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message;
+        if (action.payload) {
+          state.errorType = action.payload.type;
+        }
+      })
+      .addCase(setRating.pending, (state) => {
+        state.status = 'loading';
+      })
+      .addCase(setRating.fulfilled, (state: UserState, action) => {
+        if (state.collection) {
+          state.collection = state.collection.map((item) =>
+            item.idDrink === action.payload.idDrink
+              ? ({ ...item, rating: action.payload.rating } as IUserCollectionItemDoc)
+              : item
+          );
+        }
+        state.status = 'succeeded';
+      })
+      .addCase(setRating.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
         if (action.payload) {

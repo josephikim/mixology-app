@@ -35,6 +35,8 @@ userRouter.get('/drinkWithVideos/:idDrink', userController.getDrinkWithVideos);
 // private routes
 userRouter.post('/collectionItem', [authJwt.verifyToken], userController.addCollectionItem);
 
+userRouter.post('/rating', [authJwt.verifyToken], userController.setRating);
+
 userRouter.post('/notes', [authJwt.verifyToken], userController.saveNotes);
 
 userRouter.post('/deleteCollectionItem/:idDrink', [authJwt.verifyToken], userController.deleteCollectionItem);

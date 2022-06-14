@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 
@@ -20,10 +20,9 @@ const SearchResults: React.FC = () => {
 
   const { type, query } = useParams() as UrlParams;
 
-  const [isSearchSuccess, setIsSearchSuccess] = useState(false);
-  const [isSearchFail, setIsSearchFail] = useState(false);
+  const isSearchSuccess = useRef(false);
+  const isSearchFail = useRef(false);
 
-  const status = useAppSelector((state) => state.user.status);
   const searchPayload = useAppSelector((state) => state.user.searchPayload) as SearchPayload;
   const searchResults = useAppSelector((state) => state.user.searchResults) as IDrinkDoc[];
 
@@ -36,33 +35,27 @@ const SearchResults: React.FC = () => {
       searchPayload.query.toLowerCase() === query.toLowerCase();
   }
 
-  if (searchPayloadsMatch) {
-    if (status === 'succeeded' && !isSearchSuccess) setIsSearchSuccess(true);
-    if (status === 'failed' && !isSearchFail) setIsSearchFail(true);
+  const isNewSearch = !searchPayloadsMatch || (searchPayloadsMatch && !searchResults);
+
+  if (isNewSearch) {
+    isSearchSuccess.current = false;
+    isSearchFail.current = false;
   } else {
-    if (isSearchSuccess) setIsSearchSuccess(false);
-    if (isSearchFail) setIsSearchFail(false);
+    if (searchResults) {
+      isSearchSuccess.current = true;
+    } else {
+      isSearchFail.current = true;
+    }
   }
 
   useEffect(() => {
-    // Check conditions to dispatch search action
-    let isNewSearch = false;
-
-    if (!searchPayload) {
-      isNewSearch = true;
-    } else if ('type' in searchPayload && 'query' in searchPayload) {
-      isNewSearch =
-        searchPayload.type.toLowerCase() !== type.toLowerCase() ||
-        searchPayload.query.toLowerCase() !== query.toLowerCase();
-    }
-
     if (isNewSearch) {
-      dispatch(getSearchResults({ type, query } as UrlParams));
+      dispatch(getSearchResults({ type, query }));
     }
   }, [type, query]);
 
   const renderContent = () => {
-    const isSearchComplete = isSearchSuccess || isSearchFail;
+    const isSearchComplete = isSearchSuccess.current || isSearchFail.current;
 
     if (!isSearchComplete) {
       return (
@@ -79,8 +72,8 @@ const SearchResults: React.FC = () => {
         <ContentWrapper>
           <Row className="search-status">
             <Col>
-              {isSearchSuccess && <p>{`Found ${searchResults.length} results for "${query}"`}</p>}
-              {isSearchFail && <strong>Error retrieving data!</strong>}
+              {isSearchSuccess.current && <p>{`Found ${searchResults.length} results for "${query}"`}</p>}
+              {isSearchFail.current && <strong>Error retrieving data!</strong>}
             </Col>
           </Row>
           {isSearchSuccess && (

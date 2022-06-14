@@ -23,12 +23,21 @@ const CustomAlert: React.FC<CustomAlertProps> = ({ data }) => {
 
   return (
     <div className="CustomAlert">
-      <Alert show={show} variant="success">
-        <span>{data.message}</span>
-        <Button onClick={() => handleClose()} variant="light">
-          Close
-        </Button>
-      </Alert>
+      {data.type.endsWith('rejected') ? (
+        <Alert show={show} variant="danger">
+          <span>{data.message}</span>
+          <Button onClick={() => handleClose()} variant="light">
+            Close
+          </Button>
+        </Alert>
+      ) : (
+        <Alert show={show} variant="success">
+          <span>{data.message}</span>
+          <Button onClick={() => handleClose()} variant="light">
+            Close
+          </Button>
+        </Alert>
+      )}
     </div>
   );
 };

@@ -135,56 +135,28 @@ const getDrink = async (req: Request, res: Response, next: NextFunction): Promis
 
         const response = await axios.get(url);
 
+        const drinksArr = response.data.drinks;
+
         // No content found
-        if (response.status === 204 || response.data.drinks == null) {
+        if (response.status === 204 || (response.status === 200 && (!drinksArr || drinksArr[0] == undefined))) {
           res.status(204).send({ message: 'No result available.' });
+        } else {
+          // Save new Drink doc with videos
+          const data = drinksArr[0];
+
+          const newDrink = new Drink(data);
+
+          const videosResult = await getVideos(data.strDrink);
+
+          newDrink.youtubeVideos = videosResult;
+
+          newDrink.save((err, doc) => {
+            if (err) {
+              return next(err);
+            }
+            res.status(200).send(doc);
+          });
         }
-
-        const result = response.data.drinks[0];
-
-        // create new Drink doc
-        const newDrink = new Drink(result);
-
-        // add videos data from Youtube
-        const youtubeUrl = `${process.env.YOUTUBE_API_URL}/search?key=${
-          process.env.YOUTUBE_API_KEY
-        }&type=video&part=snippet&q=${encodeURIComponent(result.strDrink as string).replace(
-          /%20/g,
-          '+'
-        )}+recipe&maxResults=5`;
-
-        // Call Youtube API with search query
-        const youtubeResponse = await axios.get(youtubeUrl);
-
-        if (!youtubeResponse.data.items || youtubeResponse.data.items.length < 1) {
-          res.status(204).send({ message: 'No results available.' });
-        }
-
-        // Create array of YoutubeVideo objects
-        const videosResult: YoutubeVideo[] = [];
-
-        youtubeResponse.data.items.map((item: any) => {
-          const obj = {
-            id: item.id.videoId,
-            title: item.snippet.title,
-            channelTitle: item.snippet.channelTitle,
-            description: item.snippet.description,
-            publishedAt: item.snippet.publishedAt
-          } as YoutubeVideo;
-          videosResult.push(obj);
-        });
-
-        // Save videos on drink doc, then send result
-        newDrink.youtubeVideos = videosResult;
-
-        console.log('newDrink.youtubeVideos', newDrink.youtubeVideos);
-        console.log('newDrink.youtubeVideos[0]', newDrink.youtubeVideos[0]);
-        newDrink.save((err, doc) => {
-          if (err) {
-            return next(err);
-          }
-          res.status(200).send(doc);
-        });
       } else {
         res.status(200).send(doc);
       }
@@ -261,13 +233,13 @@ const getSearchResults = async (req: Request, res: Response, next: NextFunction)
 };
 
 const addCollectionItem = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
-  UserCollectionItem.findOne({ user: req.body.user, idDrink: req.body.idDrink }).exec((err, doc) => {
-    if (err) {
-      return next(err);
-    }
+  try {
+    UserCollectionItem.findOne({ user: req.body.user, idDrink: req.body.idDrink }).exec((err, doc) => {
+      if (err) {
+        return next(err);
+      }
 
-    if (doc == null) {
-      try {
+      if (doc == null) {
         const data = {
           ...req.body
         };
@@ -281,13 +253,13 @@ const addCollectionItem = async (req: Request, res: Response, next: NextFunction
 
           res.status(200).send(doc);
         });
-      } catch (err) {
-        return next(err);
+      } else {
+        res.status(409).send({ message: 'Entry already exists in database.' });
       }
-    } else {
-      res.status(409).send({ message: 'Entry already exists in database.' });
-    }
-  });
+    });
+  } catch (err) {
+    return next(err);
+  }
 };
 
 const setRating = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
@@ -416,7 +388,7 @@ const getKeywordsByType = async (type: string): Promise<IKeywordDoc[] | void> =>
 
 const getDrinkWithVideos = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
-    await Drink.findOne({ idDrink: req.params.idDrink }).exec(async (err, doc) => {
+    Drink.findOne({ idDrink: req.params.idDrink }).exec(async (err, doc) => {
       if (err) {
         return next(err);
       }
@@ -427,33 +399,11 @@ const getDrinkWithVideos = async (req: Request, res: Response, next: NextFunctio
         const isVideosEmpty = !videos || !videos.length;
 
         if (isVideosEmpty) {
-          const url = `${process.env.YOUTUBE_API_URL}/search?key=${
-            process.env.YOUTUBE_API_KEY
-          }&type=video&part=snippet&q=${encodeURIComponent(doc.strDrink as string).replace(
-            /%20/g,
-            '+'
-          )}+recipe&maxResults=5`;
+          const videosResult = await getVideos(doc.strDrink);
 
-          // Call Youtube API with search query
-          const response = await axios.get(url);
-
-          if (!response.data.items || response.data.items.length < 1) {
+          if (!videosResult || !videosResult.length) {
             res.status(204).send({ message: 'No results available.' });
           }
-
-          // Create array of YoutubeVideo objects from response
-          const videosResult: YoutubeVideo[] = [];
-
-          response.data.items.map((item: any) => {
-            const obj = {
-              id: item.id.videoId,
-              title: item.snippet.title,
-              channelTitle: item.snippet.channelTitle,
-              description: item.snippet.description,
-              publishedAt: item.snippet.publishedAt
-            } as YoutubeVideo;
-            videosResult.push(obj);
-          });
 
           // Save videos on drink doc, then send result
           doc.youtubeVideos = videosResult;
@@ -475,6 +425,35 @@ const getDrinkWithVideos = async (req: Request, res: Response, next: NextFunctio
   } catch (err) {
     return next(err);
   }
+};
+
+const getVideos = async (query: string) => {
+  const url = `${process.env.YOUTUBE_API_URL}/search?key=${
+    process.env.YOUTUBE_API_KEY
+  }&type=video&part=snippet&q=${encodeURIComponent(query).replace(/%20/g, '+')}+recipe&maxResults=5`;
+
+  // Call Youtube API with search query
+  const response = await axios.get(url);
+
+  // Create array of YoutubeVideo objects from response
+  const videosResult: YoutubeVideo[] = [];
+
+  if (!response.data.items || response.data.items.length < 1) {
+    return videosResult;
+  }
+
+  response.data.items.map((item: any) => {
+    const obj = {
+      id: item.id.videoId,
+      title: item.snippet.title,
+      channelTitle: item.snippet.channelTitle,
+      description: item.snippet.description,
+      publishedAt: item.snippet.publishedAt
+    } as YoutubeVideo;
+    videosResult.push(obj);
+  });
+
+  return videosResult;
 };
 
 const userController = {

@@ -12,26 +12,18 @@ import '../styles/RandomDrink.css';
 const RandomDrink: React.FC = () => {
   const dispatch = useAppDispatch();
   const drink = useAppSelector((state) => state.base.randomDrink);
-  const status = useAppSelector((state) => state.base.status);
 
-  if (!drink || drink == undefined) return null;
+  const isDrinkLoaded = drink && drink.idDrink;
 
-  const includesTags = drink.strTags && drink.strTags.length > 0;
+  const drinkIncludesCategory = drink.strCategory && drink.strCategory.length > 0;
+  const drinkIncludesTags = drink.strTags && drink.strTags.length > 0;
 
   const handleClick = () => {
     dispatch(getRandomDrink());
   };
 
   const renderContent = () => {
-    if (status === 'loading') {
-      return (
-        <Row>
-          <Col>
-            <h5>Loading drink...</h5>
-          </Col>
-        </Row>
-      );
-    } else {
+    if (isDrinkLoaded) {
       return (
         <>
           <Row>
@@ -46,32 +38,45 @@ const RandomDrink: React.FC = () => {
             </Col>
           </Row>
 
-          <Row>
-            <div className="flex-container">
-              <Col>
-                <h5>Category</h5>
-              </Col>
-              <Col>{drink.strAlcoholic ? <Badge bg="secondary">{drink.strAlcoholic}</Badge> : null}</Col>
-            </div>
-          </Row>
-          {includesTags ? (
+          {drinkIncludesCategory ? (
             <Row>
               <div className="flex-container">
-                <Col>
+                <Col md={7}>
+                  <h5>Category</h5>
+                </Col>
+                <Col md={5}>{drink.strCategory ? <Badge bg="success">{drink.strCategory}</Badge> : null}</Col>
+              </div>
+            </Row>
+          ) : null}
+
+          <Row>
+            <div className="flex-container">
+              <Col md={7}>
+                <h5>Alcohol Content</h5>
+              </Col>
+              <Col md={5}>{drink.strAlcoholic ? <Badge bg="success">{drink.strAlcoholic}</Badge> : null}</Col>
+            </div>
+          </Row>
+
+          {drinkIncludesTags ? (
+            <Row>
+              <div className="flex-container">
+                <Col md={7}>
                   <h5>IBA Tags</h5>
                 </Col>
-                <Col>
+                <Col md={5}>
                   <DrinkTags tags={drink.strTags as string} />
                 </Col>
               </div>
             </Row>
           ) : null}
+
           <Row>
             <div className="flex-container">
-              <Col>
+              <Col md={7}>
                 <h5>Serving Glass</h5>
               </Col>
-              <Col>{drink.strGlass}</Col>
+              <Col md={5}>{drink.strGlass}</Col>
             </div>
           </Row>
 
@@ -92,6 +97,14 @@ const RandomDrink: React.FC = () => {
           </Row>
         </>
       );
+    } else {
+      return (
+        <Row>
+          <Col>
+            <h5>Loading drink...</h5>
+          </Col>
+        </Row>
+      );
     }
   };
 
@@ -103,8 +116,8 @@ const RandomDrink: React.FC = () => {
             <h5>Random Drink</h5>
           </Col>
           <Col>
-            <Button onClick={handleClick} className="flex-container-btn" variant="success">
-              Refresh
+            <Button onClick={handleClick} className="flex-container-btn" variant="primary">
+              Randomize
             </Button>
           </Col>
         </div>

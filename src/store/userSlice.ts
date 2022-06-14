@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { IUserCollectionItemDoc } from 'src/db/UserCollectionItem';
 
 import { UserApi } from '../api';
 import { IDrinkDoc } from '../db/Drink';
+import { IUserCollectionItemDoc } from '../db/UserCollectionItem';
 import { ApiAccessError } from '../types';
 
 enum Status {

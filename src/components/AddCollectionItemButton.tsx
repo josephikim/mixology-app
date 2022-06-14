@@ -1,8 +1,10 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
+import { v4 as uuid } from 'uuid';
 
 import { addCollectionItem } from '../store/userSlice';
 import { useAppDispatch, useAppSelector } from '../hooks';
+import { createAlert } from '../store/alertSlice';
 
 interface AddCollectionItemButtonProps {
   idDrink: string;
@@ -28,7 +30,17 @@ const AddCollectionItemButton: React.FC<AddCollectionItemButtonProps> = ({ idDri
         idDrink: idDrink
       };
 
-      await dispatch(addCollectionItem(payload));
+      const resultAction = await dispatch(addCollectionItem(payload));
+
+      if (resultAction.type === 'user/addCollectionItem/rejected') {
+        const alertPayload = {
+          id: uuid(),
+          type: resultAction.type,
+          message: `Error adding item to collection`
+        };
+
+        await dispatch(createAlert(alertPayload));
+      }
     } else {
       alert('Please login to manage your collection.');
     }

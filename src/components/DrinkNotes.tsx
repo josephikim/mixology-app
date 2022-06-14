@@ -32,13 +32,13 @@ const DrinkNotes: React.FC<DrinkNotesProps> = ({ notes, idDrink }) => {
       const resultAction = await dispatch(saveNotes(payload));
 
       if (resultAction.type === 'user/saveNotes/fulfilled') {
-        const payload = {
+        const alertPayload = {
           id: uuid(),
           type: resultAction.type,
           message: 'Notes successfully saved'
         };
 
-        dispatch(createAlert(payload));
+        dispatch(createAlert(alertPayload));
       }
     } else {
       alert('No changes detected!');

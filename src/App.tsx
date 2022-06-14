@@ -20,8 +20,13 @@ import './styles/App.css';
 
 const App: React.FC = () => {
   const dispatch = useAppDispatch();
-
+  const authToken = useAppSelector((state) => state.auth.accessToken);
+  const userId = useAppSelector((state) => state.auth.userId);
+  const alerts = useAppSelector((state) => state.alert.alerts);
   const errorType = useAppSelector((state) => state.user.errorType);
+  const keywords = useAppSelector((state) => state.base.keywords);
+  const randomDrink = useAppSelector((state) => state.base.randomDrink);
+  const drinks = useAppSelector((state) => state.base.drinks);
 
   useEffect(() => {
     if (errorType === 'refreshToken' || errorType === 'accessToken' || errorType === 'role') {
@@ -30,15 +35,11 @@ const App: React.FC = () => {
     }
   }, [errorType]);
 
-  const keywords = useAppSelector((state) => state.base.keywords);
-
   useEffect(() => {
     if (!keywords || keywords.length < 1) {
       dispatch(getKeywords());
     }
   }, [keywords]);
-
-  const randomDrink = useAppSelector((state) => state.base.randomDrink);
 
   useEffect(() => {
     if (!randomDrink || Object.keys(randomDrink).length === 0) {
@@ -46,17 +47,11 @@ const App: React.FC = () => {
     }
   }, [randomDrink]);
 
-  const drinks = useAppSelector((state) => state.base.drinks);
-
   useEffect(() => {
     if (!drinks || drinks.length < 1) {
       dispatch(getDrinks());
     }
   }, [drinks]);
-
-  const authToken = useAppSelector((state) => state.auth.accessToken);
-  const userId = useAppSelector((state) => state.auth.userId);
-  const alerts = useAppSelector((state) => state.alert.alerts);
 
   return (
     <div className="App">

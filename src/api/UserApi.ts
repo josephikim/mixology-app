@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 import settings from './Settings';
-import * as ApiHelper from '../utils/ApiHelper';
-import { StorageHelper } from '../utils/StorageHelper';
-import store from '../store/index';
-import { accessTokenUpdated } from '../store/authSlice';
-import { AddCollectionItemPayload, RatingPayload, NotesPayload, SearchPayload } from '../store/userSlice';
-import { IDrinkDoc } from '../db/Drink';
-import { IKeywordDoc } from '../db/Keyword';
-import { IUserCollectionItemDoc } from '../db/UserCollectionItem';
+import * as ApiHelper from 'utils/ApiHelper';
+import { StorageHelper } from 'utils/StorageHelper';
+import store from 'store/index';
+import { accessTokenUpdated } from 'store/authSlice';
+import { AddCollectionItemPayload, RatingPayload, NotesPayload, SearchPayload } from 'store/userSlice';
+import { IDrinkDoc } from 'db/Drink';
+import { IKeywordDoc } from 'db/Keyword';
+import { IUserCollectionItemDoc } from 'db/UserCollectionItem';
 
 const userApiClient = axios.create({
   baseURL: settings.baseUrl,

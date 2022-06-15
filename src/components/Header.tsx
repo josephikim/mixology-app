@@ -1,8 +1,8 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 
-import { useAppSelector, useAppDispatch } from '../hooks';
-import { logoutAction } from '../store/index';
+import { useAppSelector, useAppDispatch } from 'hooks';
+import { logoutAction } from 'store/index';
 import SearchBox from './SearchBox';
 
 const Header: React.FC = () => {

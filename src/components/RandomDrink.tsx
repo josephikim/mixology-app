@@ -1,13 +1,13 @@
 import React from 'react';
 import { Row, Col, Badge, Image, Button } from 'react-bootstrap';
 
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { getRandomDrink } from '../store/baseSlice';
+import { useAppDispatch, useAppSelector } from 'hooks';
+import { getRandomDrink } from 'store/baseSlice';
 import DrinkTags from './DrinkTags';
 import DrinkIngredients from './DrinkIngredients';
 import DrinkInstructions from './DrinkInstructions';
 
-import '../styles/RandomDrink.css';
+import 'styles/RandomDrink.css';
 
 const RandomDrink: React.FC = () => {
   const dispatch = useAppDispatch();

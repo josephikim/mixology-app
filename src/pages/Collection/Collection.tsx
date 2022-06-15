@@ -3,9 +3,9 @@ import { Outlet, useLocation, Navigate } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
-import { useAppSelector } from '../../hooks';
-import { IDrinkDoc } from '../../db/Drink';
-import ContentWrapper from '../../layout/ContentWrapper';
+import { useAppSelector } from 'hooks';
+import { IDrinkDoc } from 'db/Drink';
+import ContentWrapper from 'layout/ContentWrapper';
 import CollectionLinks from './CollectionLinks';
 
 import './Collection.css';

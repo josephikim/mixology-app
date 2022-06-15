@@ -1,7 +1,7 @@
-import express from 'express';
-import { verifyRegistration } from '../middleware';
-import authController from '../controllers/authController';
-import { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+
+import { verifyRegistration } from 'middleware';
+import authController from 'controllers/authController';
 
 const authRouter = express.Router();
 

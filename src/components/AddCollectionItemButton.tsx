@@ -2,9 +2,9 @@ import React from 'react';
 import { Button } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
 
-import { addCollectionItem } from '../store/userSlice';
-import { useAppDispatch, useAppSelector } from '../hooks';
-import { createAlert } from '../store/alertSlice';
+import { addCollectionItem } from 'store/userSlice';
+import { useAppDispatch, useAppSelector } from 'hooks';
+import { createAlert } from 'store/alertSlice';
 
 interface AddCollectionItemButtonProps {
   idDrink: string;

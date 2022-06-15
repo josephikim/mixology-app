@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 import { Container, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
-import { IDrinkDoc } from '../../db/Drink';
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { getDrink } from '../../store/baseSlice';
-import DrinkInfo from '../../components/DrinkInfo';
-import AddCollectionItemButton from '../../components/AddCollectionItemButton';
+import { IDrinkDoc } from 'db/Drink';
+import { useAppSelector, useAppDispatch } from 'hooks';
+import { getDrink } from 'store/baseSlice';
+import DrinkInfo from 'components/DrinkInfo';
+import AddCollectionItemButton from 'components/AddCollectionItemButton';
 
 import './Drink.css';
 

@@ -2,8 +2,8 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 
-import { useAppSelector } from '../hooks';
-import ContentWrapper from '../layout/ContentWrapper';
+import { useAppSelector } from 'hooks';
+import ContentWrapper from 'layout/ContentWrapper';
 import DrinkCategoryTags from './DrinkCategoryTags';
 import DrinkAlcoholTags from './DrinkAlcoholTags';
 import DrinkTags from './DrinkTags';
@@ -11,7 +11,7 @@ import DrinkIngredients from './DrinkIngredients';
 import DrinkInstructions from './DrinkInstructions';
 import Youtube from './Youtube';
 
-import '../styles/DrinkInfo.css';
+import 'styles/DrinkInfo.css';
 
 type UrlParams = {
   id: string;

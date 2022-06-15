@@ -2,8 +2,8 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 
-import { IDrinkDoc } from '../../db/Drink';
-import { useAppSelector } from '../../hooks';
+import { IDrinkDoc } from 'db/Drink';
+import { useAppSelector } from 'hooks';
 
 import './CollectionLinks.css';
 

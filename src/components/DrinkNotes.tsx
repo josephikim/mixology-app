@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import { Container, Button, Form } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
 
-import { useAppDispatch } from '../hooks';
-import { saveNotes, NotesPayload } from '../store/userSlice';
-import { createAlert } from '../store/alertSlice';
+import { useAppDispatch } from 'hooks';
+import { saveNotes, NotesPayload } from 'store/userSlice';
+import { createAlert } from 'store/alertSlice';
 
-import '../styles/DrinkNotes.css';
+import 'styles/DrinkNotes.css';
 
 interface DrinkNotesProps {
   notes: string;

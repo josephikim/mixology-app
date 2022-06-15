@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 import settings from './Settings';
-import * as ApiHelper from '../utils/ApiHelper';
-import { IRegistration, ILogin, ILoginResult } from '../types';
+import * as ApiHelper from 'utils/ApiHelper';
+import { IRegistration, ILogin, ILoginResult } from 'types';
 
 const authApiClient = axios.create({
   baseURL: settings.authUrl,

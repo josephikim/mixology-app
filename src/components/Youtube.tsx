@@ -1,11 +1,11 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import { useAppDispatch } from '../hooks';
+import { useAppDispatch } from 'hooks';
 import YoutubeEmbed from './YoutubeEmbed';
 import YoutubeMeta from './YoutubeMeta';
-import { YoutubeVideo } from '../types';
-import { getDrinkWithVideos } from '../store/baseSlice';
+import { YoutubeVideo } from 'types';
+import { getDrinkWithVideos } from 'store/baseSlice';
 interface YoutubeProps {
   idDrink: string;
   videos?: YoutubeVideo[];

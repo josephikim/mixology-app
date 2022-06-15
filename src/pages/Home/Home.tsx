@@ -1,8 +1,8 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 
-import KeywordLinks from '../../components/KeywordLinks';
-import RandomDrink from '../../components/RandomDrink';
+import KeywordLinks from 'components/KeywordLinks';
+import RandomDrink from 'components/RandomDrink';
 
 import './Home.css';
 

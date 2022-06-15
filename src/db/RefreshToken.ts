@@ -1,7 +1,7 @@
 import { Schema, Model, Document, model, Types } from 'mongoose';
 import { v4 as uuidv4 } from 'uuid';
 
-import { jwtRefreshExpiration } from '../config/authConfig';
+import { jwtRefreshExpiration } from 'config/authConfig';
 export interface IRefreshTokenDoc extends Document {
   token: string;
   user: Types.ObjectId;

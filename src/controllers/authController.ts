@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { HydratedDocument } from 'mongoose';
 import jwt from 'jsonwebtoken';
 
-import db from '../db';
-import { IRoleDoc } from '../db/Role';
-import { IUserCollectionItemDoc } from '../db/UserCollectionItem';
-import { jwtSecretKey, jwtExpiration } from '../config/authConfig';
-import { IAuthToken } from '../types';
+import db from 'db';
+import { IRoleDoc } from 'db/Role';
+import { IUserCollectionItemDoc } from 'db/UserCollectionItem';
+import { jwtSecretKey, jwtExpiration } from 'config/authConfig';
+import { IAuthToken } from 'types';
 
 const User = db.user;
 const Role = db.role;

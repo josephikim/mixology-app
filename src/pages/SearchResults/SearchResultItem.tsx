@@ -2,8 +2,8 @@ import React from 'react';
 import { Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-import { IDrinkDoc } from '../../db/Drink';
-import AddCollectionItemButton from '../../components/AddCollectionItemButton';
+import { IDrinkDoc } from 'db/Drink';
+import AddCollectionItemButton from 'components/AddCollectionItemButton';
 
 import './SearchResultItem.css';
 

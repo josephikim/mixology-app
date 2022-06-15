@@ -3,13 +3,13 @@ import { Container, Tabs, Tab, Row, Col, Image } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import StarRatingComponent from 'react-star-rating-component';
 
-import { IUserCollectionItemDoc } from '../../db/UserCollectionItem';
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { RatingPayload, setRating } from '../../store/userSlice';
-import ContentWrapper from '../../layout/ContentWrapper';
-import DrinkInfo from '../../components/DrinkInfo';
-import DrinkNotes from '../../components/DrinkNotes';
-import DeleteCollectionItemButton from '../../components/DeleteCollectionItemButton';
+import { IUserCollectionItemDoc } from 'db/UserCollectionItem';
+import { useAppSelector, useAppDispatch } from 'hooks';
+import { RatingPayload, setRating } from 'store/userSlice';
+import ContentWrapper from 'layout/ContentWrapper';
+import DrinkInfo from 'components/DrinkInfo';
+import DrinkNotes from 'components/DrinkNotes';
+import DeleteCollectionItemButton from 'components/DeleteCollectionItemButton';
 
 import './CollectionItem.css';
 

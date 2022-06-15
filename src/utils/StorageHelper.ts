@@ -1,4 +1,4 @@
-import store from '../store/index';
+import store from 'store/index';
 
 export class StorageHelper {
   static getLocalAccessToken = (): string => {

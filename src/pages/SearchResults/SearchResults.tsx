@@ -2,10 +2,10 @@ import React, { useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Container, Row, Col } from 'react-bootstrap';
 
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { getSearchResults, SearchPayload } from '../../store/userSlice';
-import { IDrinkDoc } from '../../db/Drink';
-import ContentWrapper from '../../layout/ContentWrapper';
+import { useAppSelector, useAppDispatch } from 'hooks';
+import { getSearchResults, SearchPayload } from 'store/userSlice';
+import { IDrinkDoc } from 'db/Drink';
+import ContentWrapper from 'layout/ContentWrapper';
 import SearchResultItem from './SearchResultItem';
 
 import './SearchResults.css';

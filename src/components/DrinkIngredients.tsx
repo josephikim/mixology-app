@@ -1,9 +1,9 @@
 import React from 'react';
 import { Row, ListGroup } from 'react-bootstrap';
 
-import { IDrinkDoc } from '../db/Drink';
+import { IDrinkDoc } from 'db/Drink';
 
-import '../styles/DrinkIngredients.css';
+import 'styles/DrinkIngredients.css';
 
 interface DrinkIngredientsProps {
   data: IDrinkDoc;

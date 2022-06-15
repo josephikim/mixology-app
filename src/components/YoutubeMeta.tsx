@@ -1,7 +1,7 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 
-import '../styles/YoutubeMeta.css';
+import 'styles/YoutubeMeta.css';
 
 interface YoutubeMetaProps {
   id?: string;

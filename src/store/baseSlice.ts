@@ -1,9 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { UserApi } from '../api';
-import { IDrinkDoc } from '../db/Drink';
-import { IKeywordDoc } from '../db/Keyword';
-import { ApiAccessError } from '../types';
+import { UserApi } from 'api/index';
+import { IDrinkDoc } from 'db/Drink';
+import { IKeywordDoc } from 'db/Keyword';
+import { ApiAccessError } from 'types';
 
 enum Status {
   idle = 'IDLE',

@@ -1,4 +1,11 @@
-import * as webpack from 'webpack';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import tsConfig from './tsconfig.json' assert { type: 'json' };
+
+const __filename = fileURLToPath(import.meta.url);
+
+const __dirname = path.dirname(__filename);
 
 const common = {
   module: {
@@ -31,7 +38,8 @@ const common = {
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json']
+    extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
+    modules: [path.resolve(__dirname, 'node_modules'), path.resolve(__dirname, tsConfig.compilerOptions.baseUrl)]
   }
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-import '../styles/DrinkInstructions.css';
+import 'styles/DrinkInstructions.css';
 
 interface DrinkInstructionsProps {
   text: string;

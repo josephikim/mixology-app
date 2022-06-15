@@ -1,7 +1,7 @@
-import express from 'express';
-import { authJwt } from '../middleware';
-import userController from '../controllers/userController';
-import { Request, Response, NextFunction } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
+
+import { authJwt } from 'middleware';
+import userController from 'controllers/userController';
 
 const userRouter = express.Router();
 

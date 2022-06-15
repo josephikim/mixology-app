@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Container, Col, Row } from 'react-bootstrap';
 
-import ContentWrapper from '../../layout/ContentWrapper';
+import ContentWrapper from 'layout/ContentWrapper';
 import RegistrationForm from './RegistrationForm';
 
 const Registration: FC = () => (

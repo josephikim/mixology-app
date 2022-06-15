@@ -1,6 +1,6 @@
 import { Schema, Document, model } from 'mongoose';
 
-import { YoutubeVideo } from '../types';
+import { YoutubeVideo } from 'types';
 
 export interface IDrinkDoc extends Document {
   idDrink: string;

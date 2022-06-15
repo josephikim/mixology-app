@@ -2,9 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FormControl, InputGroup, Button } from 'react-bootstrap';
 
-import { useInput } from '../hooks/useInput';
+import { useInput } from 'hooks/useInput';
 
-import '../styles/SearchBox.css';
+import 'styles/SearchBox.css';
 
 const SearchBox: React.FC = () => {
   const navigate = useNavigate();

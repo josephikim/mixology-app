@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-import { useAppSelector, useAppDispatch } from '../../hooks';
-import { register } from '../../store/authSlice';
-import { useInput } from '../../hooks/useInput';
-import { validateFields } from '../../validation';
+import { useAppSelector, useAppDispatch } from 'hooks';
+import { register } from 'store/authSlice';
+import { useInput } from 'hooks/useInput';
+import { validateFields } from 'validation';
 
 import './RegistrationForm.css';
 

@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
 
-import { useAppSelector } from '../hooks';
-import { IKeywordDoc } from '../db/Keyword';
+import { useAppSelector } from 'hooks';
+import { IKeywordDoc } from 'db/Keyword';
 
-import '../styles/KeywordLinks.css';
+import 'styles/KeywordLinks.css';
 
 interface KeywordLinksProps {
   type: string;

@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 import axios from 'axios';
 
-import db from '../db';
-import { IKeywordDoc } from '../db/Keyword';
-import { IDrinkDoc } from '../db/Drink';
-import { YoutubeVideo } from '../types';
+import db from 'db';
+import { IKeywordDoc } from 'db/Keyword';
+import { IDrinkDoc } from 'db/Drink';
+import { YoutubeVideo } from 'types';
 
 const Drink = db.drink;
 const Keyword = db.keyword;

@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { cloneDeep } from 'lodash';
 
-import { useAppSelector } from '../../hooks';
+import { useAppSelector } from 'hooks';
 
 import './Drinks.css';
 

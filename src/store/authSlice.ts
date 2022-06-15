@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
-import { AuthApi } from '../api';
-import { IRegistration, ILogin, IAuthToken } from '../types';
+import { AuthApi } from 'api/index';
+import { IRegistration, ILogin, IAuthToken } from 'types';
 import { updateCollection } from './userSlice';
 
 enum Status {

@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 
-import { initYouTubeVideos } from '../utils/YoutubeHelper';
+import { initYouTubeVideos } from 'utils/YoutubeHelper';
 
-import '../styles/YoutubeEmbed.css';
+import 'styles/YoutubeEmbed.css';
 interface YoutubeEmbedProps {
   embedId: string;
 }

@@ -2,9 +2,9 @@ import { Request, Response, NextFunction } from 'express';
 import { HydratedDocument } from 'mongoose';
 import jwt from 'jsonwebtoken';
 
-import db from '../db';
-import { jwtSecretKey } from '../config/authConfig';
-import { IRoleDoc } from '../db/Role';
+import db from 'db';
+import { jwtSecretKey } from 'config/authConfig';
+import { IRoleDoc } from 'db/Role';
 
 const User = db.user;
 const Role = db.role;

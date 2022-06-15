@@ -1,4 +1,3 @@
-import webpack from 'webpack';
 import { merge } from 'webpack-merge';
 import Dotenv from 'dotenv-webpack';
 import common from './webpack.common';
@@ -14,7 +13,7 @@ const client = merge(common, {
 });
 
 const server = merge(common, {
-  // dev server configs
+  // prod server configs
 });
 
 const config = { ...client, ...server };

@@ -3,10 +3,10 @@ import { Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuid } from 'uuid';
 
-import { deleteCollectionItem } from '../store/userSlice';
-import { createAlert } from '../store/alertSlice';
-import { useAppDispatch } from '../hooks';
-import { IUserCollectionItemDoc } from '../db/UserCollectionItem';
+import { deleteCollectionItem } from 'store/userSlice';
+import { createAlert } from 'store/alertSlice';
+import { useAppDispatch } from 'hooks';
+import { IUserCollectionItemDoc } from 'db/UserCollectionItem';
 
 interface DeleteCollectionItemButtonProps {
   idDrink: string;

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-import { login } from '../../store/authSlice';
-import { useAppDispatch } from '../../hooks';
-import { useInput } from '../../hooks/useInput';
-import { validateFields } from '../../validation';
+import { login } from 'store/authSlice';
+import { useAppDispatch } from 'hooks';
+import { useInput } from 'hooks/useInput';
+import { validateFields } from 'validation';
 
 import './LoginForm.css';
 

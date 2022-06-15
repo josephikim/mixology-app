@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Alert, Button } from 'react-bootstrap';
 
-import { useAppDispatch } from '../hooks';
-import { deleteAlert, IAlert } from '../store/alertSlice';
+import { useAppDispatch } from 'hooks';
+import { deleteAlert, IAlert } from 'store/alertSlice';
 
-import '../styles/CustomAlert.css';
+import 'styles/CustomAlert.css';
 interface CustomAlertProps {
   data: IAlert;
 }

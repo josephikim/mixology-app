@@ -17,14 +17,9 @@
 }
 
 .SearchResultItem img {
-  max-width: 85px;
-  max-height: 85px;
+  max-width: 96px;
+  max-height: 96px;
   border: 1px solid #bebebe;
-}
-
-.SearchResultItem button {
-  min-width: 150px;
-  float: right;
 }
 
 .SearchResultItem .search-result-item-cell {
@@ -33,7 +28,7 @@
 
 .SearchResultItem .search-result-item-item {
   display: flex;
-  height: 85px;
+  height: 100px;
   align-items: center;
   justify-content: center;
 }

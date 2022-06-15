@@ -40,7 +40,8 @@ const Collection: React.FC = () => {
             {isCollectionEmpty ? (
               <ContentWrapper>
                 <div>
-                  Add drinks to your collection from the <Link to="/drinks">Drinks page</Link>.
+                  Add drinks to your collection from the <Link to="/drinks">Drinks page</Link> or by searching for a
+                  drink in the search bar.
                 </div>
               </ContentWrapper>
             ) : isBaseRoute ? (

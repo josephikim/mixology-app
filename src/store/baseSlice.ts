@@ -41,11 +41,26 @@ export const getRandomDrink = createAsyncThunk('base/getRandomDrink', async (): 
   return result;
 });
 
-export const getDrink = createAsyncThunk('base/getDrink', async (idDrink: string): Promise<IDrinkDoc> => {
+export const getDrink = createAsyncThunk<
+  IDrinkDoc,
+  string,
+  {
+    rejectValue: ApiAccessError | string;
+  }
+>('base/getDrink', async (idDrink, { rejectWithValue }) => {
   const api = new UserApi();
-  const result = await api.getDrink(idDrink);
 
-  return result;
+  try {
+    const response = await api.getDrink(idDrink);
+
+    if (response && response.idDrink) {
+      return response;
+    } else {
+      return rejectWithValue('No result available');
+    }
+  } catch (err) {
+    return rejectWithValue(err);
+  }
 });
 
 export const getDrinks = createAsyncThunk('base/getDrinks', async (): Promise<IDrinkDoc[]> => {
@@ -61,7 +76,7 @@ export const getDrinkWithVideos = createAsyncThunk<
   {
     rejectValue: ApiAccessError;
   }
->('user/getDrinkWithVideos', async (idDrink, { rejectWithValue }) => {
+>('base/getDrinkWithVideos', async (idDrink, { rejectWithValue }) => {
   const api = new UserApi();
 
   try {

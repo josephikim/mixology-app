@@ -10,6 +10,13 @@
   overflow-x: hidden;
 }
 
+.Drink > .container.full-width {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  overflow-x: hidden;
+}
+
 .Drink .drink-cell {
   background-color: #fff;
 }

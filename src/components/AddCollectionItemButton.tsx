@@ -11,7 +11,7 @@ interface AddCollectionItemButtonProps {
 }
 
 const AddCollectionItemButton: React.FC<AddCollectionItemButtonProps> = ({ idDrink }) => {
-  if (!idDrink || idDrink == undefined) return null;
+  if (!idDrink) return null;
 
   const dispatch = useAppDispatch();
 

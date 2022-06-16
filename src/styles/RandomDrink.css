@@ -1,22 +1,33 @@
 .RandomDrink img {
-  max-width: 250px;
-  margin-bottom: 1rem;
+  max-width: 225px;
+  margin-bottom: 2rem;
 }
 
-.RandomDrink > .row {
-  margin-bottom: 1rem;
-}
-
-.RandomDrink > .row .flex-container {
+.RandomDrink .flex-container {
   display: flex;
-  min-height: 36px;
+  align-items: center;
+  margin-bottom: 1rem;
 }
 
-.RandomDrink > .row .flex-container h6 {
+.RandomDrink .flex-container.content-heading h4 {
+  margin-bottom: 0.5rem;
+}
+
+.RandomDrink .flex-container.content-heading a {
+  text-decoration: none;
+}
+
+.RandomDrink .flex-container h4,
+.RandomDrink .flex-container h5 {
   margin-bottom: 0;
 }
 
-.RandomDrink > .row .flex-container .flex-container-btn {
-  font-size: 0.8rem;
+.RandomDrink .heading-container .btn {
+  font-size: 0.9rem;
   float: right;
+}
+
+.RandomDrink .cont-container h4,
+.RandomDrink .cont-container h5 {
+  font-family: 'Gill Sans', sans-serif;
 }

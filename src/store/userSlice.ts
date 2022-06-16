@@ -147,9 +147,8 @@ export const userSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getSearchResults.fulfilled, (state: UserState, action) => {
-        const results = action.payload;
         state.status = 'succeeded';
-        state.searchResults = results;
+        state.searchResults = action.payload;
         state.searchPayload = action.meta.arg;
       })
       .addCase(getSearchResults.rejected, (state, action) => {
@@ -201,11 +200,12 @@ export const userSlice = createSlice({
       })
       .addCase(saveNotes.fulfilled, (state: UserState, action) => {
         if (state.collection) {
-          state.collection = state.collection.map((item) =>
+          const newItem = state.collection.map((item) =>
             item.idDrink === action.payload.idDrink
               ? ({ ...item, notes: action.payload.notes } as IUserCollectionItemDoc)
               : item
           );
+          state.collection = [...state.collection, ...newItem];
         }
         state.status = 'succeeded';
       })

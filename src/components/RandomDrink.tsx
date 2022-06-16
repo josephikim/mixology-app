@@ -27,9 +27,12 @@ const RandomDrink: React.FC = () => {
       return (
         <>
           <Row>
-            <Col>
-              <h4>{drink.strDrink}</h4>
-            </Col>
+            <div className="flex-container content-heading">
+              <Col>
+                <h4>{drink.strDrink}</h4>
+                <a href={`/drink/${drink.idDrink}`}>view details</a>
+              </Col>
+            </div>
           </Row>
 
           <Row>
@@ -83,17 +86,21 @@ const RandomDrink: React.FC = () => {
           <h5>Ingredients</h5>
 
           <Row>
-            <Col>
-              <DrinkIngredients data={drink} />
-            </Col>
+            <div className="flex-container">
+              <Col>
+                <DrinkIngredients data={drink} />
+              </Col>
+            </div>
           </Row>
 
           <h5>Instructions</h5>
 
           <Row>
-            <Col>
-              <DrinkInstructions text={drink.strInstructions as string} />
-            </Col>
+            <div className="flex-container">
+              <Col>
+                <DrinkInstructions text={drink.strInstructions as string} />
+              </Col>
+            </div>
           </Row>
         </>
       );
@@ -110,19 +117,21 @@ const RandomDrink: React.FC = () => {
 
   return (
     <div className="RandomDrink">
-      <Row>
+      <Row className="heading-container">
         <div className="flex-container">
           <Col>
-            <h5>Random Drink</h5>
+            <h5>Featured Drink</h5>
           </Col>
           <Col>
-            <Button onClick={handleClick} className="flex-container-btn" variant="primary">
+            <Button onClick={handleClick} variant="primary">
               Randomize
             </Button>
           </Col>
         </div>
       </Row>
-      {renderContent()}
+      <Row className="cont-container">
+        <Col>{renderContent()}</Col>
+      </Row>
     </div>
   );
 };

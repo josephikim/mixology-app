@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from './hooks';
 import { logoutAction } from './store';
@@ -19,6 +19,15 @@ import CustomAlert from './components/CustomAlert';
 import './styles/App.css';
 
 const App: React.FC = () => {
+  type LocationProps = {
+    pathname: string;
+    state: {
+      nextPathname: string;
+    };
+  };
+
+  const location = useLocation() as unknown as LocationProps;
+  const nextPathname = location.state?.nextPathname;
   const dispatch = useAppDispatch();
   const authToken = useAppSelector((state) => state.auth.accessToken);
   const userId = useAppSelector((state) => state.auth.userId);
@@ -83,8 +92,14 @@ const App: React.FC = () => {
         <Route path="/search/:type/:query" element={<SearchResults />} />
         <Route path="/drink/:id" element={<Drink />} />
         <Route path="/drinks" element={<Drinks />} />
-        <Route path="login" element={authToken ? <Navigate to="/" replace /> : <Login />} />
-        <Route path="register" element={authToken ? <Navigate to="/" replace /> : <Registration />} />
+        <Route
+          path="login"
+          element={authToken ? <Navigate to={nextPathname ? nextPathname : '/'} replace /> : <Login />}
+        />
+        <Route
+          path="register"
+          element={authToken ? <Navigate to={nextPathname ? nextPathname : '/'} replace /> : <Registration />}
+        />
         <Route path="/" element={<Home />} />
       </Routes>
     </div>

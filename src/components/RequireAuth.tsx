@@ -1,5 +1,5 @@
 import React from 'react';
-import { Navigate } from 'react-router-dom';
+import { useLocation, Navigate } from 'react-router-dom';
 
 import { useAppSelector } from 'hooks';
 
@@ -10,8 +10,13 @@ interface RequireAuthProps {
 
 const RequireAuth: React.FC<RequireAuthProps> = ({ children, redirectTo }) => {
   const authToken = useAppSelector((state) => state.auth.accessToken);
+  const location = useLocation();
 
-  return authToken ? <div>{children}</div> : <Navigate to={redirectTo} replace />;
+  const locationState = {
+    nextPathname: location.pathname
+  };
+
+  return authToken ? <div>{children}</div> : <Navigate to={redirectTo} state={locationState} replace />;
 };
 
 export default RequireAuth;

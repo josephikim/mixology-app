@@ -53,7 +53,7 @@ export const getDrink = createAsyncThunk<
   try {
     const response = await api.getDrink(idDrink);
 
-    if (response && response.idDrink) {
+    if (response?.idDrink) {
       return response;
     } else {
       return rejectWithValue('No result available');

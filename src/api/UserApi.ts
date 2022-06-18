@@ -57,7 +57,7 @@ userApiClient.interceptors.response.use(
 
           return userApiClient(originalConfig);
         } catch (_error) {
-          if (_error.response && _error.response.data) {
+          if (_error.response?.data) {
             return Promise.reject(_error.response.data);
           }
 

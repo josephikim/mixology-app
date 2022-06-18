@@ -13,7 +13,7 @@ const RandomDrink: React.FC = () => {
   const dispatch = useAppDispatch();
   const drink = useAppSelector((state) => state.base.randomDrink);
 
-  const isDrinkLoaded = drink && drink.idDrink;
+  const isDrinkLoaded = !!drink?.idDrink;
 
   const drinkIncludesCategory = drink.strCategory && drink.strCategory.length > 0;
   const drinkIncludesTags = drink.strTags && drink.strTags.length > 0;

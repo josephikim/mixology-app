@@ -45,7 +45,7 @@ const RandomDrink: React.FC = () => {
             <Row>
               <div className="flex-container">
                 <Col md={7}>
-                  <h5>Category</h5>
+                  <h6>Category</h6>
                 </Col>
                 <Col md={5}>{drink.strCategory ? <Badge bg="success">{drink.strCategory}</Badge> : null}</Col>
               </div>
@@ -55,7 +55,7 @@ const RandomDrink: React.FC = () => {
           <Row>
             <div className="flex-container">
               <Col md={7}>
-                <h5>Alcohol Content</h5>
+                <h6>Alcohol Content</h6>
               </Col>
               <Col md={5}>{drink.strAlcoholic ? <Badge bg="success">{drink.strAlcoholic}</Badge> : null}</Col>
             </div>
@@ -65,7 +65,7 @@ const RandomDrink: React.FC = () => {
             <Row>
               <div className="flex-container">
                 <Col md={7}>
-                  <h5>IBA Tags</h5>
+                  <h6>IBA Tags</h6>
                 </Col>
                 <Col md={5}>
                   <DrinkTags tags={drink.strTags as string} />
@@ -77,13 +77,13 @@ const RandomDrink: React.FC = () => {
           <Row>
             <div className="flex-container">
               <Col md={7}>
-                <h5>Serving Glass</h5>
+                <h6>Serving Glass</h6>
               </Col>
               <Col md={5}>{drink.strGlass}</Col>
             </div>
           </Row>
 
-          <h5>Ingredients</h5>
+          <h6>Ingredients</h6>
 
           <Row>
             <div className="flex-container">
@@ -93,7 +93,7 @@ const RandomDrink: React.FC = () => {
             </div>
           </Row>
 
-          <h5>Instructions</h5>
+          <h6>Instructions</h6>
 
           <Row>
             <div className="flex-container">

@@ -6,6 +6,7 @@
 .RandomDrink .flex-container {
   display: flex;
   margin-bottom: 1rem;
+  align-items: center;
 }
 
 .RandomDrink .flex-container.content-heading h4 {
@@ -17,7 +18,7 @@
 }
 
 .RandomDrink .flex-container h4,
-.RandomDrink .flex-container h5 {
+.RandomDrink .flex-container h6 {
   margin-bottom: 0;
 }
 
@@ -27,6 +28,6 @@
 }
 
 .RandomDrink .cont-container h4,
-.RandomDrink .cont-container h5 {
+.RandomDrink .cont-container h6 {
   font-family: 'Gill Sans', sans-serif;
 }

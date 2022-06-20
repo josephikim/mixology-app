@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import { UserApi } from 'api/index';
 import { IDrinkDoc } from 'db/Drink';
 import { IUserCollectionItemDoc } from 'db/UserCollectionItem';
-import { ApiAccessError } from 'types';
+import { ApiError } from 'types';
 
 enum Status {
   idle = 'IDLE',
@@ -49,7 +49,7 @@ export const getSearchResults = createAsyncThunk<
   IDrinkDoc[],
   SearchPayload,
   {
-    rejectValue: ApiAccessError;
+    rejectValue: ApiError;
   }
 >('user/getSearchResults', async (payload, { rejectWithValue }) => {
   const api = new UserApi();
@@ -67,7 +67,7 @@ export const addCollectionItem = createAsyncThunk<
   IUserCollectionItemDoc,
   AddCollectionItemPayload,
   {
-    rejectValue: ApiAccessError;
+    rejectValue: ApiError;
   }
 >('user/addCollectionItem', async (payload, { rejectWithValue }) => {
   const api = new UserApi();
@@ -84,7 +84,7 @@ export const deleteCollectionItem = createAsyncThunk<
   IUserCollectionItemDoc,
   string,
   {
-    rejectValue: ApiAccessError;
+    rejectValue: ApiError;
   }
 >('user/deleteCollectionItem', async (idDrink, { rejectWithValue }) => {
   const api = new UserApi();
@@ -101,7 +101,7 @@ export const setRating = createAsyncThunk<
   IUserCollectionItemDoc,
   RatingPayload,
   {
-    rejectValue: ApiAccessError;
+    rejectValue: ApiError;
   }
 >('user/setRating', async (payload, { rejectWithValue }) => {
   const api = new UserApi();
@@ -119,7 +119,7 @@ export const saveNotes = createAsyncThunk<
   IUserCollectionItemDoc,
   NotesPayload,
   {
-    rejectValue: ApiAccessError;
+    rejectValue: ApiError;
   }
 >('user/saveNotes', async (payload, { rejectWithValue }) => {
   const api = new UserApi();

@@ -3,7 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { UserApi } from 'api/index';
 import { IDrinkDoc } from 'db/Drink';
 import { IKeywordDoc } from 'db/Keyword';
-import { ApiAccessError } from 'types';
+import { ApiError } from 'types';
 
 enum Status {
   idle = 'IDLE',
@@ -45,7 +45,7 @@ export const getDrink = createAsyncThunk<
   IDrinkDoc,
   string,
   {
-    rejectValue: ApiAccessError | string;
+    rejectValue: ApiError | string;
   }
 >('base/getDrink', async (idDrink, { rejectWithValue }) => {
   const api = new UserApi();
@@ -74,7 +74,7 @@ export const getDrinkWithVideos = createAsyncThunk<
   IDrinkDoc,
   string,
   {
-    rejectValue: ApiAccessError;
+    rejectValue: ApiError;
   }
 >('base/getDrinkWithVideos', async (idDrink, { rejectWithValue }) => {
   const api = new UserApi();

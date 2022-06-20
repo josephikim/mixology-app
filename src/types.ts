@@ -8,17 +8,17 @@ declare module 'express-serve-static-core' {
 }
 
 // API types
+export type ApiError = {
+  type: string;
+  message: string;
+};
+
 export type YoutubeVideo = {
   id?: string;
   title?: string;
   channelTitle?: string;
   description?: string;
   publishedAt?: string;
-};
-
-export type ApiAccessError = {
-  type: string;
-  message: string;
 };
 
 export interface IAuthToken {

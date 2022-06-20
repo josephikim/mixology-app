@@ -1,22 +1,22 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
 
-import { useAppSelector, useAppDispatch } from 'hooks';
-import { register } from 'store/authSlice';
+import { useAppDispatch } from 'hooks';
 import { useInput } from 'hooks/useInput';
+import { register } from 'store/authSlice';
 import { validateFields } from 'validation';
+import { ApiError } from 'types';
 
 import './RegistrationForm.css';
 
 const RegistrationForm: React.FC = () => {
   const dispatch = useAppDispatch();
-  const authStatus = useAppSelector((state) => state.auth.status);
 
   const { value: username, bind: bindUsername } = useInput('');
   const { value: password, bind: bindPassword } = useInput('');
   const { value: passwordConfirm, bind: bindPasswordConfirm } = useInput('');
 
-  const handleSubmit = (event: React.MouseEvent): void => {
+  const handleSubmit = async (event: React.MouseEvent): Promise<void> => {
     event.preventDefault();
     const usernameError = validateFields.validateUsername(username);
     const passwordError = validateFields.validatePassword(password);
@@ -29,8 +29,17 @@ const RegistrationForm: React.FC = () => {
 
     if (validationErrors.length < 1) {
       // no input errors, submit the form
-      if (authStatus === 'idle') {
-        dispatch(register({ username, password }));
+      const resultAction = await dispatch(register({ username, password }));
+
+      if (resultAction.type === 'auth/register/rejected') {
+        const error = resultAction.payload as ApiError;
+
+        if (error.type) {
+          alert(error.message);
+        } else {
+          // error is from global handler
+          alert(`Error registering user: ${error.message}`);
+        }
       }
     } else {
       // alert user of input errors
@@ -65,7 +74,12 @@ const RegistrationForm: React.FC = () => {
         <Form.Control type="password" name="passwordConfirm" placeholder="Confirm password" {...bindPasswordConfirm} />
       </Form.Group>
 
-      <Button type="submit" name="registration-form-btn" variant="primary" onClick={(e): void => handleSubmit(e)}>
+      <Button
+        type="submit"
+        name="registration-form-btn"
+        variant="primary"
+        onClick={(e): Promise<void> => handleSubmit(e)}
+      >
         Register
       </Button>
       <div>

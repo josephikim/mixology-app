@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from '@reduxjs/toolkit';
 
+import { AppDispatch } from '.';
 import { AuthApi } from 'api/index';
-import { IRegistration, ILogin, IAuthToken } from 'types';
 import { updateCollection } from './userSlice';
+import { IRegistration, ILogin, IAuthToken, ApiError } from 'types';
 
 enum Status {
   idle = 'IDLE',
@@ -25,19 +26,30 @@ export const initialState: AuthState = {
   status: 'idle'
 };
 
-export const register = createAsyncThunk(
-  'auth/register',
-  async ({ username, password }: IRegistration, { dispatch }): Promise<IAuthToken> => {
-    const api = new AuthApi();
-    const res = await api.registerUser({ username, password });
+export const register = createAsyncThunk<
+  IAuthToken,
+  IRegistration,
+  {
+    dispatch: AppDispatch;
+    rejectValue: ApiError;
+  }
+>('auth/register', async ({ username, password }: IRegistration, { dispatch, rejectWithValue }) => {
+  const api = new AuthApi();
 
-    const { token, collection } = res;
+  try {
+    const response = await api.registerUser({ username, password });
+    const { token, collection } = response;
 
     dispatch(updateCollection(collection));
 
     return token;
+  } catch (err) {
+    if (err.response?.data) {
+      return rejectWithValue(err.response.data);
+    }
+    return rejectWithValue(err);
   }
-);
+});
 
 export const login = createAsyncThunk(
   'auth/login',

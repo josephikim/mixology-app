@@ -13,8 +13,8 @@ interface YoutubeProps {
 
 const Youtube: React.FC<YoutubeProps> = ({ idDrink, videos }) => {
   const dispatch = useAppDispatch();
-  const isDrinkMissingVideos = idDrink && (!videos || !videos.length);
   const style = { marginTop: '1.5rem', marginBottom: '1.5rem' };
+  const isDrinkMissingVideos = idDrink && (!videos || !videos.length);
 
   if (isDrinkMissingVideos) {
     dispatch(getDrinkWithVideos(idDrink));

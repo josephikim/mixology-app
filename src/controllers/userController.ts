@@ -430,7 +430,7 @@ const getDrinkWithVideos = async (req: Request, res: Response, next: NextFunctio
 const getVideos = async (query: string) => {
   const url = `${process.env.YOUTUBE_API_URL}/search?key=${
     process.env.YOUTUBE_API_KEY
-  }&type=video&part=snippet&q=${encodeURIComponent(query).replace(/%20/g, '+')}+recipe&maxResults=5`;
+  }&type=video&part=snippet&q=${encodeURIComponent(query).replace(/%20/g, '+')}+cocktail+recipe&maxResults=5`;
 
   // Call Youtube API with search query
   const response = await axios.get(url);

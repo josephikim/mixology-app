@@ -3,19 +3,10 @@
   padding-bottom: 2rem;
 }
 
-.Drinks .DrinksWrapper {
+.Drinks .drinks-wrapper {
   padding: 2rem 3rem;
   background-color: #fff;
   border-right: 1px solid #dadce0;
   border-bottom: 1px solid #dadce0;
   overflow-x: hidden;
-}
-
-.Drinks strong {
-  display: block;
-  margin-bottom: 0.7rem;
-}
-
-.Drinks a {
-  display: block;
 }

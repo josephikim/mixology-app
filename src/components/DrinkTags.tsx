@@ -1,19 +1,21 @@
 import React from 'react';
 import { Badge } from 'react-bootstrap';
 
+import 'styles/DrinkTags.css';
 interface DrinkTagsProps {
   tags: string;
 }
 
 const DrinkTags: React.FC<DrinkTagsProps> = ({ tags }) => {
+  if (!tags || tags == undefined) return null;
+
   const tagsArr = tags.split(/[, ]+/).filter((element) => element);
-  const style = { marginRight: '.7rem', marginBottom: '.7rem' };
 
   return (
     <div className="DrinkTags">
       {tagsArr.map((tag, index) => {
         return (
-          <Badge bg="success" key={index} style={style}>
+          <Badge bg="secondary" key={index}>
             {tag}
           </Badge>
         );

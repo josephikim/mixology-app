@@ -47,7 +47,7 @@ const RandomDrink: React.FC = () => {
                 <Col md={7}>
                   <h6>Category</h6>
                 </Col>
-                <Col md={5}>{drink.strCategory ? <Badge bg="success">{drink.strCategory}</Badge> : null}</Col>
+                <Col md={5}>{drink.strCategory ? <Badge bg="primary">{drink.strCategory}</Badge> : null}</Col>
               </div>
             </Row>
           ) : null}

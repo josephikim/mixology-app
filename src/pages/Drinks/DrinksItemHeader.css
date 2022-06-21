@@ -1,0 +1,12 @@
+.DrinksItemHeader {
+  position: relative;
+  display: grid;
+  margin: 0 auto;
+  margin-bottom: 1rem;
+  background-color: #fff;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.DrinksItemHeader .DrinksItemHeader-cell {
+  padding: 1rem;
+}

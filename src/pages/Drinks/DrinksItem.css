@@ -1,0 +1,18 @@
+.DrinksItem {
+  position: relative;
+  display: grid;
+  margin: 0 auto;
+  margin-bottom: 0.5rem;
+  background-color: #fff;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.DrinksItem img {
+  max-width: 96px;
+  max-height: 96px;
+  border: 1px solid #bebebe;
+}
+
+.DrinksItem .drinksItem-cell {
+  padding: 1rem;
+}

@@ -1,9 +1,10 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Container } from 'react-bootstrap';
 import { cloneDeep } from 'lodash';
 
 import { useAppSelector } from 'hooks';
+import DrinksItemHeader from './DrinksItemHeader';
+import DrinksItem from './DrinksItem';
 
 import './Drinks.css';
 
@@ -15,21 +16,11 @@ const Drinks: React.FC = () => {
   return (
     <div className="Drinks">
       <Container>
-        <div className="DrinksWrapper">
-          <Row>
-            <Col>
-              <strong>All drinks</strong>
-            </Col>
-          </Row>
-          <Row>
-            {drinksSorted.map((drink) => {
-              return (
-                <Col key={drink.idDrink} md={3}>
-                  <Link to={`/drink/${drink.idDrink}`}>{drink.strDrink}</Link>
-                </Col>
-              );
-            })}
-          </Row>
+        <div className="drinks-wrapper">
+          <DrinksItemHeader />
+          {drinksSorted.map((drink) => {
+            return <DrinksItem key={drink.idDrink} drink={drink} />;
+          })}
         </div>
       </Container>
     </div>

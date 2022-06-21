@@ -33,7 +33,7 @@ export const register = createAsyncThunk<
     dispatch: AppDispatch;
     rejectValue: ApiError;
   }
->('auth/register', async ({ username, password }: IRegistration, { dispatch, rejectWithValue }) => {
+>('auth/register', async ({ username, password }, { dispatch, rejectWithValue }) => {
   const api = new AuthApi();
 
   try {
@@ -51,18 +51,30 @@ export const register = createAsyncThunk<
   }
 });
 
-export const login = createAsyncThunk(
-  'auth/login',
-  async ({ username, password }: ILogin, { dispatch }): Promise<IAuthToken> => {
-    const api = new AuthApi();
-    const res = await api.loginUser({ username, password });
-    const { token, collection } = res;
+export const login = createAsyncThunk<
+  IAuthToken,
+  ILogin,
+  {
+    dispatch: AppDispatch;
+    rejectValue: ApiError;
+  }
+>('auth/login', async ({ username, password }, { dispatch, rejectWithValue }) => {
+  const api = new AuthApi();
+
+  try {
+    const response = await api.loginUser({ username, password });
+    const { token, collection } = response;
 
     dispatch(updateCollection(collection));
 
     return token;
+  } catch (err) {
+    if (err.response?.data) {
+      return rejectWithValue(err.response.data);
+    }
+    return rejectWithValue(err);
   }
-);
+});
 
 export const authSlice = createSlice({
   name: 'auth',

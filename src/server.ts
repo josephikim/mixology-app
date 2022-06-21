@@ -32,7 +32,7 @@ app.get('*', (req: express.Request, res: express.Response) => {
 // Global error handler
 app.use(function (err: any, req: Request, res: Response, next: NextFunction) {
   const error = {
-    name: err.name,
+    type: err.name,
     message: err.message
   };
 

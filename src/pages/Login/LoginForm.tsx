@@ -5,6 +5,7 @@ import { login } from 'store/authSlice';
 import { useAppDispatch } from 'hooks';
 import { useInput } from 'hooks/useInput';
 import { validateFields } from 'validation';
+import { ApiError } from 'types';
 
 import './LoginForm.css';
 
@@ -14,7 +15,7 @@ const LoginForm: React.FC = () => {
   const { value: username, bind: bindUsername } = useInput('');
   const { value: password, bind: bindPassword } = useInput('');
 
-  const handleSubmit = (event: React.MouseEvent): void => {
+  const handleSubmit = async (event: React.MouseEvent): Promise<void> => {
     event.preventDefault();
     const usernameError = validateFields.validateUsername(username);
     const passwordError = validateFields.validatePassword(password);
@@ -25,7 +26,13 @@ const LoginForm: React.FC = () => {
 
     if (validationErrors.length === 0) {
       // no input errors, submit the form
-      dispatch(login({ username, password }));
+      const resultAction = await dispatch(login({ username, password }));
+
+      if (resultAction.type === 'auth/login/rejected') {
+        const error = resultAction.payload as ApiError;
+
+        alert(`Error logging in: ${error.message}`);
+      }
     } else {
       // alert user of input errors
       let errorMsg = '';
@@ -54,7 +61,7 @@ const LoginForm: React.FC = () => {
         <Form.Control type="password" name="password" placeholder="Enter password" {...bindPassword} />
       </Form.Group>
 
-      <Button type="submit" name="login-form-btn" variant="primary" onClick={(e): void => handleSubmit(e)}>
+      <Button type="submit" name="login-form-btn" variant="primary" onClick={(e): Promise<void> => handleSubmit(e)}>
         Login
       </Button>
     </Form>

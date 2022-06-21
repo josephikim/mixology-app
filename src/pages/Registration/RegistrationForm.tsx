@@ -34,12 +34,7 @@ const RegistrationForm: React.FC = () => {
       if (resultAction.type === 'auth/register/rejected') {
         const error = resultAction.payload as ApiError;
 
-        if (error.type) {
-          alert(error.message);
-        } else {
-          // error is from global handler
-          alert(`Error registering user: ${error.message}`);
-        }
+        alert(`Error registering user: ${error.message}`);
       }
     } else {
       // alert user of input errors

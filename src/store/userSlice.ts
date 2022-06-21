@@ -74,6 +74,7 @@ export const addCollectionItem = createAsyncThunk<
 
   try {
     const response = await api.addCollectionItem(payload);
+
     return response;
   } catch (err) {
     return rejectWithValue(err);
@@ -126,6 +127,7 @@ export const saveNotes = createAsyncThunk<
 
   try {
     const response = await api.saveNotes(payload);
+
     return response;
   } catch (err) {
     return rejectWithValue(err);
@@ -155,7 +157,7 @@ export const userSlice = createSlice({
         state.status = 'failed';
         state.error = action.error.message;
         state.searchPayload = action.meta.arg;
-        if (action.payload) {
+        if (action.payload?.type) {
           state.errorType = action.payload.type;
         }
       })
@@ -171,7 +173,7 @@ export const userSlice = createSlice({
       .addCase(addCollectionItem.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-        if (action.payload) {
+        if (action.payload?.type) {
           state.errorType = action.payload.type;
         }
       })
@@ -191,7 +193,7 @@ export const userSlice = createSlice({
       .addCase(setRating.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-        if (action.payload) {
+        if (action.payload?.type) {
           state.errorType = action.payload.type;
         }
       })
@@ -212,7 +214,7 @@ export const userSlice = createSlice({
       .addCase(saveNotes.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-        if (action.payload) {
+        if (action.payload?.type) {
           state.errorType = action.payload.type;
         }
       })
@@ -228,7 +230,7 @@ export const userSlice = createSlice({
       .addCase(deleteCollectionItem.rejected, (state, action) => {
         state.status = 'failed';
         state.error = action.error.message;
-        if (action.payload) {
+        if (action.payload?.type) {
           state.errorType = action.payload.type;
         }
       });

@@ -81,6 +81,7 @@ export const getDrinkWithVideos = createAsyncThunk<
 
   try {
     const response = await api.getDrinkWithVideos(idDrink);
+
     return response;
   } catch (err) {
     return rejectWithValue(err);

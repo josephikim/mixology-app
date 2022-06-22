@@ -1,0 +1,21 @@
+.Slideshow {
+  /*box-shadow*/
+  -webkit-box-shadow: rgba(0, 0, 0, 0.3) 0px 0 8px;
+  -moz-box-shadow: rgba(0, 0, 0, 0.3) 0 0 8px;
+  box-shadow: rgba(0, 0, 0, 0.3) 0 0 8px;
+}
+
+.Slideshow .each-slide > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-size: contain;
+  height: 350px;
+}
+
+/* .Slideshow .each-slide span {
+  padding: 20px;
+  font-size: 20px;
+  background: #efefef;
+  text-align: center;
+} */

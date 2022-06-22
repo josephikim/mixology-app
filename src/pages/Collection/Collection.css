@@ -12,6 +12,7 @@
 }
 
 .Collection .collection-cell {
+  min-height: 800px;
   padding: 1rem;
   background-color: #fff;
   border-right: 1px solid #dadce0;

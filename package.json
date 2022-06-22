@@ -50,6 +50,7 @@
     "node-dev": "^7.0.0",
     "npm-run-all": "^4.1.5",
     "react-bootstrap": "^2.2.3",
+    "react-slideshow-image": "^3.7.5",
     "style-loader": "^2.0.0",
     "svg-url-loader": "^6.0.0",
     "typescript": "^4.4.4",

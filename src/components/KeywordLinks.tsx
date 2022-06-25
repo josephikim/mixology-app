@@ -21,11 +21,22 @@ const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
     .filter((keyword) => keyword.type === type)
     .sort((a, b) => a.value.localeCompare(b.value)) as IKeywordDoc[];
 
+  const displayHeading = (type: string) => {
+    let result = type;
+
+    if (type === 'ingredient') result = 'Ingredients';
+    if (type === 'category') result = 'Categories';
+    if (type === 'alcohol') result = 'Alcohol Content';
+    if (type === 'glass') result = 'Serving Glass';
+
+    return result;
+  };
+
   return (
     <div className="KeywordLinks">
       <Row>
         <Col>
-          <h5>Search by {type}</h5>
+          <h5>{displayHeading(type)}</h5>
         </Col>
       </Row>
 

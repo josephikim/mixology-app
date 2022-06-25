@@ -21,7 +21,7 @@ const client = merge(common, {
       filename: 'index.html'
     }),
     new Dotenv({
-      path: '.env.development'
+      path: '.env.production'
     })
   ]
 });

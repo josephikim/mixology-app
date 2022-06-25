@@ -12,8 +12,7 @@ const client = merge(common, {
   target: 'web',
   output: {
     path: path.resolve('./dist'),
-    filename: 'bundle.js',
-    publicPath: '/'
+    filename: 'bundle.js'
   },
   plugins: [
     new HtmlWebpackPlugin({

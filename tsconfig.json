@@ -15,6 +15,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "useUnknownInCatchVariables": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["node"]
   }
 }

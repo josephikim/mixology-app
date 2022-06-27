@@ -5,7 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node ./dist/server.cjs",
+    "start": "node dist/server.cjs",
     "build": "rm -rf dist && npm-run-all build:server build:client",
     "build:server": "webpack --mode=production --config webpack.production.js --config-name server",
     "build:client": "webpack --mode=production --config webpack.production.js --config-name client",

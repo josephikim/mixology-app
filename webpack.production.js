@@ -10,9 +10,11 @@ const client = merge(common, {
   name: 'client',
   entry: './src/index.tsx',
   target: 'web',
+  devtool: 'source-map',
   output: {
     path: path.resolve('./dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: './'
   },
   plugins: [
     new HtmlWebpackPlugin({

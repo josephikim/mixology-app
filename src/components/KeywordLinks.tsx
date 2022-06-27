@@ -12,9 +12,9 @@ interface KeywordLinksProps {
 }
 
 const KeywordLinks: React.FC<KeywordLinksProps> = ({ type }) => {
-  const keywords = useAppSelector((state) => state.base.keywords);
+  const keywords = useAppSelector((state) => state.base.keywords) as IKeywordDoc[];
 
-  if (!keywords.length) return null;
+  if (!keywords || !keywords.length) return null;
 
   // filter keywords by type and sort alphabetically
   const keywordsByType = keywords

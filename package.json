@@ -58,9 +58,7 @@
     "svg-url-loader": "^6.0.0",
     "typescript": "^4.4.4",
     "validator": "^13.7.0",
-    "webpack-cli": "^4.9.1",
-    "webpack-dev-server": "^3.11.1",
-    "webpack-merge": "^5.8.0"
+    "webpack-dev-server": "^3.11.1"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.15.8",
@@ -95,6 +93,8 @@
     "redux-logger": "^3.0.6",
     "uuid": "^8.3.2",
     "webpack": "^4.46.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-merge": "^5.8.0",
     "webpack-node-externals": "^3.0.0"
   },
   "husky": {

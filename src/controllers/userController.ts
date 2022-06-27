@@ -107,7 +107,7 @@ const getRandomDrink = async (req: Request, res: Response, next: NextFunction): 
 
         const newDrink = new Drink(response.data.drinks[0]);
 
-        newDrink.save((err, doc) => {
+        newDrink.save((err: any, doc: IDrinkDoc) => {
           if (err) {
             return next(err);
           }
@@ -150,7 +150,7 @@ const getDrink = async (req: Request, res: Response, next: NextFunction): Promis
 
           newDrink.youtubeVideos = videosResult;
 
-          newDrink.save((err, doc) => {
+          newDrink.save((err: any, doc: IDrinkDoc) => {
             if (err) {
               return next(err);
             }
@@ -246,7 +246,7 @@ const addCollectionItem = async (req: Request, res: Response, next: NextFunction
 
         const newItem = new UserCollectionItem(data);
 
-        newItem.save((err, doc) => {
+        newItem.save((err: any, doc: IDrinkDoc) => {
           if (err) {
             return next(err);
           }

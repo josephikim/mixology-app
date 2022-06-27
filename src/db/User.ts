@@ -32,12 +32,6 @@ const userSchema = new Schema({
   ]
 });
 
-// preserving isNew state for 'post' middleware
-userSchema.pre('save', function (next) {
-  this.wasNew = this.isNew;
-  next();
-});
-
 // schema middleware to apply before saving
 userSchema.pre('save', async function (next) {
   // only hash the password if it has been modified (or is new)

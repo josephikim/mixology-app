@@ -1,5 +1,6 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
 
 import { useAppSelector, useAppDispatch } from 'hooks';
 import { logoutAction } from 'store/index';
@@ -23,17 +24,17 @@ const Header: React.FC = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
             <Nav>
-              <Nav.Link href="/">Home</Nav.Link>
-              <Nav.Link href="/drinks">Drinks</Nav.Link>
+              <NavLink to="/">Home</NavLink>
+              <NavLink to="/drinks">Drinks</NavLink>
               {authToken ? (
                 <>
-                  <Nav.Link href="/collection">Collection</Nav.Link>
+                  <NavLink to="/collection">Collection</NavLink>
                   <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                 </>
               ) : (
                 <>
-                  <Nav.Link href="/register">Register</Nav.Link>
-                  <Nav.Link href="/login">Login</Nav.Link>
+                  <NavLink to="/register">Register</NavLink>
+                  <NavLink to="/login">Login</NavLink>
                 </>
               )}
             </Nav>

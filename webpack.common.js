@@ -20,20 +20,14 @@ const common = {
         use: ['babel-loader']
       },
       {
-        test: /\.(png|svg|jpg|gif|eot|otf|ttf|woff|woff2)$/,
-        use: ['file-loader']
-      },
-      {
-        test: /\.svg$/,
-        use: [
-          {
-            loader: 'svg-url-loader',
-            options: {
-              limit: 10 * 1024,
-              noquotes: true
-            }
+        test: /\.(png|jpg|gif|eot|otf|ttf|woff|woff2)$/,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            outputPath: 'assets/images'
           }
-        ]
+        }
       }
     ]
   },

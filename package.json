@@ -17,8 +17,7 @@
     "check-types": "tsc",
     "prettier": "prettier \"src/**/*.{ts,tsx,css}\"",
     "prettier:fix": "npm run prettier -- --write",
-    "lint": "eslint '*/**/*.{js,ts,tsx}' --fix",
-    "storybook": "start-storybook"
+    "lint": "eslint '*/**/*.{js,ts,tsx}' --fix"
   },
   "keywords": [],
   "author": "",
@@ -30,8 +29,6 @@
     "@babel/preset-react": "^7.12.10",
     "@babel/preset-typescript": "^7.12.7",
     "@redux-devtools/extension": "^3.2.2",
-    "@storybook/addon-info": "^5.3.21",
-    "@storybook/react": "^5.3.21",
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.12",
     "@types/dotenv-webpack": "^7.0.3",

@@ -4,6 +4,7 @@ import axios from 'axios';
 import db from 'db';
 import { IKeywordDoc } from 'db/Keyword';
 import { IDrinkDoc } from 'db/Drink';
+import { IUserCollectionItemDoc } from 'db/UserCollectionItem';
 import { YoutubeVideo } from 'types';
 
 const Drink = db.drink;
@@ -246,7 +247,7 @@ const addCollectionItem = async (req: Request, res: Response, next: NextFunction
 
         const newItem = new UserCollectionItem(data);
 
-        newItem.save((err: any, doc: IDrinkDoc) => {
+        newItem.save((err: any, doc: IUserCollectionItemDoc) => {
           if (err) {
             return next(err);
           }

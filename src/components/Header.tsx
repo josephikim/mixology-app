@@ -24,17 +24,27 @@ const Header: React.FC = () => {
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
           <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-end">
             <Nav>
-              <NavLink to="/">Home</NavLink>
-              <NavLink to="/drinks">Drinks</NavLink>
+              <NavLink className="nav-link" to="/">
+                Home
+              </NavLink>
+              <NavLink className="nav-link" to="/drinks">
+                Drinks
+              </NavLink>
               {authToken ? (
                 <>
-                  <NavLink to="/collection">Collection</NavLink>
+                  <NavLink className="nav-link" to="/collection">
+                    Collection
+                  </NavLink>
                   <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
                 </>
               ) : (
                 <>
-                  <NavLink to="/register">Register</NavLink>
-                  <NavLink to="/login">Login</NavLink>
+                  <NavLink className="nav-link" to="/register">
+                    Register
+                  </NavLink>
+                  <NavLink className="nav-link" to="/login">
+                    Login
+                  </NavLink>
                 </>
               )}
             </Nav>

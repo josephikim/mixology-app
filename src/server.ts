@@ -4,6 +4,7 @@ import cors from 'cors';
 
 import db from './db';
 import apiRouter from './routers';
+import { basePath } from 'config/appConfig';
 
 const BUILD_DIR = __dirname;
 const HTML_FILE = path.join(BUILD_DIR, 'index.html');
@@ -25,9 +26,17 @@ app.use('/api', apiRouter);
 // serve static files
 app.use(express.static(BUILD_DIR));
 
-app.get('*', (req: express.Request, res: express.Response) => {
+const indexRouter = express.Router();
+
+indexRouter.get('/', function (req, res) {
   res.sendFile(HTML_FILE);
 });
+
+// Use API routes
+indexRouter.use('/api', apiRouter);
+
+// allow hosting express routes on a custom URL i.e. '/calendarapp'
+app.use(basePath, indexRouter);
 
 // Global error handler
 app.use(function (err: any, req: Request, res: Response, next: NextFunction) {

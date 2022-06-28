@@ -34,10 +34,13 @@ export const getKeywords = createAsyncThunk('base/getKeywords', async (): Promis
   return result;
 });
 
-export const getRandomDrink = createAsyncThunk('base/getRandomDrink', async (): Promise<IDrinkDoc> => {
+export const getRandomDrink = createAsyncThunk('base/getRandomDrink', async (_, thunkAPI): Promise<IDrinkDoc> => {
   const api = new UserApi();
   const result = await api.getRandomDrink();
 
+  if (result?.idDrink) {
+    thunkAPI.dispatch(getDrink(result.idDrink));
+  }
   return result;
 });
 
@@ -121,7 +124,8 @@ export const baseSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getDrink.fulfilled, (state: BaseState, action) => {
-        const newState = [...state.drinks, action.payload];
+        const newState = [...state.drinks];
+        upsertDrink(newState, action.payload);
         state.drinks = newState;
         state.status = 'succeeded';
       })
@@ -144,13 +148,8 @@ export const baseSlice = createSlice({
         state.status = 'loading';
       })
       .addCase(getDrinkWithVideos.fulfilled, (state: BaseState, action) => {
-        const newState = state.drinks.map((drink) => {
-          if (drink.idDrink === action.payload.idDrink) {
-            return action.payload;
-          } else {
-            return drink;
-          }
-        });
+        const newState = [...state.drinks];
+        upsertDrink(newState, action.payload);
         state.drinks = newState;
         state.status = 'succeeded';
       })
@@ -160,5 +159,14 @@ export const baseSlice = createSlice({
       });
   }
 });
+
+export const upsertDrink = (array: Array<IDrinkDoc>, element: IDrinkDoc): void => {
+  const i = array.findIndex((e: IDrinkDoc) => e.idDrink === element.idDrink);
+  if (i > -1) {
+    array[i] = element;
+  } else {
+    array.push(element);
+  }
+};
 
 export default baseSlice.reducer;

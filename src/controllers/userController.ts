@@ -169,7 +169,7 @@ const getDrink = async (req: Request, res: Response, next: NextFunction): Promis
 
 const getDrinks = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
-    Drink.find().exec(async (err, docs) => {
+    Drink.find({ idDrink: { $exists: true, $ne: null } }).exec(async (err, docs) => {
       if (err) {
         return next(err);
       }

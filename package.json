@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "start": "node dist/server.cjs",
-    "build": "rm -rf dist && npm-run-all build:server build:client",
+    "build": "npm run lint && npm run check-types && rm -rf dist && npm-run-all build:server build:client",
     "build:server": "webpack --mode=production --config webpack.production.js --config-name server",
     "build:client": "webpack --mode=production --config webpack.production.js --config-name client",
     "dev": "npm run lint && npm run check-types && npm run build:dev && npm-run-all --parallel start:dev-server watch:dev-client",

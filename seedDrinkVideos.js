@@ -89,7 +89,7 @@ const seedVideos = async () => {
     });
 
     Promise.all(promises).then((results) => {
-      console.log('updated with results: ', results);
+      console.log('Drink videos updated successfully!');
     });
   } catch (err) {
     console.log(err.stack);

@@ -4,7 +4,7 @@
 
 ## Description
 
-**Mixology App** helps you easily curate your favorite drinks, research new recipes, compose tasting notes, submit ratings and more. This is a demo app that I built to explore the integration of multiple third party APIs with a MongoDB database, as well as applying static typing on the frontend and backend via TypeScript. Mixology App is relatively small in scope, but it has architectural elements in place (e.g. React-Router, Redux Toolkit, JSON Web Token) to help developers scale up its functionality easily. Feel free to fork or extend the codebase for your project and contact me for any questions.
+**Mixology App** helps you easily curate your favorite drinks, research new recipes, compose tasting notes, submit ratings and more. This is a demo app that I built to explore the integration of multiple third party APIs with a MongoDB database, as well as applying static typing on the frontend and backend via TypeScript. The app is relatively small in scope, but it has architectural elements in place (e.g. React-Router, Redux Toolkit, JSON Web Token) to help developers scale up its functionality easily. Feel free to fork or extend the codebase for your project and contact me for any questions.
 
 Mixology App is an example of a "MERN stack" application which consists of the following technologies:
 
@@ -18,41 +18,40 @@ This stack makes it possible to build and easily maintain a full-stack web app i
 ## File structure
 
 - `src`
-  - `api` - This folders hold files used by the API client
-  - `src`
-    - `assets` - This folder holds assets such as images
-    - `components` - This folder holds all of the different components that will make up our views
-    - `config` - This folder holds configuration files
-    - `controllers` - This folder holds controller files used by Express.js
-    - `db` - This folder holds database models and connection files
-    - `hooks` - This folder holds React hooks for use with functional components
-    - `layout` - This folder holds components used for page layout
-    - `middleware` - This folder holds middleware used by the backend
-    - `pages` - This folder holds components organized by page level view
-    - `routers` - This folder holds router files used by Express.js
-    - `store` - This folder holds files used to connect to the Redux store and call Redux actions
-    - `styles` - This folder holds stylesheets used by the frontend
-    - `utils` - This folder holds files containing utility functions
-    - `App.tsx` - Renders all of our browser routes and different views
-    - `custom.d.ts` - Custom type declarations used by TypeScript for third party packages
-    - `index.html` - Our index.html file
-    - `index.tsx` - Entrypoint for our React app
-    - `server.ts` - Entrypoint for our Node.js app
-    - `types.ts` - Custom type declarations used by TypeScript
-    - `validation.ts` - Used for form validation
-- `package.json` - Defines npm behaviors and packages for the client
+  - `api` - This folder holds files used by the API client
+  - `assets` - This folder holds assets such as images
+  - `components` - This folder holds different components that will make up our views
+  - `config` - This folder holds app configuration files
+  - `controllers` - This folder holds controller files used by the backend
+  - `db` - This folder holds database models and connection files
+  - `hooks` - This folder holds React hooks for use in functional components
+  - `layout` - This folder holds components used for page layout
+  - `middleware` - This folder holds middleware used by the backend
+  - `pages` - This folder holds components organized by page level view
+  - `routers` - This folder holds router files used by Express.js
+  - `store` - This folder holds files used to connect to the Redux store and call Redux actions
+  - `styles` - This folder holds stylesheets used by the frontend
+  - `utils` - This folder holds files containing utility functions
+  - `App.tsx` - Renders all of our browser routes and different views
+  - `custom.d.ts` - Custom type declarations used by TypeScript for third party packages
+  - `index.html` - Our index.html file
+  - `index.tsx` - Entrypoint for our React app
+  - `server.ts` - Entrypoint for our Node.js app
+  - `types.ts` - Custom type declarations used by TypeScript
+  - `validation.ts` - Used for form validation
+- `package.json` - Defines npm behaviors and packages
 - `package-lock.json` - Tracks dependency tree
 - `.babelrc` - Configuration file for Babel.js
-- `.env.sample` - File containing sample environment variables used by dotenv.js
+- `.env.sample` - Sample file containing environment variables used by dotenv.js
 - `.eslintignore` - Directories to ignore during linting
 - `.gitignore` - Directories to exclude from git tracking
 - `.prettierrc.cjs` - Configuration file for Prettier.js
-- `.seedDrinks.js` - Script for seeding Drink objects in MongoDB
-- `.seedDrinkVideos.js` - Script for seeding Drink objects' video data in MongoDB
+- `.seedDrinks.js` - Script for seeding drink documents in MongoDB
+- `.seedDrinkVideos.js` - Script for seeding drink documents' video data in MongoDB
 - `.tsconfig.json` - Configuration file for TypeScript
-- `.webpack.common.js` - Configuration file for common Webpack settings
-- `.webpack.development.js` - Configuration file for Webpack's development mode
-- `.webpack.production.js` - Configuration file for Webpack's production mode
+- `.webpack.common.js` - Webpack configuration file for common settings
+- `.webpack.development.js` - Webpack configuration file for development mode settings
+- `.webpack.production.js` - Webpack configuration file for production mode settings
 - `README.md` - This file!
 
 ## Initial Setup
@@ -111,22 +110,22 @@ NOTE: The name of the Mongo database should be used as the value for the `MONGO_
 
 Next you need to seed your database with application data using the seeding scripts `seedDrinks.js` and `seedDrinkVideos.js`. These scripts assume that you are running a local instance of MongoDB and your environment variables are properly configured in `.env.development`. Make sure to run the following scripts in order (First `seedDrinks.js` then `seedDrinkVideos.js`).
 
-Seed database drinks documents by running `node seedDrinks.js`
+Seed drink documents by running `node seedDrinks.js`
 
 - This script connects to our Mongo instance, makes network calls to The CocktailDB API for drink data, and updates the `drinks` collection in our database with new drink documents. If the script runs successfully, you should see a success message in the terminal (`Database seeded!`) and the new database documents should be visible in our `drinks` collection.
 
-Seed database drinks documents with video data by running `node seedDrinkVideos.js`
+Seed drink documents' video data by running `node seedDrinkVideos.js`
 
-- This script connects to our Mongo instance, makes network calls to the Youtube Data API for video data corresponding to each drink in our database, and updates the `drinks` collection in our database with drink documents containing video data. If the script runs successfully, you should see a success message in the terminal (`Drink videos updated successfully!`) and the new drink data should be visible in our `drinks` collection.
-- Depending on your access policy, Youtube Data API may limit the number and frequency of calls it will accept from a given client. You may set or remove this limit manually using the line `.limit(20)` inside the `seedVideos` funtion. Depending on what the Youtube API returns, you may need to run `seedDrinkVideos.js` multiple times in order to seed every drink document in your database.
+- This script connects to our Mongo instance, makes network calls to the Youtube Data API for video data corresponding to each document in our `drinks` collection, and updates those documents with the returned video data. If the script runs successfully, you should see a success message in the terminal (`Drink videos updated successfully!`) and the updated documents should be visible in our `drinks` collection.
+- Depending on your access policy, the Youtube Data API may limit the quantity and frequency of calls it will accept from a given client. You may set or remove this limit manually using the line `.limit(20)` inside the `seedVideos` funtion. Depending on what the Youtube API returns, you may need to run `seedDrinkVideos.js` multiple times in order to seed every drink document in your database.
 
 ## Run the app
 
-Once you've verified Node has been installed, install Mixology App dependencies using `npm install`.
+Once you've verified Node and MongoDB has been installed and your database has been properly seeded, install Mixology App dependencies using `npm install`.
 
-To run the app in development mode, run the command `npm run dev`. This triggers a workflow which lints the code, checks for correct typing via the TyepScript compiler, bundles the frontend code using Webpack and serves up the Node app in your local environment via Webpack Dev Server. Once the workflow is complete, you should be able to see that the server is running in the terminal. If it started correctly, the following message will appear in the terminal, `Server started at http://localhost:3000`. Try visiting `http://localhost:8080` in your browser to verify the app is running.
+To run the app in development mode, run the command `npm run dev`. This triggers a workflow which lints the source code, checks for correct typing via the TyepScript compiler, bundles the frontend code using Webpack and serves up the Node app in your local environment via Webpack Dev Server. Once the workflow is complete, you should be able to see the server running in the terminal. If it started correctly, the following message will appear in the terminal, `Server started at http://localhost:3000`. Then try visiting `http://localhost:8080` in your browser to verify that you can access the frontend.
 
-To run the app in production mode, first run `npm run build` NOTE: Make sure you've created a `.env.production` file with required environment variables before running this command! This will bundle the source code and static assets using Webpack and emit them into the `dist` folder. Once you've verified the bundled files, run `npm run pm2` to start the application as a background process using the process management tool PM2. You can use any process manager of your choice, but PM2 works well with Node.js applications.
+To run the app in production mode, first run the command `npm run build`. NOTE: Make sure you've created a `.env.production` file with required environment variables before running this command! This will bundle the source code and static assets using Webpack and emit them into the `dist` folder. Once you've verified the bundled files have been produced, run `npm run pm2` to start the application as a background process using the process management tool PM2. You can use any process manager of your choice, but PM2 generally works well with Node applications.
 
 ## Authentication
 
@@ -137,12 +136,12 @@ Mixology app uses JSON Web Token (JWT) for authentication. This is a popular cho
 - Easier to scale up with userbase
 - Better portability across services
 
-NOTE: Each `User` object includes a `roles` field which can take on one of three values:`user`, `moderator` or `admin`. These values aren't currently used for authorization purposes in the app, but can be used to build out an authorization layer on top of the authentication workflow if needed.
+NOTE: Each `User` document in the database includes a `roles` field which can take on one of three values: `user`, `moderator` or `admin`. These values aren't currently used for any authorization purposes, but can be used to build out an authorization layer on top of the authentication workflow if desired.
 
 ## React & Redux
 
-The frontend is a single-page React application that supports client-side routing via React-Router. This enables fast navigation between views and reduces the amount of network calls made by the frontend. NOTE: To support single-page apps in production, you will need to update the configuration of the web server used to serve your app (e.g Nginx).
+The frontend is a single-page React application that supports client-side routing via React-Router. This enables fast navigation between views and reduces the amount of network calls made by the frontend. NOTE: To support single-page apps in production, you will need to update the configuration of the web server used to serve your app externally (e.g Nginx).
 
 Client data is stored using Redux which promotes data consistency, reduces database calls, and allows the use of Redux Devtools for development.
 
-All updates to Redux data are persisted to localStorage (at `localStorage.state`) for access between browser sessions. If at any point the app displays data which appears out of sync, try clearing out your browser's localStorage and reload the browser window.
+All updates to Redux data are persisted to localStorage (in the object located at `localStorage.state`) for access between browser sessions. If at any point the app displays data which appears out of sync, try clearing out your browser's localStorage data and reload the browser window.

@@ -8,9 +8,10 @@ import common from './webpack.common.js';
 
 const client = merge(common, {
   name: 'client',
+  mode: 'development',
   entry: './src/index.tsx',
   target: 'web',
-  devtool: 'source-map',
+  devtool: 'inline-source-map',
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',

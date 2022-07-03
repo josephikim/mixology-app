@@ -8,13 +8,13 @@ import common from './webpack.common.js';
 
 const client = merge(common, {
   name: 'client',
+  mode: 'production',
   entry: './src/index.tsx',
   target: 'web',
-  devtool: 'source-map',
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',
-    publicPath: './'
+    publicPath: '/'
   },
   plugins: [
     new HtmlWebpackPlugin({

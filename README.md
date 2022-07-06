@@ -43,7 +43,6 @@ This stack makes it possible to quickly build and easily maintain a full-stack w
 - `package-lock.json` - Tracks dependency tree
 - `.babelrc` - Configuration file for Babel.js
 - `.env.sample` - Sample file containing environment variables used by dotenv.js
-- `.eslintignore` - Directories to ignore during linting
 - `.gitignore` - Directories to exclude from git tracking
 - `.prettierrc.cjs` - Configuration file for Prettier.js
 - `.seedDrinks.js` - Script for seeding drink documents in MongoDB

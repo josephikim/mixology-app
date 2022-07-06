@@ -17,10 +17,12 @@ const common = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: {
+          loader: 'babel-loader'
+        }
       },
       {
-        test: /\.(png|jpg|gif|eot|otf|ttf|woff|woff2)$/,
+        test: /\.(png|svg|jpg|gif)$/,
         use: {
           loader: 'file-loader',
           options: {

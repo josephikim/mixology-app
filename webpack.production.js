@@ -30,10 +30,10 @@ const client = merge(common, {
 const server = merge(common, {
   name: 'server',
   target: 'node',
-  node: {
-    __dirname: false,
-    __filename: false
-  },
+  // node: {
+  //   __dirname: false,
+  //   __filename: false
+  // },
   entry: './src/server.ts',
   output: {
     path: path.resolve('./dist'),

@@ -12,11 +12,6 @@ const client = merge(common, {
   entry: './src/index.tsx',
   target: 'web',
   devtool: 'inline-source-map',
-  output: {
-    path: path.resolve('./dist'),
-    filename: 'bundle.js',
-    publicPath: '/'
-  },
   devServer: {
     port: 8080,
     historyApiFallback: true,

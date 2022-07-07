@@ -14,7 +14,7 @@ const client = merge(common, {
   output: {
     path: path.resolve('./dist'),
     filename: 'bundle.js',
-    publicPath: './'
+    publicPath: '/mixologyapp'
   },
   plugins: [
     new HtmlWebpackPlugin({

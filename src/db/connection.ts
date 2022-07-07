@@ -9,15 +9,15 @@ const MONGO_URL = `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}
 const db = mongoose
   .connect(MONGO_URL)
   .then(() => {
-    console.log('Successfully connected to MongoDB.');
-    initialRoles();
+    console.log('Successfully connected to MongoDB');
+    initRoles();
   })
   .catch((err) => {
     console.error('Connection error', err);
     process.exit();
   });
 
-const initialRoles = (): void => {
+const initRoles = (): void => {
   Role.estimatedDocumentCount((err: any, count: number) => {
     if (!err && count === 0) {
       new Role({

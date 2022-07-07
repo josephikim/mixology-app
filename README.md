@@ -39,12 +39,12 @@ This stack makes it possible to quickly build and easily maintain a full-stack w
   - `server.ts` - Entrypoint for Node.js app
   - `types.ts` - Custom type declarations
   - `validation.ts` - Used for form validation
-- `package.json` - Defines npm behaviors and packages
-- `package-lock.json` - Tracks dependency tree
 - `.babelrc` - Configuration file for Babel.js
 - `.env.sample` - Sample file containing environment variables used by dotenv.js
 - `.gitignore` - Directories to exclude from git tracking
 - `.prettierrc.cjs` - Configuration file for Prettier.js
+- `package.json` - Defines npm behaviors and packages
+- `package-lock.json` - Tracks dependency tree
 - `.seedDrinks.js` - Script for seeding drink documents in MongoDB
 - `.seedDrinkVideos.js` - Script for seeding drink documents' video data in MongoDB
 - `.tsconfig.json` - Configuration file for TypeScript
@@ -97,38 +97,61 @@ In each file, you need to enter values for the following environment variables (
 
 ### MongoDB
 
-Mixology App is designed to work best with a local installation of MongoDB (v4.4.6), but can be used with MongoDB instances located elsewhere.
+Mixology App works best with a local installation of MongoDB (v4.4.6), but can be used with MongoDB instances located elsewhere.
 
-First set up your local installation of Mongo using instructions corresponding to your operating system.
+First set up a local installation of Mongo using instructions corresponding to your operating system.
 
 - MongoDB <https://www.mongodb.com/try/download>
 
-Once those steps have been completed, you need to create a new Mongo database to store your app data. This can be done in several ways, but most commonly with the Mongo shell CLI which comes pre-installed with MongoDB. You can run Mongo shell from your command line using the `mongo` command. Once you are in the shell, create a new Mongo database (e.g. `mixologyapp_db`). Then create a new collection called `drinks` within the database. This is the collection that will be used to store drink documents for your app.
+Once those steps have been completed, and your MongoDB instance is up and running (typically using the command `mongod`), you need to create a new database to store Mixology App data. This can be done in several ways, but most commonly with the Mongo shell CLI which comes pre-installed with MongoDB. You can start the Mongo shell from the command line using the `mongo` command, then create a new Mongo database (e.g. `mixologyapp_db`).
 
-NOTE: The name of the Mongo database should also be used as the value for the `MONGO_DB` environment variable (see *Environment Variables* above).
+Now verify that the app can connect to your new database by starting the app in development mode.
 
-Next you need to seed your database with app data using the seeding scripts `seedDrinks.js` and `seedDrinkVideos.js`. These scripts assume that you are running a local instance of MongoDB and your environment variables are properly configured in `.env.development`. Make sure to run the following scripts in order (First `seedDrinks.js` then `seedDrinkVideos.js`).
+- To begin this process, first install Mixology App dependencies using `npm install`. Once that is complete, start the app in development mode with `npm run dev`.
 
-Seed drink documents by running `node seedDrinks.js`
+NOTE: Make sure you've created an `.env.development` file at the project root with the required environment variables before starting the app! See _Environment Variables_ above.
 
-- This script connects to your Mongo database, makes network calls to The CocktailDB API for drink data, and updates the `drinks` collection in the database with new drink documents. If the script runs successfully, you should see a success message in the terminal (`Database seeded!`) and the new documents should be visible in your database.
+Once the workflow is complete, the following messages will appear in the terminal:
 
-Seed drink documents' video data by running `node seedDrinkVideos.js`
+```text
+  Successfully connected to MongoDB
+  added "user" to roles collection
+  added "moderator" to roles collection
+  added "admin" to roles collection
+```
 
-- This script connects to your Mongo instance, makes network calls to the Youtube Data API for video data corresponding to each document in your `drinks` collection, and updates those documents with the returned video data. If the script runs successfully, you should see a success message in the terminal (`Drink videos updated successfully!`) and the updated documents should be visible in your database.
-- Depending on your access policy, the Youtube Data API may limit the quantity and frequency of calls it will accept from a given client. You may set or remove this limit manually using the line `.limit(20)` inside the `seedVideos` funtion. Depending on the result, you may need to run `seedDrinkVideos.js` multiple times in order to seed every drink document in your database.
+Verify the newly created documents in the `roles` collection by inspecting your database instance using the Mongo shell CLI or another database management tool (e.g. Robot 3T).
+
+Next you need to seed your database with app data using the seeding scripts `seedDrinks.js` and `seedDrinkVideos.js`. Make sure to run these scripts in order (First `seedDrinks.js` then `seedDrinkVideos.js`).
+
+- Seed drink documents by running `node seedDrinks.js`
+
+This script connects to your Mongo database, makes API calls to The CocktailDB for drink data, and updates the `drinks` collection in the database. Once the workflow is complete, the following messages will appear in the terminal:
+
+```text
+  Connected correctly to server
+  Database seeded!
+```
+
+- Seed drink videos data by running `node seedDrinkVideos.js`
+
+This script connects to your Mongo instance, makes API calls to the Youtube Data API for video data corresponding to documents in your `drinks` collection, and updates those documents with the returned video data. If the script runs successfully, you should see a success message in the terminal (`Drink videos updated successfully!`).
+
+NOTE: Depending on your access policy, the Youtube Data API may limit the number and frequency of calls it will accept from a given client. You can set or remove this limit by updating the line `.limit(20)` in `seedDrinkVideos.js`. Depending on the result, you may need to run the script multiple times in order to seed every drink in your database.
+
+Now you can verify the new documents in the `drinks` collection of your database. Then try reloading the page at `http://localhost:8080/drinks` in your browser to see the updated drinks.
 
 ## Run the app
 
-Once you've verified Node and MongoDB has been installed and your database has been properly seeded, install Mixology App dependencies using `npm install`.
+To run the app in **development mode**, run the command `npm run dev`. This triggers a Webpack workflow which lints the source code, applies formatting changes based on Prettier.js settings, builds the `server.cjs` file, and serves up the frontend via in-memory assets using Webpack Dev Server. Once the workflow is complete, you should be able to see the server running in the terminal. If it started correctly, the following message will appear in the terminal, `Server started at http://localhost:3001`. Then try visiting `http://localhost:8080` in your browser to verify that you can access the frontend.
 
-To run the app in development mode, run the command `npm run dev`. This triggers a workflow which lints the source code, checks for correct typing via the TyepScript compiler, bundles the frontend code using Webpack and serves up the Node app in your local environment via Webpack Dev Server. Once the workflow is complete, you should be able to see the server running in the terminal. If it started correctly, the following message will appear in the terminal, `Server started at http://localhost:3000`. Then try visiting `http://localhost:8080` in your browser to verify that you can access the frontend.
+NOTE: Hot module reloading is turned on by default in development mode. To turn HMR off, remove `hot: true` from the `client` config in `webpack.development.js`.
 
-To run the app in production mode, first run the command `npm run build`.
+To run the app in **production mode**, first run the command `npm run build`.
 
 NOTE: Make sure you've created a `.env.production` file with the required environment variables before running this command!
 
-This will bundle the source code and static assets using Webpack and emit them into the `dist` folder. Once you've verified the bundled files have been created, run `npm run pm2` to start the app as a background process using the process management tool PM2. You can use any process manager of your choice, but PM2 generally works well with Node apps.
+This triggers a webpack workflow which bundles the source code and static assets using Webpack and emits them into the `build` folder. Once you've verified the bundled files have been created, run `npm run pm2` to start the app as a background process using the process management tool PM2. You can use any process manager of your choice, but PM2 generally works well with Node apps.
 
 ## Authentication
 
@@ -139,9 +162,9 @@ Mixology App uses JSON Web Token (JWT) for authentication. JWT is a popular choi
 - Easier to scale up with userbase
 - Better portability across services
 
-Since the backend of our app acts as both issuer and verifier of JWT tokens, it only needs one private key for authentication purposes. This is the key designated in your `.env` files as the `JWT_SECRET_KEY` environment variable.
+Since the backend of the app acts as both issuer and verifier of JWT tokens, it only needs one private key for authentication purposes. This is the key designated in your `.env` files as the `JWT_SECRET_KEY` environment variable.
 
-NOTE: It is IMPORTANT to never share sensitive information such as keys or passwords! Make sure to apply appropriate security settings to prevent exposing your files.
+IMPORTANT: Never share sensitive information such as keys or passwords! Make sure to apply appropriate security settings to prevent exposing your files.
 
 ### Authorization
 

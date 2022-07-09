@@ -6,6 +6,7 @@ import RegistrationForm from './RegistrationForm';
 import Slideshow from 'components/Slideshow';
 
 import './Registration.css';
+
 const Registration: FC = () => (
   <div className="Registration">
     <Container>

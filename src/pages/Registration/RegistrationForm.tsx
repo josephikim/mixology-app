@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { useAppDispatch } from 'hooks';
 import { useInput } from 'hooks/useInput';
@@ -78,7 +79,7 @@ const RegistrationForm: React.FC = () => {
         Register
       </Button>
       <div>
-        Already registered? Please <a href="/login">login</a>.
+        Already registered? Please <Link to="/login">login</Link>.
       </div>
     </Form>
   );

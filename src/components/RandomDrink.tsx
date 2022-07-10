@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col, Badge, Image, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from 'hooks';
 import { getRandomDrink } from 'store/baseSlice';
@@ -30,7 +31,7 @@ const RandomDrink: React.FC = () => {
             <div className="flex-container content-heading">
               <Col>
                 <h4>{drink.strDrink}</h4>
-                <a href={`/drink/${drink.idDrink}`}>view details</a>
+                <Link to={`/drink/${drink.idDrink}`}>view details</Link>
               </Col>
             </div>
           </Row>

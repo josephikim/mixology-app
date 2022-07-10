@@ -202,16 +202,16 @@ export const userSlice = createSlice({
       })
       .addCase(saveNotes.fulfilled, (state: UserState, action) => {
         if (state.collection) {
-          const newItem = state.collection.map((item) =>
+          const newState = state.collection.map((item) =>
             item.idDrink === action.payload.idDrink
               ? ({ ...item, notes: action.payload.notes } as IUserCollectionItemDoc)
               : item
           );
-          state.collection = [...state.collection, ...newItem];
+          state.collection = [...newState];
         }
         state.status = 'succeeded';
       })
-      .addCase(saveNotes.rejected, (state, action) => {
+      .addCase(saveNotes.rejected, (state: UserState, action) => {
         state.status = 'failed';
         state.error = action.error.message;
         if (action.payload?.type) {

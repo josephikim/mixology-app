@@ -16,6 +16,9 @@ const client = merge(common, {
   name: 'client',
   mode: 'development',
   entry: './src/index.tsx',
+  output: {
+    publicPath: '/'
+  },
   target: 'web',
   devtool: 'inline-source-map',
   devServer: {

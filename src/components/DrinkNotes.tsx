@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Button, Form } from 'react-bootstrap';
 import { v4 as uuid } from 'uuid';
 
@@ -17,6 +17,16 @@ const DrinkNotes: React.FC<DrinkNotesProps> = ({ notes, idDrink }) => {
   const dispatch = useAppDispatch();
 
   const [notesInput, setNotesInput] = useState(notes);
+
+  useEffect(() => {
+    if (!notes) {
+      setNotesInput('');
+    } else {
+      if (notesInput != notes) {
+        setNotesInput(notes);
+      }
+    }
+  }, [notes]);
 
   const handleClick = async (event: React.MouseEvent<HTMLElement>): Promise<void> => {
     event.preventDefault();

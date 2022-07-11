@@ -12,9 +12,9 @@ enum Status {
   failed = 'FAILED'
 }
 
-interface BaseState {
+export interface BaseState {
   status: keyof typeof Status;
-  error?: string;
+  error: string | null;
   drinks: IDrinkDoc[];
   keywords: IKeywordDoc[];
   randomDrink: IDrinkDoc;
@@ -22,6 +22,7 @@ interface BaseState {
 
 export const initialState: BaseState = {
   status: 'idle',
+  error: null,
   drinks: [],
   keywords: [],
   randomDrink: {} as IDrinkDoc
@@ -107,7 +108,9 @@ export const baseSlice = createSlice({
       })
       .addCase(getKeywords.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        if (action.error?.message) {
+          state.error = action.error.message;
+        }
       })
       .addCase(getRandomDrink.pending, (state) => {
         state.status = 'loading';
@@ -118,7 +121,9 @@ export const baseSlice = createSlice({
       })
       .addCase(getRandomDrink.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        if (action.error?.message) {
+          state.error = action.error.message;
+        }
       })
       .addCase(getDrink.pending, (state) => {
         state.status = 'loading';
@@ -131,7 +136,9 @@ export const baseSlice = createSlice({
       })
       .addCase(getDrink.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        if (action.error?.message) {
+          state.error = action.error.message;
+        }
       })
       .addCase(getDrinks.pending, (state) => {
         state.status = 'loading';
@@ -142,7 +149,9 @@ export const baseSlice = createSlice({
       })
       .addCase(getDrinks.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        if (action.error?.message) {
+          state.error = action.error.message;
+        }
       })
       .addCase(getDrinkWithVideos.pending, (state) => {
         state.status = 'loading';
@@ -155,7 +164,9 @@ export const baseSlice = createSlice({
       })
       .addCase(getDrinkWithVideos.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        if (action.error?.message) {
+          state.error = action.error.message;
+        }
       });
   }
 });

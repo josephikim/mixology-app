@@ -12,13 +12,13 @@ enum Status {
   failed = 'FAILED'
 }
 
-interface UserState {
+export interface UserState {
   status: keyof typeof Status;
-  searchPayload?: SearchPayload;
-  searchResults?: IDrinkDoc[];
-  collection?: IUserCollectionItemDoc[];
-  error?: string;
-  errorType?: string;
+  searchPayload: SearchPayload | null;
+  searchResults: IDrinkDoc[];
+  collection: IUserCollectionItemDoc[];
+  error: string | null;
+  errorType: string | null;
 }
 
 export type RatingPayload = {
@@ -42,7 +42,12 @@ export type AddCollectionItemPayload = {
 };
 
 export const initialState: UserState = {
-  status: 'idle'
+  status: 'idle',
+  searchPayload: null,
+  searchResults: [],
+  collection: [],
+  error: null,
+  errorType: null
 };
 
 export const getSearchResults = createAsyncThunk<
@@ -155,10 +160,12 @@ export const userSlice = createSlice({
       })
       .addCase(getSearchResults.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
         state.searchPayload = action.meta.arg;
         if (action.payload?.type) {
           state.errorType = action.payload.type;
+        }
+        if (action.error?.message) {
+          state.error = action.error.message;
         }
       })
       .addCase(addCollectionItem.pending, (state) => {
@@ -172,9 +179,11 @@ export const userSlice = createSlice({
       })
       .addCase(addCollectionItem.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
         if (action.payload?.type) {
           state.errorType = action.payload.type;
+        }
+        if (action.error?.message) {
+          state.error = action.error.message;
         }
       })
       .addCase(setRating.pending, (state) => {
@@ -192,9 +201,11 @@ export const userSlice = createSlice({
       })
       .addCase(setRating.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
         if (action.payload?.type) {
           state.errorType = action.payload.type;
+        }
+        if (action.error?.message) {
+          state.error = action.error.message;
         }
       })
       .addCase(saveNotes.pending, (state) => {
@@ -213,9 +224,11 @@ export const userSlice = createSlice({
       })
       .addCase(saveNotes.rejected, (state: UserState, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
         if (action.payload?.type) {
           state.errorType = action.payload.type;
+        }
+        if (action.error?.message) {
+          state.error = action.error.message;
         }
       })
       .addCase(deleteCollectionItem.pending, (state) => {
@@ -229,9 +242,11 @@ export const userSlice = createSlice({
       })
       .addCase(deleteCollectionItem.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
         if (action.payload?.type) {
           state.errorType = action.payload.type;
+        }
+        if (action.error?.message) {
+          state.error = action.error.message;
         }
       });
   }

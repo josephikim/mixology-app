@@ -11,19 +11,20 @@ enum Status {
   succeeded = 'SUCCEEDED',
   failed = 'FAILED'
 }
-interface AuthState {
+export interface AuthState {
   accessToken: string;
   refreshToken: string;
   userId: string;
   status: keyof typeof Status;
-  error?: string;
+  error: string | null;
 }
 
 export const initialState: AuthState = {
   accessToken: '',
   refreshToken: '',
   userId: '',
-  status: 'idle'
+  status: 'idle',
+  error: null
 };
 
 export const register = createAsyncThunk<
@@ -99,7 +100,9 @@ export const authSlice = createSlice({
       })
       .addCase(register.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        if (action.error?.message) {
+          state.error = action.error.message;
+        }
       })
       .addCase(login.pending, (state) => {
         state.status = 'loading';
@@ -113,7 +116,9 @@ export const authSlice = createSlice({
       })
       .addCase(login.rejected, (state, action) => {
         state.status = 'failed';
-        state.error = action.error.message;
+        if (action.error?.message) {
+          state.error = action.error.message;
+        }
       });
   }
 });

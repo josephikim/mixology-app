@@ -6,7 +6,7 @@ export interface IAlert {
   message: string;
 }
 
-interface AlertState {
+export interface AlertState {
   alerts: IAlert[];
 }
 

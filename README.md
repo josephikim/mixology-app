@@ -4,7 +4,7 @@
 
 ## Description
 
-**Mixology App** helps you easily curate your favorite drinks, research new recipes, compose tasting notes, submit ratings and more. It is a demo app that I built to explore the integration of multiple third party APIs with a MongoDB database, as well as applying static typing via TypeScript. The app is relatively small in scope, but it has architectural elements in place (e.g. JSON Web Token, Mongoose, React-Router, Redux Toolkit) to help developers scale up its functionality easily. Feel free to fork or extend the codebase for your own project!
+**Mixology App** helps you easily curate your favorite drinks, research new recipes, submit ratings, compose tasting notes and more. It is a demo app that I built to explore the integration of multiple third party APIs with a MongoDB database, as well as applying static typing via TypeScript. The app is relatively small in scope, but it has architectural elements in place (e.g. JSON Web Token, Mongoose, React-Router, Redux Toolkit) to help developers scale up its functionality easily. Feel free to fork or extend the codebase for your own project!
 
 Mixology App is an example of a "MERN stack" application which consists of the following technologies:
 

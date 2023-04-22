@@ -169,17 +169,19 @@ const getDrink = async (req: Request, res: Response, next: NextFunction): Promis
 
 const getDrinks = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
   try {
-    Drink.find({ idDrink: { $exists: true, $ne: null } }).exec(async (err, docs) => {
-      if (err) {
-        return next(err);
-      }
+    Drink.find({ idDrink: { $exists: true, $ne: null } })
+      .sort({ strDrink: 1 })
+      .exec(async (err, docs) => {
+        if (err) {
+          return next(err);
+        }
 
-      if (!docs) {
-        return next(new Error('Drinks not found'));
-      }
+        if (!docs) {
+          return next(new Error('Drinks not found'));
+        }
 
-      res.status(200).send(docs);
-    });
+        res.status(200).send(docs);
+      });
   } catch (err) {
     return next(err);
   }

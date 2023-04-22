@@ -1,45 +1,66 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import ReactPaginate from 'react-paginate';
 import { Container } from 'react-bootstrap';
-import { cloneDeep } from 'lodash';
 
-import { useAppSelector, useAppDispatch } from 'hooks';
-import { IDrinkDoc } from 'db/Drink';
-import { getDrinks } from 'store/baseSlice';
+import { useAppSelector } from 'hooks';
 import DrinksItemHeader from './DrinksItemHeader';
 import DrinksItem from './DrinksItem';
 
 import './Drinks.css';
 
 const Drinks: React.FC = () => {
-  const dispatch = useAppDispatch();
+  const [offset, setOffset] = useState(0);
+  const [paginatedData, setPaginatedData] = useState<JSX.Element[]>([]);
+  const [perPage] = useState(6);
+  const [pageCount, setPageCount] = useState(0);
   const drinks = useAppSelector((state) => state.base.drinks);
-  const drinksClone = cloneDeep(drinks) as IDrinkDoc[];
-  const isDrinksLoaded = drinksClone?.length && drinksClone.length > 0;
 
   useEffect(() => {
-    if (!isDrinksLoaded) {
-      dispatch(getDrinks());
-    }
-  }, []);
+    getPaginatedData();
+  }, [drinks, offset]);
+
+  const getPaginatedData = () => {
+    const slice = drinks.slice(offset, offset + perPage);
+    const drinksData = slice.map((drink) => <DrinksItem key={drink.idDrink} drink={drink} />);
+    setPaginatedData(drinksData);
+    setPageCount(Math.ceil(drinks.length / perPage));
+  };
+
+  const handlePageClick = (e: { selected: number }) => {
+    const selectedPage = e.selected;
+    const newOffset = (selectedPage * perPage) % drinks.length;
+    setOffset(newOffset);
+  };
 
   const renderContent = () => {
-    if (isDrinksLoaded) {
-      const drinksSorted = drinksClone.sort((a, b) => a.strDrink.localeCompare(b.strDrink));
-      return (
+    let jsx;
+    if (drinks.length) {
+      jsx = (
         <div className="drinks-wrapper">
           <DrinksItemHeader />
-          {drinksSorted.map((drink) => {
-            return <DrinksItem key={drink.idDrink} drink={drink} />;
-          })}
+          {paginatedData}
+          <ReactPaginate
+            previousLabel={'prev'}
+            nextLabel={'next'}
+            breakLabel={'...'}
+            breakClassName={'break-me'}
+            pageCount={pageCount}
+            marginPagesDisplayed={2}
+            pageRangeDisplayed={5}
+            onPageChange={handlePageClick}
+            containerClassName={'pagination'}
+            activeClassName={'active'}
+          />
         </div>
       );
     } else {
-      return (
+      jsx = (
         <div className="drinks-wrapper">
           <h4>Loading drinks...</h4>
         </div>
       );
     }
+    return jsx;
   };
 
   return (

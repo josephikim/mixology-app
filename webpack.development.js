@@ -20,7 +20,7 @@ const client = merge(common, {
     publicPath: '/'
   },
   target: 'web',
-  devtool: 'inline-source-map',
+  devtool: 'eval-source-map',
   devServer: {
     port: 8080,
     historyApiFallback: true,

@@ -38,19 +38,21 @@ const Drinks: React.FC = () => {
       jsx = (
         <div className="drinks-wrapper">
           <DrinksItemHeader />
-          {paginatedData}
-          <ReactPaginate
-            previousLabel={'prev'}
-            nextLabel={'next'}
-            breakLabel={'...'}
-            breakClassName={'break-me'}
-            pageCount={pageCount}
-            marginPagesDisplayed={2}
-            pageRangeDisplayed={5}
-            onPageChange={handlePageClick}
-            containerClassName={'pagination'}
-            activeClassName={'active'}
-          />
+          <div className="pagination-content">{paginatedData}</div>
+          <div className="pagination-ui">
+            <ReactPaginate
+              previousLabel={'prev'}
+              nextLabel={'next'}
+              breakLabel={'...'}
+              breakClassName={'break-me'}
+              pageCount={pageCount}
+              marginPagesDisplayed={1}
+              pageRangeDisplayed={5}
+              onPageChange={handlePageClick}
+              containerClassName={'pagination'}
+              activeClassName={'active'}
+            />
+          </div>
         </div>
       );
     } else {

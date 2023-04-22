@@ -3,7 +3,7 @@
   padding-bottom: 2rem;
 }
 
-.Drinks .drinks-wrapper {
+.drinks-wrapper {
   padding: 2rem 3rem;
   background-color: #fff;
   border-right: 1px solid #dadce0;
@@ -11,13 +11,25 @@
   overflow-x: hidden;
 }
 
+.pagination-content {
+  height: 800px;
+}
+
+.pagination-ui {
+  padding: 1rem;
+}
+
+.pagination {
+  justify-content: center;
+}
+
 .pagination > .active > a {
-  background-color: #47ccde;
-  border-color: #47ccde;
+  background-color: #9cc3c9;
+  border-color: #9cc3c9;
   color: #fff;
 }
 .pagination > li > a {
-  border: 1px solid #47ccde;
+  border: 1px solid #9cc3c9;
   padding: 5px 10px;
   outline: none;
   cursor: pointer;
@@ -28,13 +40,13 @@
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
-  background-color: #47ccde;
-  border-color: #47ccde;
+  background-color: #9cc3c9;
+  border-color: #9cc3c9;
   outline: none;
 }
 .pagination > li > a,
 .pagination > li > span {
-  color: #47ccde;
+  color: #9cc3c9;
 }
 .pagination > li:first-child > a,
 .pagination > li:first-child > span,

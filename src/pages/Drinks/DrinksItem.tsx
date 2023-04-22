@@ -37,12 +37,12 @@ const DrinksItem: React.FC<DrinksItemProps> = ({ drink }) => {
         </div>
       </div>
       <div className="drinksItem-cell drinksItem-cell--5">
+        <div className="drinksItem-item">{drink.strGlass}</div>
+      </div>
+      <div className="drinksItem-cell drinksItem-cell--6">
         <div className="drinksItem-item">
           <DrinkTags tags={drink.strTags as string} />
         </div>
-      </div>
-      <div className="drinksItem-cell drinksItem-cell--6">
-        <div className="drinksItem-item">{drink.strGlass}</div>
       </div>
     </div>
   );

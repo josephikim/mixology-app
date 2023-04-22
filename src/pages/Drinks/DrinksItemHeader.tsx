@@ -23,12 +23,12 @@ const DrinksItemHeader: React.FC = () => {
       </div>
       <div className="DrinksItemHeader-cell DrinksItemHeader-cell--5">
         <div className="DrinksItemHeader-item">
-          <h4>IBA Tags</h4>
+          <h4>Serving Glass</h4>
         </div>
       </div>
       <div className="DrinksItemHeader-cell DrinksItemHeader-cell--6">
         <div className="DrinksItemHeader-item">
-          <h4>Serving Glass</h4>
+          <h4>IBA Tags</h4>
         </div>
       </div>
     </div>

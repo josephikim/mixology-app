@@ -1,19 +1,19 @@
 # Mixology App
 
-<img src="src/assets/images/drinkpage.png" width="500"  />
+<img src="src/assets/images/drinkpage.png" width="640"  />
 
 ## Description
 
-**Mixology App** helps you easily curate your favorite drinks, research new recipes, submit ratings, compose tasting notes and more. It is a demo app that I built to explore the integration of multiple third party APIs with a MongoDB database, as well as applying static typing via TypeScript. The app is relatively small in scope, but it has architectural elements in place (e.g. JSON Web Token, Mongoose, React-Router, Redux Toolkit) to help developers scale up its functionality easily. Feel free to fork or extend the codebase for your own project!
+**Mixology App** helps you curate your favorite drinks, research recipes, submit ratings, compose tasting notes and more. The app has architectural elements in place (e.g. Mongoose, Redux-Toolkit, React-Router, JSON Web Token) to help developers scale up its functionality easily. It uses third party data provided by [TheCocktailDB API](https://www.thecocktaildb.com/api.php) and the [Youtube Data API](https://developers.google.com/youtube/v3).
 
-Mixology App is an example of a "MERN stack" application which consists of the following technologies:
+Feel free to use or modify the codebase for your own project!
+
+This demo utilizes the "MERN stack" which makes it possible to quickly build and easily maintain a full-stack web app, and consists of the following technologies:
 
 - **MongoDB**: A document-based open source database.
 - **Express**: A web application framework for Node.js.
 - **React**: A JavaScript front-end library for building user interfaces.
 - **Node.js**: JavaScript run-time environment that executes JavaScript code outside of a browser (such as a server).
-
-This stack makes it possible to quickly build and easily maintain a full-stack web app. While MERN is a solid foundation for building a web app, I did run into some bumps in the road while integrating third party API data (provided by [TheCocktailDB API](https://www.thecocktaildb.com/api.php) and the [Youtube Data API](https://developers.google.com/youtube/v3)) with the Node.js backend. This was not too surprising since no two APIs are designed exactly alike, but the experience was a good reminder to refrain from making any assumptions about third party APIs regarding their design, functionality, data interface, reliability, etc.
 
 ## File structure
 
@@ -45,12 +45,12 @@ This stack makes it possible to quickly build and easily maintain a full-stack w
 - `.prettierrc.cjs` - Configuration file for Prettier.js
 - `package.json` - Defines npm behaviors and packages
 - `package-lock.json` - Tracks dependency tree
-- `.seedDrinks.js` - Script for seeding drink documents in MongoDB
-- `.seedDrinkVideos.js` - Script for seeding drink documents' video data in MongoDB
-- `.tsconfig.json` - Configuration file for TypeScript
-- `.webpack.common.js` - Webpack configuration file for common settings
-- `.webpack.development.js` - Webpack configuration file for development mode settings
-- `.webpack.production.js` - Webpack configuration file for production mode settings
+- `seedDrinks.js` - Script for seeding drink documents in MongoDB
+- `seedDrinkVideos.js` - Script for seeding drink documents' video data in MongoDB
+- `tsconfig.json` - Configuration file for TypeScript
+- `webpack.common.js` - Webpack configuration file for common settings
+- `webpack.development.js` - Webpack configuration file for development mode settings
+- `webpack.production.js` - Webpack configuration file for production mode settings
 - `README.md` - This file!
 
 ## Initial Setup
@@ -69,7 +69,7 @@ node -v
 
 Before you build or run the app, create two new files called `.env.development` and `.env.production` at the project root. These are configuration files that will be used by dotenv.js to expose environment variables to your app at runtime.
 
-In each file, you need to enter values for the following environment variables (refer to `.env.sample` for examples):
+In each file, you need to enter values for the following environment variables (refer to `.env.sample` for example values):
 
 `PORT`: Port where the app will run
 
@@ -107,9 +107,9 @@ Once those steps have been completed, and your MongoDB instance is up and runnin
 
 Now verify that the app can connect to your new database by starting the app in development mode.
 
-- To begin this process, first install Mixology App dependencies using `npm install`. Once that is complete, start the app in development mode with `npm run dev`.
+**NOTE**: Make sure you've created an `.env.development` and `.env.production` file at the project root with the required environment variables before starting the app! See _Environment Variables_ above.
 
-NOTE: Make sure you've created an `.env.development` file at the project root with the required environment variables before starting the app! See _Environment Variables_ above.
+- First install application dependencies using `npm install`. Once that is complete, start the app in development mode with `npm run dev`.
 
 Once the workflow is complete, the following messages will appear in the terminal:
 
@@ -120,9 +120,11 @@ Once the workflow is complete, the following messages will appear in the termina
   added "admin" to roles collection
 ```
 
-Verify the newly created documents in the `roles` collection by inspecting your database instance using the Mongo shell CLI or another database management tool (e.g. Robot 3T).
+Verify the newly created documents in the `roles` collection by inspecting your database using the Mongo shell CLI or another database management tool (e.g. Robot 3T).
 
-Next you need to seed your database with app data using the seeding scripts `seedDrinks.js` and `seedDrinkVideos.js`. Make sure to run these scripts in order (First `seedDrinks.js` then `seedDrinkVideos.js`).
+### Initialize Data
+
+Next you need to seed your database using the scripts `seedDrinks.js` and `seedDrinkVideos.js`. Make sure to run these scripts in order (First `seedDrinks.js` then `seedDrinkVideos.js`).
 
 - Seed drink documents by running `node seedDrinks.js`
 
@@ -135,47 +137,49 @@ This script connects to your Mongo database, makes API calls to The CocktailDB f
 
 - Seed drink videos data by running `node seedDrinkVideos.js`
 
-This script connects to your Mongo instance, makes API calls to the Youtube Data API for video data corresponding to documents in your `drinks` collection, and updates those documents with the returned video data. If the script runs successfully, you should see a success message in the terminal (`Drink videos updated successfully!`).
+This script connects to your Mongo instance, makes API calls to the Youtube Data API for video data corresponding to documents in your `drinks` collection, and updates those documents with the returned API data. If the script runs successfully, you should see a success message in the terminal.
 
-NOTE: Depending on your access policy, the Youtube Data API may limit the number and frequency of calls it will accept from a given client. You can set or remove this limit by updating the line `.limit(20)` in `seedDrinkVideos.js`. Depending on the result, you may need to run the script multiple times in order to seed every drink in your database.
+```text
+  Drink videos updated successfully!
+```
 
-Now you can verify the new documents in the `drinks` collection of your database. Then try reloading the page at `http://localhost:8080/drinks` in your browser to see the updated drinks.
+Now you can verify the new documents in the `drinks` collection of your database.
+
+**Note**: Depending on your access policy, the Youtube Data API may limit the number and frequency of calls it will accept from a given client. You can set or remove this limit by updating the line `.limit(20)` in `seedDrinkVideos.js`. Depending on the result, you may need to run the script multiple times in order to seed every drink in your database.
 
 ## Run the app
 
-To run the app in **development mode**, run the command `npm run dev`. This triggers a Webpack workflow which lints the source code, applies formatting changes based on Prettier.js settings, builds the `server.cjs` file, and serves up the frontend via in-memory assets using Webpack Dev Server. Once the workflow is complete, you should be able to see the server running in the terminal. If it started correctly, the following message will appear in the terminal, `Server started at http://localhost:3001`. Then try visiting `http://localhost:8080` in your browser to verify that you can access the frontend.
+To run the app in **development mode**, run the command `npm run dev`. This triggers a Webpack workflow which lints the source code, applies formatting changes based on Prettier.js settings, builds the `server.cjs` file, and serves up the frontend via in-memory assets using Webpack Dev Server. Once the workflow is complete, you should be able to see the server running in the terminal. If started correctly, the following message will appear in the terminal, `Server started at http://localhost:3001`. Then try visiting `http://localhost:8080` in your browser to access the frontend.
 
-NOTE: Hot module reloading is turned on by default in development mode. To turn HMR off, remove `hot: true` from the `client` config in `webpack.development.js`.
+**Note**: Hot module reloading is turned on by default in development mode. To turn HMR off, remove `hot: true` from the `client` config in `webpack.development.js`.
 
-To run the app in **production mode**, first run the command `npm run build`.
+To build a production-ready bundle of the app, run the command `npm run build`.
 
-NOTE: Make sure you've created a `.env.production` file with the required environment variables before running this command!
-
-This triggers a webpack workflow which bundles the source code and static assets using Webpack and emits them into the `build` folder. Once you've verified the bundled files have been created, run `npm run pm2` to start the app as a background process using the process management tool PM2. You can use any process manager of your choice, but PM2 generally works well with Node apps.
+This triggers a webpack workflow which bundles the source code and static assets using Webpack and emits the results into the `build` folder. Once you've verified the bundled files have been created, run `npm run pm2` to start the app as a background process using the process management tool PM2. You can use any process manager of your choice, but PM2 generally works well with Node environments.
 
 ## Authentication
 
-Mixology App uses JSON Web Token (JWT) for authentication. JWT is a popular choice for authentication in Node.js apps for several reasons:
+Mixology App uses JSON Web Token (JWT) for managing authentication. JWT is a popular choice for authentication in Node.js apps for several reasons:
 
 - Fewer database queries
 - Less development time
 - Easier to scale up with userbase
 - Better portability across services
 
-Since the backend of the app acts as both issuer and verifier of JWT tokens, it only needs one private key for authentication purposes. This is the key designated in your `.env` files as the `JWT_SECRET_KEY` environment variable.
+Since the backend of the app acts as both issuer and verifier of JWT tokens, it only needs one private key for authentication purposes. This is the key designated as `JWT_SECRET_KEY` in your `.env.*` files.
 
-IMPORTANT: Never share sensitive information such as keys or passwords! Make sure to apply appropriate security settings to prevent exposing your files.
+**Important**: Never share sensitive information such as keys or passwords! Make sure to apply appropriate security settings to prevent exposing your files.
 
 ### Authorization
 
-Each user document in the database includes a `roles` field which can take on one of three values: `user`, `moderator` or `admin`. These values aren't currently used for authorization purposes, but can be used to build out an authorization layer on top of the authentication workflow if desired.
+Each user document in your database includes a `roles` field which can take on one of three values: `user`, `moderator` or `admin`. These values aren't currently used for authorization purposes, but can be used to build out an authorization layer on top of the authentication workflow if desired.
 
-## React & Redux
+## React and Redux
 
 The frontend is a single-page React app that supports client-side routing via React-Router. This enables fast navigation between views and reduces the amount of network calls initiated by the frontend.
 
-NOTE: To support single-page apps in production, you will need to update the configuration of the web server used to serve your app externally (e.g Nginx).
+**Note**: To support single-page apps in production, you may need to update the configuration of the web server used to serve your app (e.g Nginx).
 
 Client data is stored using Redux which promotes data consistency, reduces database calls, and allows the use of Redux Devtools for development.
 
-All updates to Redux data are also persisted to localStorage (in the object located at `localStorage.state`) for access between browser sessions. If at any point the app displays data which appears out of sync, try clearing out your browser's localStorage and reloading the browser window.
+Redux data is also persisted to your browser's `localStorage` (in the object located at `localStorage.state`) for access between browser sessions. If at any point the app displays data which appears out of sync, try clearing your browser's localStorage and reloading the page.

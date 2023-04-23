@@ -8,7 +8,7 @@ const Login: FC = () => (
   <div className="Login">
     <Container>
       <Row>
-        <Col md={6}>
+        <Col md={4}>
           <ContentWrapper>
             <LoginForm />
           </ContentWrapper>

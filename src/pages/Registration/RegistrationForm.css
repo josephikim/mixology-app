@@ -1,4 +1,8 @@
+.RegistrationForm {
+  margin: 2rem auto;
+}
+
 .RegistrationForm > div,
 .RegistrationForm > button {
-  margin-bottom: 18px;
+  margin-bottom: 1rem;
 }

@@ -11,13 +11,13 @@ const Registration: FC = () => (
   <div className="Registration">
     <Container>
       <Row>
-        <Col md={6}>
+        <Col md={8}>
           <ContentWrapper>
             <Row className="registration-about">
               <Col>
                 <p>
-                  <strong>Mixology App</strong> helps you easily curate your favorite drinks, search for new recipes,
-                  submit ratings, compose tasting notes and more.
+                  <strong>Mixology App</strong> helps you curate your favorite drinks, search recipes, submit ratings,
+                  compose tasting notes and more.
                 </p>
                 <p>Please register to get started!</p>
               </Col>
@@ -30,7 +30,7 @@ const Registration: FC = () => (
           </ContentWrapper>
         </Col>
 
-        <Col md={6}>
+        <Col md={4}>
           <ContentWrapper>
             <RegistrationForm />
           </ContentWrapper>

@@ -5,7 +5,7 @@ import 'react-slideshow-image/dist/styles.css';
 import 'styles/Slideshow.css';
 
 import drinkpage from 'assets/images/drinkpage.png';
-import notespage from 'assets/images/notespage.png';
+import collectionpage from 'assets/images/collectionpage.png';
 import homepage from 'assets/images/homepage.png';
 
 const Slideshow: React.FC = () => {
@@ -13,13 +13,13 @@ const Slideshow: React.FC = () => {
     <div className="Slideshow">
       <Slide easing="ease">
         <div className="each-slide">
-          <div style={{ backgroundImage: `url(${drinkpage})` }}>{/* <span>Slide 1</span> */}</div>
+          <div style={{ backgroundImage: `url(${homepage})` }}></div>
         </div>
         <div className="each-slide">
-          <div style={{ backgroundImage: `url(${notespage})` }}>{/* <span>Slide 2</span> */}</div>
+          <div style={{ backgroundImage: `url(${drinkpage})` }}></div>
         </div>
         <div className="each-slide">
-          <div style={{ backgroundImage: `url(${homepage})` }}>{/* <span>Slide 3</span> */}</div>
+          <div style={{ backgroundImage: `url(${collectionpage})` }}></div>
         </div>
       </Slide>
     </div>

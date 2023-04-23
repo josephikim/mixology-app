@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import { login } from 'store/authSlice';
 import { useAppDispatch } from 'hooks';
@@ -48,7 +49,7 @@ const LoginForm: React.FC = () => {
   return (
     <Form className="LoginForm">
       <div className="text-primary">
-        <h4>Returning User Login</h4>
+        <h4>User Login</h4>
       </div>
 
       <Form.Group controlId="username">
@@ -64,6 +65,10 @@ const LoginForm: React.FC = () => {
       <Button type="submit" name="login-form-btn" variant="primary" onClick={(e): Promise<void> => handleSubmit(e)}>
         Login
       </Button>
+
+      <div>
+        First time user? Please <Link to="/register">register</Link>.
+      </div>
     </Form>
   );
 };

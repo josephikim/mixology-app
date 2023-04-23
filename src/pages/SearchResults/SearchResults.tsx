@@ -62,7 +62,7 @@ const SearchResults: React.FC = () => {
         <ContentWrapper>
           <Row className="search-status">
             <Col>
-              <strong>Retrieving data...</strong>
+              <h6>Retrieving data...</h6>
             </Col>
           </Row>
         </ContentWrapper>
@@ -72,7 +72,7 @@ const SearchResults: React.FC = () => {
         <ContentWrapper>
           <Row className="search-status">
             <Col>
-              {isSearchSuccess.current && <p>{`Found ${searchResults.length} results for "${query}"`}</p>}
+              {isSearchSuccess.current && <h6>{`Found ${searchResults.length} results for "${query}"`}</h6>}
               {isSearchFail.current && <strong>Error retrieving data!</strong>}
             </Col>
           </Row>

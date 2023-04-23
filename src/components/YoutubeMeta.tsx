@@ -17,29 +17,20 @@ const YoutubeMeta: React.FC<YoutubeMetaProps> = ({ id, title, channelTitle, desc
       <Table borderless size="sm">
         <tbody>
           <tr>
-            <td className="table-header">Title:</td>
-            <td>{title}</td>
+            <td className="table-header">Title</td>
+            <td>
+              <a href={`https://www.youtube.com/watch?v=${id}`} target="_blank">
+                {title}
+              </a>
+            </td>
           </tr>
           <tr>
-            <td className="table-header">Channel:</td>
+            <td className="table-header">Channel</td>
             <td>{channelTitle}</td>
           </tr>
           <tr>
-            <td className="table-header">Description:</td>
+            <td className="table-header">Description</td>
             <td>{description}</td>
-          </tr>
-          <tr>
-            <td className="table-header">Published:</td>
-            <td>{publishedAt}</td>
-          </tr>
-          <tr>
-            <td className="table-header">Link:</td>
-            <td>
-              <a
-                href={`https://www.youtube.com/watch?v=${id}`}
-                target="_blank"
-              >{`https://www.youtube.com/watch?v=${id}`}</a>
-            </td>
           </tr>
         </tbody>
       </Table>

@@ -28,18 +28,18 @@ const RandomDrink: React.FC = () => {
       return (
         <>
           <Row>
+            <Col>
+              <Image src={drink.strDrinkThumb} rounded />
+            </Col>
+          </Row>
+
+          <Row>
             <div className="flex-container content-heading">
               <Col>
                 <h4>{drink.strDrink}</h4>
                 <Link to={`/drink/${drink.idDrink}`}>view details</Link>
               </Col>
             </div>
-          </Row>
-
-          <Row>
-            <Col>
-              <Image src={drink.strDrinkThumb} rounded />
-            </Col>
           </Row>
 
           {drinkIncludesCategory ? (

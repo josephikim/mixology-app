@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-const style = { marginRight: '7%', marginLeft: '7%', marginTop: '2rem', marginBottom: '2rem' };
+const style = { margin: '18px' };
 
 interface ContentWrapperProps {
   children?: React.ReactNode;

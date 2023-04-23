@@ -8,27 +8,27 @@ const DrinksItemHeader: React.FC = () => {
       <div className="DrinksItemHeader-cell DrinksItemHeader-cell--1"></div>
       <div className="DrinksItemHeader-cell DrinksItemHeader-cell--2">
         <div className="DrinksItemHeader-item">
-          <h4>Drink</h4>
+          <h5>Drink</h5>
         </div>
       </div>
       <div className="DrinksItemHeader-cell DrinksItemHeader-cell--3">
         <div className="DrinksItemHeader-item">
-          <h4>Category</h4>
+          <h5>Category</h5>
         </div>
       </div>
       <div className="DrinksItemHeader-cell DrinksItemHeader-cell--4">
         <div className="DrinksItemHeader-item">
-          <h4>Alcohol Content</h4>
+          <h5>Alcohol Content</h5>
         </div>
       </div>
       <div className="DrinksItemHeader-cell DrinksItemHeader-cell--5">
         <div className="DrinksItemHeader-item">
-          <h4>Serving Glass</h4>
+          <h5>Serving Glass</h5>
         </div>
       </div>
       <div className="DrinksItemHeader-cell DrinksItemHeader-cell--6">
         <div className="DrinksItemHeader-item">
-          <h4>IBA Tags</h4>
+          <h5>IBA Tags</h5>
         </div>
       </div>
     </div>

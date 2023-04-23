@@ -44,11 +44,11 @@ const DrinkInfo: React.FC = () => {
         <div className="drink-info-cell drink-info-cell--1">
           <div className="drink-info-item">
             <Row>
-              <Col md={5}>
-                <h5>Category</h5>
+              <Col md={6}>
+                <h6>CATEGORY</h6>
               </Col>
 
-              <Col md={7}>
+              <Col md={6}>
                 {matchingDrink.strCategory && <DrinkCategoryTags category={matchingDrink.strCategory} />}
               </Col>
             </Row>
@@ -57,11 +57,11 @@ const DrinkInfo: React.FC = () => {
         <div className="drink-info-cell drink-info-cell--2">
           <div className="drink-info-item">
             <Row>
-              <Col md={5}>
-                <h5>Alcohol Content</h5>
+              <Col md={6}>
+                <h6>ALCOHOL CONTENT</h6>
               </Col>
 
-              <Col md={7}>
+              <Col md={6}>
                 {matchingDrink.strAlcoholic && <DrinkAlcoholTags alcohol={matchingDrink.strAlcoholic} />}
               </Col>
             </Row>
@@ -70,30 +70,30 @@ const DrinkInfo: React.FC = () => {
         <div className="drink-info-cell drink-info-cell--3">
           <div className="drink-info-item">
             <Row>
-              <Col md={5}>
-                <h5>IBA Tags</h5>
+              <Col md={6}>
+                <h6>SERVING GLASS</h6>
               </Col>
 
-              <Col md={7}>{matchingDrink.strTags && <DrinkTags tags={matchingDrink.strTags} />}</Col>
+              <Col md={6}>
+                <span>{matchingDrink.strGlass}</span>
+              </Col>
             </Row>
           </div>
         </div>
         <div className="drink-info-cell drink-info-cell--4">
           <div className="drink-info-item">
             <Row>
-              <Col md={5}>
-                <h5>Serving Glass</h5>
+              <Col md={6}>
+                <h6>IBA TAGS</h6>
               </Col>
 
-              <Col md={7}>
-                <p>{matchingDrink.strGlass}</p>
-              </Col>
+              <Col md={6}>{matchingDrink.strTags && <DrinkTags tags={matchingDrink.strTags} />}</Col>
             </Row>
           </div>
         </div>
         <div className="drink-info-cell drink-info-cell--5">
           <div className="drink-info-item">
-            <h5>Recipe</h5>
+            <h6>RECIPE</h6>
             <ContentWrapper>
               <Row>
                 <Col>
@@ -111,7 +111,7 @@ const DrinkInfo: React.FC = () => {
         </div>
         <div className="drink-info-cell drink-info-cell--6">
           <div className="drink-info-item">
-            <h5>Videos</h5>
+            <h6>VIDEOS</h6>
             <ContentWrapper>
               <Youtube idDrink={matchingDrink.idDrink} videos={matchingDrink.youtubeVideos} />
             </ContentWrapper>

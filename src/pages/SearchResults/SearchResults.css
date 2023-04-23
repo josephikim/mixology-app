@@ -1,9 +1,3 @@
 .SearchResults .search-status {
-  margin-bottom: 2rem;
-}
-
-.SearchResults .search-status p {
-  display: block;
-  margin: 0 auto;
-  max-width: 1080px;
+  margin-bottom: 1.5rem;
 }

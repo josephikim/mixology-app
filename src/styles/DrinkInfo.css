@@ -1,39 +1,27 @@
 .DrinkInfo > .container {
-  position: relative;
   display: grid;
   padding-left: 0;
   padding-right: 0;
-  grid-template-columns: 1fr 1fr;
   overflow-x: hidden;
   border-left: 1px solid #dadce0;
   border-top: 1px solid #dadce0;
 }
 
-.DrinkInfo .drink-info-cell {
-  padding: 1rem;
-  background-color: #fff;
+.drink-info-cell {
+  padding: 18px;
   border-right: 1px solid #dadce0;
   border-bottom: 1px solid #dadce0;
 }
 
-.DrinkInfo .drink-info-cell p,
-.DrinkInfo .drink-info-cell .DrinkIngredients .list-group-item {
-  font-size: 1rem;
-}
-
-.DrinkInfo .drink-info-cell .badge {
+.drink-info-cell .badge {
   font-size: 0.8rem;
 }
 
-.DrinkInfo .drink-info-cell--3 {
-  grid-row: 2;
-}
-
-.DrinkInfo .drink-info-cell--5 {
+.drink-info-cell--5 {
   grid-row: 3;
   grid-column: span 2;
 }
-.DrinkInfo .drink-info-cell--6 {
+.drink-info-cell--6 {
   grid-row: 4;
   grid-column: span 2;
 }

@@ -7,7 +7,7 @@
   position: relative;
   display: grid;
   grid-template-rows: 250px 150px 1fr;
-  grid-template-columns: 2fr 3fr 2fr;
+  grid-template-columns: 2fr 2fr 2fr;
   overflow-x: hidden;
 }
 

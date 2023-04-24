@@ -22,7 +22,7 @@ const seedVideos = async () => {
     // Find docs with empty youtubeVideos field or with a value of empty array
     let cursor = drinksCollection
       .find({ $or: [{ youtubeVideos: { $exists: false } }, { youtubeVideos: { $eq: [] } }] })
-      .limit(5); // Adjust based on Youtube API usage quotas
+      .limit(20); // Adjust based on Youtube API usage quotas
 
     const docs = await cursor.toArray();
 

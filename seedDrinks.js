@@ -47,25 +47,25 @@ const seedDB = async () => {
   try {
     await client.connect();
     console.log('Connected correctly to server');
-    const collection = client.db('mixologyapp_db').collection('drinks');
 
-    // Insert drinks into DB
-    makeDrinks().then((drinks) => {
-      collection
-        .bulkWrite(
-          drinks.map((drink) => ({
-            updateOne: {
-              filter: { idDrink: drink.idDrink },
-              update: { $set: drink },
-              upsert: true
-            }
-          }))
-        )
-        .then(() => {
-          client.close();
-        });
-      console.log('Database seeded!');
+    const drinksCollection = client.db('mixologyapp_db').collection('drinks');
+
+    const drinksData = await makeDrinks();
+    const ops = [];
+
+    // Insert drink into DB if no existing document with matching idDrink is found
+    drinksData.forEach((drink) => {
+      ops.push({ updateOne: { filter: { idDrink: drink.idDrink }, update: { $setOnInsert: drink }, upsert: true } });
     });
+
+    // run bulkWrite operation
+    if (ops.length > 0) {
+      drinksCollection.bulkWrite(ops).then((result) => {
+        console.log('Database seeded!');
+        console.log({ result });
+        client.close();
+      });
+    }
   } catch (err) {
     console.log(err.stack);
   }

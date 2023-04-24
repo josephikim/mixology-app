@@ -16,84 +16,91 @@ const seedVideos = async () => {
   try {
     await client.connect();
     console.log('Connected correctly to server');
+
     const drinksCollection = client.db('mixologyapp_db').collection('drinks');
 
-    // The drop() command destroys all data from a collection.
-    // Make sure you run it against proper database and collection.
-    // collection.drop();
-
-    // Return all docs with idDrink
-    // let cursor = drinksCollection.find({ idDrink: { $exists: true, $ne: null } });
-
-    // Return all docs without an actual entry in youtubeVideos
+    // Find docs with empty youtubeVideos field or with a value of empty array
     let cursor = drinksCollection
-      .find({
-        'youtubeVideos.0': { $exists: false }
-      })
-      .limit(20); // Adjust based on Youtube API usage quotas
+      .find({ $or: [{ youtubeVideos: { $exists: false } }, { youtubeVideos: { $eq: [] } }] })
+      .limit(5); // Adjust based on Youtube API usage quotas
 
-    cursor.count({}, function (err, count) {
+    const docs = await cursor.toArray();
+
+    if (docs && docs.length > 0) {
       console.log('====================');
-      console.log(count);
-    });
+      const ids = [];
+      docs.forEach((doc) => {
+        ids.push({ idDrink: doc.idDrink });
+      });
+      console.log(`seeding ${docs.length} documents with following ids:`);
+      console.log({ ids });
 
-    let promises = [];
+      const update = await updateDocuments(drinksCollection, docs);
 
-    cursor.forEach(function (doc) {
-      if (!doc || Object.keys(doc).length < 1) {
-        return;
-      } else {
-        const videos = doc.youtubeVideos;
-        const isVideosEmpty = !videos || !videos.length;
-
-        if (isVideosEmpty) {
-          promises.push(
-            new Promise(async (resolve) => {
-              const url = `${process.env.YOUTUBE_API_URL}/search?key=${
-                process.env.YOUTUBE_API_KEY
-              }&type=video&part=snippet&q=${encodeURIComponent(doc.strDrink).replace(
-                /%20/g,
-                '+'
-              )}+cocktail+recipe&maxResults=5`;
-
-              // Call Youtube API with search query
-              const response = await axios.get(url);
-
-              if (!response.data.items || response.data.items.length < 1) {
-                resolve('No results found from Youtube API');
-              }
-
-              // Create array of YoutubeVideo objects from response
-              const videosResult = [];
-
-              response.data.items.map((item) => {
-                const obj = {
-                  id: item.id.videoId,
-                  title: item.snippet.title,
-                  channelTitle: item.snippet.channelTitle,
-                  description: item.snippet.description,
-                  publishedAt: item.snippet.publishedAt
-                };
-                videosResult.push(obj);
-              });
-
-              drinksCollection
-                .updateOne({ idDrink: doc.idDrink }, { $set: { youtubeVideos: videosResult } })
-                .then((updated) => {
-                  resolve(updated);
-                });
-            })
-          );
-        }
-      }
-    });
-
-    Promise.all(promises).then((results) => {
+      console.log('====================');
       console.log('Drink videos updated successfully!');
-    });
+      console.log({ update });
+    } else {
+      console.log('No matching documents found.');
+    }
+
+    client.close();
   } catch (err) {
     console.log(err.stack);
   }
+};
+
+const updateDocuments = async (collection, documents) => {
+  const promises = [];
+
+  // construct array of promises
+  documents.forEach((doc) => {
+    // check for empty document
+    if (Object.keys(doc).length < 1) {
+      return;
+    }
+
+    promises.push(
+      new Promise(async (resolve) => {
+        // Call Youtube API
+        const url = `${process.env.YOUTUBE_API_URL}/search?key=${
+          process.env.YOUTUBE_API_KEY
+        }&type=video&part=snippet&q=${encodeURIComponent(doc.strDrink).replace(
+          /%20/g,
+          '+'
+        )}+cocktail+recipe&maxResults=5`;
+
+        const response = await axios.get(url);
+
+        // check for empty response
+        if (!response.data.items || response.data.items.length < 1) {
+          resolve(`No results found from Youtube API for ${doc.strDrink}`);
+        }
+
+        // Create array of video objects from API response
+        const videos = [];
+
+        response.data.items.map((item) => {
+          const obj = {
+            id: item.id.videoId,
+            title: item.snippet.title,
+            channelTitle: item.snippet.channelTitle,
+            description: item.snippet.description,
+            publishedAt: item.snippet.publishedAt
+          };
+          videos.push(obj);
+        });
+
+        // update document
+        collection.updateOne({ idDrink: doc.idDrink }, { $set: { youtubeVideos: videos } }).then((result) => {
+          resolve(result);
+        });
+      })
+    );
+  });
+
+  const result = await Promise.all(promises);
+  return result;
 };
 
 seedVideos();

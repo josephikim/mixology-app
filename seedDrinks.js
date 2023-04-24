@@ -49,10 +49,6 @@ const seedDB = async () => {
     console.log('Connected correctly to server');
     const collection = client.db('mixologyapp_db').collection('drinks');
 
-    // The drop() command destroys all data from a collection.
-    // Make sure you run it against proper database and collection.
-    // collection.drop();
-
     // Insert drinks into DB
     makeDrinks().then((drinks) => {
       collection

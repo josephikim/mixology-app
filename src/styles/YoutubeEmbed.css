@@ -20,18 +20,15 @@
 }
 
 .YoutubeEmbed .youtube-player img {
-  object-fit: cover;
-  display: block;
+  position: absolute;
   left: 0;
   bottom: 0;
-  margin: auto;
-  max-width: 100%;
-  width: 100%;
-  position: absolute;
   right: 0;
   top: 0;
+  width: 100%;
   border: none;
-  height: auto;
+  margin: auto;
+  object-fit: cover;
   cursor: pointer;
   -webkit-transition: 0.4s all;
   -moz-transition: 0.4s all;
@@ -39,20 +36,16 @@
 }
 
 .YoutubeEmbed .youtube-player img:hover {
-  -webkit-filter: brightness(75%);
-  -moz-filter: brightness(75%);
-  filter: brightness(75%);
+  -webkit-filter: brightness(66%);
+  -moz-filter: brightness(66%);
+  filter: brightness(66%);
 }
 
-.YoutubeEmbed .youtube-player .play {
-  height: 72px;
-  width: 72px;
+.YoutubeEmbed .youtube-player .ri-play-circle-line {
+  position: absolute;
   left: 50%;
   top: 50%;
-  margin-left: -36px;
-  margin-top: -36px;
-  position: absolute;
-  background: url('https://iconsplace.com/wp-content/uploads/_icons/ffffff/256/png/play-icon-18-256.png') no-repeat;
-  background-size: cover;
+  transform: translate(-50%, -50%);
+  color: red;
   cursor: pointer;
 }

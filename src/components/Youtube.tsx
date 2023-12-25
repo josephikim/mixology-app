@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Row, Col } from 'react-bootstrap';
-
 import { useAppDispatch } from 'hooks';
+import { initYouTubeVideos } from 'utils/YoutubeHelper';
 import YoutubeEmbed from './YoutubeEmbed';
 import YoutubeMeta from './YoutubeMeta';
 import { YoutubeVideo } from 'types';
 import { getDrinkWithVideos } from 'store/baseSlice';
+
 interface YoutubeProps {
   idDrink: string;
   videos?: YoutubeVideo[];
@@ -19,6 +20,10 @@ const Youtube: React.FC<YoutubeProps> = ({ idDrink, videos }) => {
   if (isDrinkMissingVideos) {
     dispatch(getDrinkWithVideos(idDrink));
   }
+
+  useEffect(() => {
+    initYouTubeVideos();
+  }, []);
 
   return (
     <div className="Youtube">

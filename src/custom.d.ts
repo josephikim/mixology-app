@@ -2,16 +2,6 @@ declare module '*.jpg';
 declare module '*.png';
 
 declare module 'react-slideshow-image' {
-  export class Zoom extends React.Component<ZoomProps & any, any> {
-    goBack(): void;
-    goNext(): void;
-    goTo(index: number): void;
-  }
-  export class Fade extends React.Component<SlideshowProps & any, any> {
-    goBack(): void;
-    goNext(): void;
-    goTo(index: number): void;
-  }
   export class Slide extends React.Component<SlideshowProps & any, any> {
     goBack(): void;
     goNext(): void;
@@ -34,8 +24,5 @@ declare module 'react-slideshow-image' {
     canSwipe?: boolean;
     easing?: string;
     cssClass?: string;
-  }
-  export interface ZoomProps extends SlideshowProps {
-    scale: number;
   }
 }

@@ -22,8 +22,10 @@ const Youtube: React.FC<YoutubeProps> = ({ idDrink, videos }) => {
   }
 
   useEffect(() => {
-    initYouTubeVideos();
-  }, []);
+    if (videos !== undefined) {
+      initYouTubeVideos();
+    }
+  }, [videos]);
 
   return (
     <div className="Youtube">
